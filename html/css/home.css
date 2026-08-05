@@ -1,0 +1,525 @@
+/* Hero */
+.hero {
+  position: relative;
+  display: grid;
+  /* Ties the height to the viewport so the CTA stays above the fold on short
+     screens — at a flat 560px it fell below it on anything under ~630px tall. */
+  min-height: clamp(320px, 62vh, 560px);
+  overflow: hidden;
+  background: linear-gradient(135deg, #efd9c8 0%, #e3c3b0 45%, #cf9a86 100%);
+}
+@supports (height: 1svh) {
+  /* svh, so a phone's collapsing URL bar doesn't change the hero's height */
+  .hero { min-height: clamp(320px, 62svh, 560px); }
+}
+.hero__slides {
+  display: grid;
+}
+.hero__slide {
+  /* All slides share one grid cell: they still stack for the crossfade, but the
+     cell grows to the tallest one instead of clipping content that outgrows it. */
+  grid-area: 1 / 1;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s ease;
+}
+/* The outgoing slide stays fully opaque underneath while the incoming one
+   fades in over it. Fading both at once would let the hero's own light
+   background show through the middle of the transition — a visible flash. */
+.hero__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+.hero__slide.is-leaving {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+.hero__slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(47, 47, 46, 0.55) 0%, rgba(47, 47, 46, 0.15) 55%, rgba(47, 47, 46, 0) 100%);
+}
+.hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px;
+  color: var(--color-white);
+}
+.hero__eyebrow {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+}
+.hero__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+.hero__text {
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.hero__cta {
+  display: inline-block;
+  border: 1px solid var(--color-white);
+  color: var(--color-white);
+  background: transparent;
+  padding: 16px 40px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.hero__cta:hover {
+  background: var(--color-white);
+  color: var(--color-text);
+}
+.hero__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--color-white);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease;
+}
+.hero__arrow:hover { background: rgba(255, 255, 255, 0.45); }
+.hero__arrow--prev { left: 20px; }
+.hero__arrow--next { right: 20px; }
+.hero__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.hero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--color-white);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+.hero__dot.is-active { background: var(--color-white); }
+
+@media (max-width: 1024px) {
+  .hero__title { font-size: 36px; }
+}
+@media (max-width: 768px) {
+  .hero__content { padding: 32px 20px; }
+  .hero__title { font-size: 26px; }
+  .hero__text { font-size: 14px; margin-bottom: 20px; }
+  .hero__cta { padding: 12px 28px; }
+  .hero__arrow { display: none; }
+}
+
+/* Section heading (used above bestsellers) */
+.section-heading {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+.section-heading__eyebrow {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--color-rust);
+  display: block;
+  margin-bottom: 6px;
+}
+.section-heading__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 30px;
+}
+
+/* Best sellers carousel */
+.bestsellers {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 40px;
+  position: relative;
+}
+.bestsellers__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 4 * 28px) / 5);
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.bestsellers__track::-webkit-scrollbar { display: none; }
+.bestsellers__item {
+  text-align: center;
+  scroll-snap-align: start;
+  position: relative;
+}
+.bestsellers__item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: var(--color-white);
+  margin: 40px 0 16px;
+}
+.bestsellers__item p { font-size: 15px; line-height: 1.5; }
+.bestsellers__item .add-to-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  transition: background 0.2s ease;
+}
+.bestsellers__item .add-to-cart:hover { background: var(--color-text); }
+.bestsellers__item .icon-cart {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.bestsellers__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-text);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.bestsellers__arrow:hover {
+  background: var(--color-rust);
+  border-color: var(--color-rust);
+  color: var(--color-white);
+}
+/* Inside the section's 40px gutter, not hanging past it: once the viewport is
+   only a little wider than max-width the arrows would poke outside it and give
+   the page a horizontal scrollbar. */
+.bestsellers__arrow--prev { left: 0; }
+.bestsellers__arrow--next { right: 0; }
+
+.shop-all-cta {
+  text-align: center;
+  padding-bottom: 70px;
+}
+.shop-all-cta .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.shop-all-cta__arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+.shop-all-cta .btn-outline:hover .shop-all-cta__arrow { transform: translateX(4px); }
+
+@media (max-width: 1024px) {
+  .bestsellers__track { grid-auto-columns: calc((100% - 2 * 28px) / 3); }
+}
+@media (max-width: 600px) {
+  .bestsellers { padding: 0 34px 40px; }
+  .bestsellers__track { grid-auto-columns: calc((100% - 20px) / 2); gap: 20px; }
+  /* Sized to sit inside the narrowed gutter rather than over the cards. */
+  .bestsellers__arrow { width: 34px; height: 34px; font-size: 17px; }
+}
+
+/* Alternating category rows */
+.category-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.category-row__card {
+  position: relative;
+  background: var(--color-white);
+  border: 1px solid #e4d9d1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  overflow: hidden;
+}
+.category-row__badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 8px 18px;
+  z-index: 2;
+}
+.category-row__card img {
+  width: 100%;
+  height: 460px;
+  object-fit: contain;
+  padding: 40px;
+}
+.category-row__card-info {
+  position: relative;
+  width: 100%;
+  padding-bottom: 32px;
+}
+.category-row__card p {
+  padding: 0 20px;
+  font-size: 16px;
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+.category-row__card a.detail-link {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  border: 1px solid var(--color-rust);
+  color: var(--color-rust);
+  font-size: 14px;
+  padding: 10px 32px;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+  pointer-events: none;
+}
+.category-row__card:hover p { opacity: 0; }
+.category-row__card:hover a.detail-link { opacity: 1; pointer-events: auto; }
+.category-row__card a.detail-link:hover { background: var(--color-rust); color: var(--color-white); }
+
+.category-row__banner {
+  position: relative;
+  min-height: 460px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Holds the image still against the viewport while the crop stays centred on
+   the banner. background-attachment: fixed can't do this: it sizes the image
+   against the viewport, so a half-width banner only ever shows an off-centre
+   slice of it.
+   The image is sticky inside a track that overhangs the banner by a viewport
+   on each side, so it stays pinned at the top of the viewport for as long as
+   the banner is on screen. overflow: clip — not hidden — is what makes this
+   work: hidden would turn the banner into the sticky element's scrollport.
+   Browsers without overflow: clip keep the banner's own background instead. */
+.category-row__banner--sticky-bg {
+  overflow: clip;
+}
+.category-row__banner--sticky-bg::before {
+  z-index: 1;
+}
+.category-row__banner-bgtrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -100vh;
+  height: calc(100% + 200vh);
+}
+.category-row__banner-bg {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+/* Scales the image up as the banner travels down the viewport, and back down
+   again on the way up — the scroll position drives the animation, so it
+   reverses on its own. Only the transform animates, so it stays composited.
+   Longhands, not the animation shorthand: the shorthand would reset
+   animation-duration to 0s and snap the animation to its end state. */
+.category-row__banner--zoom-bg {
+  /* clip, not hidden: hidden would make the banner a scroll container and the
+     view() timeline would measure against it instead of the page. */
+  overflow: clip;
+}
+.category-row__banner--zoom-bg::before {
+  z-index: 1;
+}
+.category-row__banner-zoom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@keyframes banner-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.75); }
+}
+@supports (animation-timeline: view()) {
+  .category-row__banner-zoom {
+    animation-name: banner-zoom;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+  }
+}
+.category-row__banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 15, 10, 0.38);
+}
+.category-row__banner-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 460px;
+  text-align: center;
+  color: var(--color-white);
+  padding: 40px;
+}
+.category-row__banner-inner h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 26px;
+  margin-bottom: 16px;
+}
+.category-row__banner-inner .divider {
+  width: 60px;
+  height: 2px;
+  background: var(--color-white);
+  margin: 0 auto 20px;
+}
+.category-row__banner-inner p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .category-row { grid-template-columns: 1fr; }
+  .category-row__card img { height: 340px; padding: 24px; }
+  .category-row__banner { min-height: 340px; }
+  .category-row__banner-bgtrack { display: none; }
+}
+
+/* Story / Craft / Custom design cards */
+.info-cards {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 90px 40px 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+.info-card {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  color: var(--color-white);
+}
+.info-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.info-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+.info-card__overlay h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-size: 22px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.info-card__overlay .divider {
+  width: 40px;
+  height: 2px;
+  background: var(--color-white);
+  margin-bottom: 16px;
+}
+.info-card__overlay a {
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .info-cards { grid-template-columns: 1fr; padding: 50px 24px 30px; }
+}
+
+/* Feature strip */
+.feature-strip {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 30px 40px 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+.feature-strip .divider {
+  width: 30px;
+  height: 2px;
+  background: var(--color-rust);
+  margin: 0 auto 14px;
+}
+.feature-strip p {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--color-rust);
+}
+
+@media (max-width: 700px) {
+  .feature-strip { grid-template-columns: 1fr; gap: 40px; }
+}
