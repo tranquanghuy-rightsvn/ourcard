@@ -51,13 +51,22 @@
 <div class="product-detail" id="main-content">
   <div class="product-gallery">
     <div class="product-gallery__thumbs">
-      <button class="product-gallery__thumb product-gallery__thumb--active"><img src="../images/pc1052-hi-1.jpg" alt="Beach pop-up card, front view"></button>
+      <button class="product-gallery__thumb product-gallery__thumb--active product-gallery__thumb--video" data-video="../videos/card-video.mp4">
+        <img src="../images/pc1052-hi-1.jpg" alt="Watch the card video">
+        <span class="product-gallery__play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </button>
+      <button class="product-gallery__thumb"><img src="../images/pc1052-hi-1.jpg" alt="Beach pop-up card, front view"></button>
       <button class="product-gallery__thumb"><img loading="lazy" src="../images/pc1052-hi-2.jpg" alt="Beach pop-up card, side angle"></button>
       <button class="product-gallery__thumb"><img loading="lazy" src="../images/pc1052-hi-3.jpg" alt="Beach pop-up card, layered detail"></button>
       <button class="product-gallery__thumb"><img loading="lazy" src="../images/pc1052-hi-4.jpg" alt="Beach pop-up card, folded flat"></button>
     </div>
     <div class="product-gallery__main">
-      <img src="../images/pc1052-hi-1.jpg" alt="PC1052 &mdash; Summer Holiday Beach Pop-Up Card" id="productMainImg">
+      <img src="../images/pc1052-hi-1.jpg" alt="PC1052 &mdash; Summer Holiday Beach Pop-Up Card" id="productMainImg" hidden>
+      <video id="productMainVideo" controls playsinline preload="metadata" poster="../images/pc1052-hi-1.jpg">
+        <source src="../videos/card-video.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
 

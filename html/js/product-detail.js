@@ -9,8 +9,23 @@ document.querySelectorAll('.product-gallery__thumb').forEach(function (thumb) {
       t.classList.remove('product-gallery__thumb--active');
     });
     this.classList.add('product-gallery__thumb--active');
-    var img = this.querySelector('img');
+
     var main = document.getElementById('productMainImg');
+    var video = document.getElementById('productMainVideo');
+
+    // The first thumb is the clip; the rest swap the still image back in.
+    if (this.hasAttribute('data-video')) {
+      if (main) main.hidden = true;
+      if (video) video.hidden = false;
+      return;
+    }
+    if (video) {
+      video.pause();
+      video.hidden = true;
+    }
+    var img = this.querySelector('img');
+    if (!main) return;
+    main.hidden = false;
     main.src = img.getAttribute('data-large') || img.src;
     main.alt = img.alt;
   });

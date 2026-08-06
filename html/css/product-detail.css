@@ -25,7 +25,9 @@
 /* ===== PRODUCT DETAIL ===== */
 .product-detail {
   display: grid;
-  grid-template-columns: 96px 1fr 460px;
+  /* minmax(0, …) so a wide child (the video) can't push the track past the
+     viewport and give the page a horizontal scrollbar on narrow screens. */
+  grid-template-columns: 96px minmax(0, 1fr) 460px;
   gap: 32px;
   max-width: var(--max-width);
   margin: 0 auto;
@@ -52,7 +54,23 @@
   overflow: hidden;
   aspect-ratio: 1 / 1;
 }
-.product-gallery__main img { width: 100%; height: 100%; object-fit: contain; }
+.product-gallery__main img,
+.product-gallery__main video { width: 100%; height: 100%; object-fit: contain; }
+.product-gallery__main video { background: #000; }
+.product-gallery__main [hidden] { display: none; }
+
+/* Video thumb: still frame with a play badge over it */
+.product-gallery__thumb--video { position: relative; }
+.product-gallery__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 15, 10, 0.35);
+  color: var(--color-white);
+}
+.product-gallery__play svg { width: 22px; height: 22px; }
 
 .product-info__vendor { font-size: 12.5px; color: var(--color-muted); margin-bottom: 8px; }
 .product-info__title {
@@ -367,12 +385,12 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .product-detail { grid-template-columns: 84px 1fr 380px; gap: 24px; }
+  .product-detail { grid-template-columns: 84px minmax(0, 1fr) 380px; gap: 24px; }
   .pcard { flex: 0 0 calc(33.333% - 14px); }
 }
 
 @media (max-width: 768px) {
-  .product-detail { grid-template-columns: 1fr; padding: 24px 20px 48px; }
+  .product-detail { grid-template-columns: minmax(0, 1fr); padding: 24px 20px 48px; }
   .product-gallery { display: block; }
   .product-gallery__thumbs { flex-direction: row; margin-top: 12px; margin-bottom: 10px; overflow-x: auto; }
   .product-gallery__thumb { width: 64px; flex-shrink: 0; }
