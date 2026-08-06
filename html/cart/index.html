@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart | KHT Card</title>
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+
+<div class="topbar">
+  <p>3D Pop Up Greeting Card Vietnam Manufacturer, Supplier, Wholesaler for all occasions.<br>Faster &ndash; Better &ndash; Cheaper</p>
+  <div class="topbar__contact">
+    <a href="tel:+84904152501">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.8 21 3 13.2 3 3.9c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+      (+84) 904 152 501
+    </a>
+    <a href="mailto:info@khtcard.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      info@khtcard.com
+    </a>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="../index.html" class="logo"><img src="../images/logo-kht.png" alt="KHT Card"></a>
+    <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav class="main-nav">
+      <a href="../index.html">Home</a>
+      <a href="../shop-all/index.html">Shop All</a>
+      <a href="../our-story/index.html">Our Story</a>
+      <a href="../our-craft/index.html">Our Craft</a>
+      <a href="#">Contact</a>
+      <a href="#">Custom design</a>
+      <a href="#">Certificate</a>
+    </nav>
+    <a href="index.html" class="cart-link" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg><span class="cart-link__badge" hidden>0</span></a>
+  </div>
+</header>
+
+<main class="cart-page" id="main-content">
+  <h1 class="cart-page__title">YOUR CART</h1>
+  <p class="cart-page__sub">Review your designs below, then check out.</p>
+
+  <div class="cart-items" id="cartItems" style="display:none;"></div>
+
+  <div class="cart-summary" id="cartSummary" style="display:none;">
+    <div class="cart-summary__row">
+      <span class="cart-summary__label">Total <span class="cart-summary__designs"></span></span>
+      <span class="cart-summary__total-value">0₫</span>
+    </div>
+    <p class="cart-summary__note">Prices are per card and include VAT. Wholesale orders start at 50 pcs per design &mdash; we&rsquo;ll confirm the final quote by email.</p>
+    <button type="button" class="cart-summary__checkout" id="payNowBtn">Pay now</button>
+  </div>
+
+  <div class="cart-empty-state">
+    <p class="cart-empty-state__msg">Your cart is empty</p>
+    <a href="../shop-all/index.html" class="cart-empty-state__link">Browse the collection</a>
+  </div>
+</main>
+
+<!-- Checkout modal. Demo only: nothing is submitted anywhere and the QR is a
+     placeholder pattern, not a real payment code. -->
+<div class="checkout" id="checkout" hidden>
+  <div class="checkout__backdrop" data-checkout-close></div>
+  <div class="checkout__dialog" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <button type="button" class="checkout__close" aria-label="Close" data-checkout-close>&times;</button>
+
+    <div class="checkout__body" id="checkoutBody">
+      <h2 class="checkout__title" id="checkoutTitle">Checkout</h2>
+      <p class="checkout__demo-note">Demo store &mdash; no real order is placed and no payment is taken.</p>
+
+      <form class="checkout__form" id="checkoutForm" novalidate>
+        <fieldset class="checkout__section">
+          <legend class="checkout__legend">Delivery details</legend>
+          <label class="checkout__field">
+            <span>Full name <em>*</em></span>
+            <input type="text" name="name" autocomplete="name" required>
+          </label>
+          <div class="checkout__row">
+            <label class="checkout__field">
+              <span>Phone <em>*</em></span>
+              <input type="tel" name="phone" autocomplete="tel" required>
+            </label>
+            <label class="checkout__field">
+              <span>Email</span>
+              <input type="email" name="email" autocomplete="email">
+            </label>
+          </div>
+          <label class="checkout__field">
+            <span>Address <em>*</em></span>
+            <input type="text" name="address" autocomplete="street-address" required>
+          </label>
+          <div class="checkout__row">
+            <label class="checkout__field">
+              <span>City / Province <em>*</em></span>
+              <input type="text" name="city" autocomplete="address-level1" required>
+            </label>
+            <label class="checkout__field">
+              <span>Postcode</span>
+              <input type="text" name="postcode" autocomplete="postal-code">
+            </label>
+          </div>
+          <label class="checkout__field">
+            <span>Delivery note</span>
+            <textarea name="note" rows="2" placeholder="Gift message, preferred delivery time&hellip;"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="checkout__section">
+          <legend class="checkout__legend">Payment method</legend>
+          <label class="checkout__option">
+            <input type="radio" name="payment" value="cod" checked>
+            <span class="checkout__option-body">
+              <span class="checkout__option-title">Cash on delivery</span>
+              <span class="checkout__option-sub">Pay the courier when your cards arrive. No transfer needed.</span>
+            </span>
+          </label>
+          <label class="checkout__option">
+            <input type="radio" name="payment" value="transfer">
+            <span class="checkout__option-body">
+              <span class="checkout__option-title">Pay now by bank transfer</span>
+              <span class="checkout__option-sub">Scan the QR below and we ship as soon as the transfer lands.</span>
+            </span>
+          </label>
+
+          <div class="checkout__qr" id="checkoutQr" hidden>
+            <div class="checkout__qr-code" id="checkoutQrCode" aria-hidden="true"></div>
+            <div class="checkout__qr-info">
+              <p class="checkout__qr-badge">Sample QR &mdash; not a real payment code</p>
+              <dl>
+                <div><dt>Bank</dt><dd>Demo Bank &mdash; KHT CO. LTD</dd></div>
+                <div><dt>Account</dt><dd>0000 1234 5678</dd></div>
+                <div><dt>Reference</dt><dd id="checkoutRef">KHT-0000</dd></div>
+                <div><dt>Amount</dt><dd id="checkoutQrAmount">0₫</dd></div>
+              </dl>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="checkout__summary">
+          <span>Order total</span>
+          <strong id="checkoutTotal">0₫</strong>
+        </div>
+        <p class="checkout__error" id="checkoutError" hidden></p>
+        <button type="submit" class="checkout__submit" id="checkoutSubmit">Place order</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-logo">KHT.</div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <a href="../index.html">Home</a>
+        <a href="../shop-all/index.html">Shop All</a>
+        <a href="../our-story/index.html">Our Story</a>
+        <a href="../our-craft/index.html">Our Craft</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <a href="#">FAQ</a>
+        <a href="#">Shipping &amp; Returns</a>
+        <a href="#">Sales Policy</a>
+      </div>
+    </div>
+    <div class="footer-social">
+      <a href="#"><img src="../images/icon-instagram.png" alt="Instagram"></a>
+      <a href="#"><img src="../images/icon-facebook.png" alt="Facebook"></a>
+      <a href="#"><img src="../images/icon-tiktok.png" alt="TikTok"></a>
+    </div>
+    <div class="footer-signup">
+      <h4>JOIN US!</h4>
+      <form onsubmit="return false;">
+        <label for="footer-email">Email *</label>
+        <input type="email" id="footer-email" required>
+        <button type="submit" class="btn-outline">Send</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy;2023 by kht.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/checkout.js"></script>
+</body>
+</html>

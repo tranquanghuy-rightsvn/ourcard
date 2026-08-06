@@ -36,12 +36,14 @@
       <a href="#">Custom design</a>
       <a href="#">Certificate</a>
     </nav>
+    <a href="cart/index.html" class="cart-link" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg><span class="cart-link__badge" hidden>0</span></a>
   </div>
 </header>
 
 <main>
 
   <section class="hero" aria-label="KHT pop-up card showcase">
+    <div class="hero__main">
     <div class="hero__slides">
       <div class="hero__slide is-active" style="background-image:url('images/card-banner-1.webp');">
         <div class="hero__content">
@@ -75,6 +77,24 @@
       <button class="hero__dot" aria-label="Go to slide 2"></button>
       <button class="hero__dot" aria-label="Go to slide 3"></button>
     </div>
+    </div>
+
+    <div class="hero__side">
+      <a class="hero-card" href="#" style="background-image:url('images/hero-side-custom.jpg');">
+        <div class="hero-card__body">
+          <h2 class="hero-card__title">Custom design</h2>
+          <p>Send us your artwork or idea &mdash; we turn it into a working pop-up.</p>
+          <span class="hero-card__cta">Send your idea <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+      <a class="hero-card" href="shop-all/index.html" style="background-image:url('images/hero-side-wholesale.jpg');">
+        <div class="hero-card__body">
+          <h2 class="hero-card__title">Wholesale &amp; OEM</h2>
+          <p>Factory-direct pricing for retailers, from small batches upwards.</p>
+          <span class="hero-card__cta">Get a quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+    </div>
   </section>
 
   <section class="section-heading">
@@ -85,84 +105,100 @@
   <section class="bestsellers">
     <button class="bestsellers__arrow bestsellers__arrow--prev" aria-label="Previous">&lsaquo;</button>
     <div class="bestsellers__track">
-      <a class="bestsellers__item" href="product-page/pc1052-summer-holiday-beach-popup-card/index.html">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1052-beach.jpg" alt="PC1052 - Summer Holiday Beach Popup Card" loading="lazy">
         <p>PC1052 - Summer Holiday<br>Beach Popup Card</p>
+        <p class="product-price" data-price="195000">195.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1051-mountain.png" alt="PC1051 - Summer Holiday Mountain Popup Card" loading="lazy">
         <p>PC1051 - Summer Holiday<br>Mountain Popup Card</p>
+        <p class="product-price" data-price="130000">130.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1046-back-to-school.png" alt="PC1046 - Back to school Popup Card" loading="lazy">
         <p>PC1046 - Back to school<br>Popup Card</p>
+        <p class="product-price" data-price="395000">395.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1043-birthday-numbers.png" alt="PC1043 - Happy birthday with numbers Popup Card" loading="lazy">
         <p>PC1043 - Happy birthday with<br>numbers Popup Card</p>
+        <p class="product-price" data-price="470000">470.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1042-birthday-flower.png" alt="PC1042 - Happy birthday flower Popup Card" loading="lazy">
         <p>PC1042 - Happy birthday<br>flower Popup Card</p>
+        <p class="product-price" data-price="255000">255.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1041-birthday-60th.png" alt="PC1041 - Happy Birthday 60th Popup Card" loading="lazy">
         <p>PC1041 - Happy Birthday<br>60th Popup Card</p>
+        <p class="product-price" data-price="380000">380.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1044-travel-adventure.jpg" alt="PC1044 - Travel Adventure Popup Card" loading="lazy">
         <p>PC1044 - Travel Adventure<br>Popup Card</p>
+        <p class="product-price" data-price="240000">240.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1040-badminton.jpg" alt="PC1040 - Badminton Popup Card" loading="lazy">
         <p>PC1040 - Badminton<br>Popup Card</p>
+        <p class="product-price" data-price="295000">295.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/p1039-cornflowers.png" alt="P1039 - Cornflowers Popup Card" loading="lazy">
         <p>P1039 - Cornflowers<br>Popup Card</p>
+        <p class="product-price" data-price="530000">530.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1036-camera.png" alt="PC1036 - Camera Popup Card" loading="lazy">
         <p>PC1036 - Camera<br>Popup Card</p>
+        <p class="product-price" data-price="365000">365.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1038-happy-wedding.png" alt="PC1038 - Happy Wedding Popup Card" loading="lazy">
         <p>PC1038 - Happy Wedding<br>Popup Card</p>
+        <p class="product-price" data-price="170000">170.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1037-happy-anniversary.png" alt="PC1037 - Happy Anniversary Popup Card" loading="lazy">
         <p>PC1037 - Happy Anniversary<br>Popup Card</p>
+        <p class="product-price" data-price="150000">150.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1035-happy-wedding.jpg" alt="PC1035 - Happy Wedding Popup Card" loading="lazy">
         <p>PC1035 - Happy Wedding<br>Popup Card</p>
+        <p class="product-price" data-price="585000">585.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1033-happy-anniversary-numbers.png" alt="PC1033 - Happy Anniversary with numbers Popup Card" loading="lazy">
         <p>PC1033 - Happy Anniversary<br>with numbers Popup Card</p>
+        <p class="product-price" data-price="510000">510.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1034-fathers-day-camping.png" alt="PC1034 - Farther's day camping Popup Card" loading="lazy">
         <p>PC1034 - Farther's day<br>camping Popup Card</p>
+        <p class="product-price" data-price="120000">120.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
-      <a class="bestsellers__item" href="#">
+      <a class="bestsellers__item" href="product/index.html">
         <img src="images/pc1031-best-dad-ever.png" alt="PC1031 - Best Dad Ever Popup Card" loading="lazy">
         <p>PC1031 - Best Dad Ever<br>Popup Card</p>
+        <p class="product-price" data-price="545000">545.000₫</p>
         <span class="add-to-cart"><svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>Add to Cart</span>
       </a>
     </div>
@@ -179,7 +215,7 @@
       <img src="images/pc938-christmas-hot-chocolate.webp" alt="PC938 - Christmas Hot Chocolate" loading="lazy">
       <div class="category-row__card-info">
         <p>PC938 - Christmas Hot Chocolate</p>
-        <a class="detail-link" href="#">Detail</a>
+        <a class="detail-link" href="product/index.html">Detail</a>
       </div>
     </div>
     <div class="category-row__banner category-row__banner--sticky-bg" style="background-image:url('images/banner-christmas.jpg');">
@@ -208,7 +244,7 @@
       <img src="images/pc900-thank-you.webp" alt="PC900 - Thank you" loading="lazy">
       <div class="category-row__card-info">
         <p>PC900 - Thank you</p>
-        <a class="detail-link" href="#">Detail</a>
+        <a class="detail-link" href="product/index.html">Detail</a>
       </div>
     </div>
   </section>
@@ -219,7 +255,7 @@
       <img src="images/pc926-flamingo.webp" alt="PC926 - Flamingo" loading="lazy">
       <div class="category-row__card-info">
         <p>PC926 - Flamingo</p>
-        <a class="detail-link" href="#">Detail</a>
+        <a class="detail-link" href="product/index.html">Detail</a>
       </div>
     </div>
     <div class="category-row__banner category-row__banner--sticky-bg" style="background-image:url('images/banner-animals.jpg');">
@@ -250,7 +286,7 @@
       <img src="images/pc902-happy-new-year.webp" alt="PC902 - Happy New Year" loading="lazy">
       <div class="category-row__card-info">
         <p>PC902 - Happy New Year</p>
-        <a class="detail-link" href="#">Detail</a>
+        <a class="detail-link" href="product/index.html">Detail</a>
       </div>
     </div>
   </section>
@@ -261,7 +297,7 @@
       <img src="images/pc925-birthday-clown.webp" alt="PC925 - Birthday Clown" loading="lazy">
       <div class="category-row__card-info">
         <p>PC925 - Birthday Clown</p>
-        <a class="detail-link" href="#">Detail</a>
+        <a class="detail-link" href="product/index.html">Detail</a>
       </div>
     </div>
     <div class="category-row__banner category-row__banner--sticky-bg" style="background-image:url('images/banner-birthday.jpg');">
@@ -292,7 +328,7 @@
       <img src="images/pc932-winter-house.webp" alt="PC932 - Winter House" loading="lazy">
       <div class="category-row__card-info">
         <p>PC932 - Winter House</p>
-        <a class="detail-link" href="#">Detail</a>
+        <a class="detail-link" href="product/index.html">Detail</a>
       </div>
     </div>
   </section>
@@ -369,5 +405,6 @@
 <script src="js/main.js"></script>
 <script src="js/carousel.js"></script>
 <script src="js/hero-slider.js"></script>
+<script src="js/cart.js"></script>
 </body>
 </html>

@@ -116,6 +116,40 @@ body {
 .main-nav a:hover,
 .main-nav a[aria-current="page"] { color: var(--color-rust); }
 
+/* Cart button — last item in the header, so it sits at the far right */
+.cart-link {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 28px;
+  border-radius: 50%;
+  color: var(--color-text);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cart-link:hover { background: var(--color-white); color: var(--color-rust); }
+.cart-link svg { width: 22px; height: 22px; }
+.cart-link__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 17px;
+  text-align: center;
+}
+/* Hidden until there's something in the cart */
+.cart-link__badge[hidden] { display: none; }
+
 /* ==========================================================================
    Buttons
    ========================================================================== */
@@ -155,6 +189,40 @@ body {
   margin-bottom: 14px;
 }
 .product-card p { font-size: 15px; line-height: 1.5; }
+
+.product-price {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-rust);
+}
+
+/* Add-to-cart button shared by every product tile (home carousel, shop grid).
+   Matches .pcard__cta on the product page so the two never drift apart. */
+.add-to-cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid var(--color-rust);
+  border-radius: 2px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  transition: transform 0.15s ease, background 0.2s, border-color 0.2s;
+}
+.add-to-cart:hover { background: var(--color-text); border-color: var(--color-text); }
+.add-to-cart:active { transform: scale(0.96); }
+.icon-cart {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
 
 /* ==========================================================================
    Footer
@@ -247,7 +315,9 @@ body {
 
 @media (max-width: 768px) {
   .site-header__inner { flex-wrap: wrap; }
-  .nav-toggle { display: block; }
+  .nav-toggle { display: block; order: 3; }
+  /* Keep the cart beside the burger instead of after the collapsed menu */
+  .cart-link { order: 2; margin-left: auto; margin-right: 8px; }
   .main-nav {
     display: none;
     position: absolute;
