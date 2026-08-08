@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Story | KHT co. ltd</title>
+<title>Wishlist | KHT Card</title>
 <link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/content-page.css">
+<link rel="stylesheet" href="../css/wishlist.css">
 </head>
 <body>
 
@@ -31,70 +31,26 @@
       <a href="../index.html">HOME</a>
       <a href="../shop-all/index.html">SHOP ALL</a>
       <a href="#">CUSTOM DESIGN</a>
-      <a href="../our-story/index.html" aria-current="page">ABOUT US</a>
+      <a href="../our-story/index.html">ABOUT US</a>
       <a href="../contact-us/index.html">CONTACT US</a>
       <a href="#">WHOLESALE</a>
       <a href="#">FREE TEMPLATE</a>
     </nav>
-    <a href="../wishlist/index.html" class="wishlist-link" aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1-1.1a5.5 5.5 0 000-7.7z"/></svg><span class="wishlist-link__badge" hidden>0</span></a>
+    <a href="index.html" class="wishlist-link" aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1-1.1a5.5 5.5 0 000-7.7z"/></svg><span class="wishlist-link__badge" hidden>0</span></a>
     <a href="../cart/index.html" class="cart-link" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg><span class="cart-link__badge" hidden>0</span></a>
   </div>
 </header>
 
-<main>
+<main class="wishlist-page" id="main-content">
+  <h1 class="wishlist-page__title">WISHLIST</h1>
+  <p class="wishlist-page__sub">Designs you saved for later. They stay here on this device until you remove them.</p>
 
-  <div class="page-hero">
-    <div class="page-hero__video" role="img" aria-label="KHT team introduction"></div>
+  <div class="wishlist-grid" id="wishlistItems" style="display:none;"></div>
+
+  <div class="wishlist-empty">
+    <p class="wishlist-empty__msg">Your wishlist is empty</p>
+    <a href="../shop-all/index.html" class="wishlist-empty__link">Browse the collection</a>
   </div>
-
-  <section class="split-row">
-    <div class="split-row__text">
-      <h2>FASTER &ndash; BETTER &ndash; CHEAPER</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="split-row__image">
-      <img src="../images/story-team-beach.jpg" alt="KHT team" loading="lazy">
-    </div>
-  </section>
-
-  <section class="photo-statement">
-    <img src="../images/story-our-story-bg.jpg" alt="" loading="lazy">
-    <div class="photo-statement__inner">
-      <h2>Our Story</h2>
-      <p>Not sure how to spend your time in KHT? We have provided and manufactured 3D pop-up cards for our customers with the hope to spread Vietnamese people&rsquo;s beauty, ingenuity, warmth, and generosity to recipients all over the world. Would you like to join our journey?</p>
-      <p>KHT&rsquo;s story. In the context of complete turmoil and full of physical and mental difficulties after covid, our KHT team was born with the desire of bringing spiritual food through 3D hand-made cards to every corner in the world, because more than ever we understand the value of sharing the great love sent through each card when we can't see each other.</p>
-      <p>Working and dedicating with the motto as well as the core value "Faster &ndash; Better &ndash; Cheaper", we not only would like to reach the position of the top company in the industry, but more than ever, we strive to bring quality products and the most perfect service to touch every customer's heart.</p>
-      <p>KHT might not be anything without you, dear customers, but we will be really strong, thrive and overcome all challenges when we have your companion, support and trust.</p>
-      <p>KHT&rsquo;s product. Our range of premium quality pop up cards are all lovingly designed in Vietnam and then hand assembled, creating a keepsake that will leave a lasting impression on the lucky recipient.</p>
-    </div>
-  </section>
-
-  <section class="split-row">
-    <div class="split-row__text">
-      <h2>OUR VISION</h2>
-      <div class="divider"></div>
-      <p>Thriving Vietnam 3D Handmade cards all over the globe</p>
-      <p>Affirming the quality of Vietnamese products and integrating with worldwide friends</p>
-      <p>Building up Popup Greeting Card Company to become the leading company in Vietnam in designing and manufacturing 3D Cards for export</p>
-    </div>
-    <div class="split-row__image">
-      <img src="../images/story-vision.jpg" alt="Crafting pop up cards" loading="lazy">
-    </div>
-  </section>
-
-  <section class="split-row">
-    <div class="split-row__image">
-      <img src="../images/story-mission.jpg" alt="Laser cutting pop up card pieces" loading="lazy">
-    </div>
-    <div class="split-row__text">
-      <h2>OUR MISSION</h2>
-      <div class="divider"></div>
-      <p>To become an interconnected, happy and prosperous team, we keep on trying</p>
-      <p>To help strengthen and tie up the connection between friends and family, we create unique and meaningful 3D card designs</p>
-      <p>To accomplish our vision, we <strong>Keep Hard-working</strong> to reach the <strong>Top</strong></p>
-    </div>
-  </section>
-
 </main>
 
 <footer class="site-footer">

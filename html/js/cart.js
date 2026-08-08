@@ -264,12 +264,25 @@
     });
   }
 
+  /* Shared with wishlist.js so both features read a tile the same way. */
+  window.khtProduct = {
+    read: readProduct,
+    toRoot: toRootRelative,
+    fromRoot: fromRootRelative,
+    format: formatVnd
+  };
+  window.khtToast = showToast;
+
   /* Small surface for the checkout modal to read totals and empty the cart. */
   window.khtCart = {
     items: getCart,
     total: totalPrice,
     count: totalQty,
     format: formatVnd,
+    add: function (product, qty) {
+      if (!product || !product.id) return;
+      addItem(product.id, product, qty || 1);
+    },
     clear: function () {
       saveCart([]);
       updateBadges();

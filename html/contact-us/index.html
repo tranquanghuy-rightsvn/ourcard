@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Story | KHT co. ltd</title>
+<title>Contact Us | KHT Card</title>
 <link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/content-page.css">
+<link rel="stylesheet" href="../css/contact.css">
 </head>
 <body>
 
@@ -31,8 +31,8 @@
       <a href="../index.html">HOME</a>
       <a href="../shop-all/index.html">SHOP ALL</a>
       <a href="#">CUSTOM DESIGN</a>
-      <a href="../our-story/index.html" aria-current="page">ABOUT US</a>
-      <a href="../contact-us/index.html">CONTACT US</a>
+      <a href="../our-story/index.html">ABOUT US</a>
+      <a href="index.html" aria-current="page">CONTACT US</a>
       <a href="#">WHOLESALE</a>
       <a href="#">FREE TEMPLATE</a>
     </nav>
@@ -41,60 +41,63 @@
   </div>
 </header>
 
-<main>
+<main class="contact-page" id="main-content">
+  <h1 class="contact-page__title">CONTACT US</h1>
+  <p class="contact-page__sub">Tell us the designs and quantities you need &mdash; we usually reply within one working day.</p>
 
-  <div class="page-hero">
-    <div class="page-hero__video" role="img" aria-label="KHT team introduction"></div>
+  <div class="contact-layout">
+    <div class="contact-info">
+      <h2>KHT CO. LTD</h2>
+      <p>3D pop-up greeting card manufacturer, supplier and wholesaler.</p>
+      <dl class="contact-details">
+        <div><dt>Phone</dt><dd><a href="tel:+84904152501">(+84) 904 152 501</a></dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:info@khtcard.com">info@khtcard.com</a></dd></div>
+        <div><dt>Workshop</dt><dd>Ha Noi, Viet Nam</dd></div>
+        <div><dt>Port</dt><dd>Ho Chi Minh</dd></div>
+        <div><dt>Hours</dt><dd>Mon&ndash;Sat, 8:00&ndash;17:30 (GMT+7)</dd></div>
+      </dl>
+      <h3>What to include</h3>
+      <ul class="contact-list">
+        <li>Product codes, or your own artwork for a custom design</li>
+        <li>Quantity per design (minimum 50 pcs each)</li>
+        <li>Destination country and target delivery date</li>
+      </ul>
+    </div>
+
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="contact-form__row">
+        <label class="contact-field">
+          <span>Name <em>*</em></span>
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label class="contact-field">
+          <span>Company</span>
+          <input type="text" name="company" autocomplete="organization">
+        </label>
+      </div>
+      <div class="contact-form__row">
+        <label class="contact-field">
+          <span>Email <em>*</em></span>
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="contact-field">
+          <span>Phone</span>
+          <input type="tel" name="phone" autocomplete="tel">
+        </label>
+      </div>
+      <label class="contact-field">
+        <span>Subject</span>
+        <input type="text" name="subject" placeholder="Wholesale enquiry, custom design&hellip;">
+      </label>
+      <label class="contact-field">
+        <span>Message <em>*</em></span>
+        <textarea name="message" rows="6" required placeholder="Product codes, quantities, destination&hellip;"></textarea>
+      </label>
+      <p class="contact-form__error" id="contactError" hidden></p>
+      <p class="contact-form__note">Demo form &mdash; nothing is sent. Please email us directly at info@khtcard.com.</p>
+      <button type="submit" class="contact-form__submit">Send enquiry</button>
+    </form>
   </div>
-
-  <section class="split-row">
-    <div class="split-row__text">
-      <h2>FASTER &ndash; BETTER &ndash; CHEAPER</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="split-row__image">
-      <img src="../images/story-team-beach.jpg" alt="KHT team" loading="lazy">
-    </div>
-  </section>
-
-  <section class="photo-statement">
-    <img src="../images/story-our-story-bg.jpg" alt="" loading="lazy">
-    <div class="photo-statement__inner">
-      <h2>Our Story</h2>
-      <p>Not sure how to spend your time in KHT? We have provided and manufactured 3D pop-up cards for our customers with the hope to spread Vietnamese people&rsquo;s beauty, ingenuity, warmth, and generosity to recipients all over the world. Would you like to join our journey?</p>
-      <p>KHT&rsquo;s story. In the context of complete turmoil and full of physical and mental difficulties after covid, our KHT team was born with the desire of bringing spiritual food through 3D hand-made cards to every corner in the world, because more than ever we understand the value of sharing the great love sent through each card when we can't see each other.</p>
-      <p>Working and dedicating with the motto as well as the core value "Faster &ndash; Better &ndash; Cheaper", we not only would like to reach the position of the top company in the industry, but more than ever, we strive to bring quality products and the most perfect service to touch every customer's heart.</p>
-      <p>KHT might not be anything without you, dear customers, but we will be really strong, thrive and overcome all challenges when we have your companion, support and trust.</p>
-      <p>KHT&rsquo;s product. Our range of premium quality pop up cards are all lovingly designed in Vietnam and then hand assembled, creating a keepsake that will leave a lasting impression on the lucky recipient.</p>
-    </div>
-  </section>
-
-  <section class="split-row">
-    <div class="split-row__text">
-      <h2>OUR VISION</h2>
-      <div class="divider"></div>
-      <p>Thriving Vietnam 3D Handmade cards all over the globe</p>
-      <p>Affirming the quality of Vietnamese products and integrating with worldwide friends</p>
-      <p>Building up Popup Greeting Card Company to become the leading company in Vietnam in designing and manufacturing 3D Cards for export</p>
-    </div>
-    <div class="split-row__image">
-      <img src="../images/story-vision.jpg" alt="Crafting pop up cards" loading="lazy">
-    </div>
-  </section>
-
-  <section class="split-row">
-    <div class="split-row__image">
-      <img src="../images/story-mission.jpg" alt="Laser cutting pop up card pieces" loading="lazy">
-    </div>
-    <div class="split-row__text">
-      <h2>OUR MISSION</h2>
-      <div class="divider"></div>
-      <p>To become an interconnected, happy and prosperous team, we keep on trying</p>
-      <p>To help strengthen and tie up the connection between friends and family, we create unique and meaningful 3D card designs</p>
-      <p>To accomplish our vision, we <strong>Keep Hard-working</strong> to reach the <strong>Top</strong></p>
-    </div>
-  </section>
-
 </main>
 
 <footer class="site-footer">
@@ -158,6 +161,7 @@
 <script src="../js/main.js"></script>
 <script src="../js/cart.js"></script>
 <script src="../js/wishlist.js"></script>
+<script src="../js/contact.js"></script>
 <script src="../js/chat.js"></script>
 </body>
 </html>

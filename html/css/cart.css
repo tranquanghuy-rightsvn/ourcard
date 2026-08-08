@@ -50,8 +50,9 @@
 .cart-item__info { flex: 1; min-width: 0; }
 .cart-item__name {
   display: block;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 700;
   margin-bottom: 10px;
   transition: opacity 0.2s;
 }

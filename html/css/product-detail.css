@@ -73,15 +73,18 @@
 .product-gallery__play svg { width: 22px; height: 22px; }
 
 .product-info__vendor { font-size: 12.5px; color: var(--color-muted); margin-bottom: 8px; }
+/* Product names carry the accent serif and the bold weight; everything that
+   describes the product underneath stays regular so the title leads. */
 .product-info__title {
-  font-family: var(--font-heading);
-  font-size: clamp(22px, 2.5vw, 30px);
-  font-weight: 400;
+  font-family: var(--font-accent);
+  font-size: clamp(24px, 2.6vw, 33px);
+  font-weight: 700;
+  line-height: 1.25;
   margin-bottom: 16px;
 }
-.product-info__price-label { font-size: 12px; color: var(--color-muted); margin-bottom: 2px; }
+.product-info__price-label { font-size: 12px; font-weight: 400; color: var(--color-muted); margin-bottom: 2px; }
 .product-info__price { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
-.product-info__tax { font-size: 12.5px; color: var(--color-muted); margin-bottom: 24px; }
+.product-info__tax { font-size: 12.5px; font-weight: 400; color: var(--color-muted); margin-bottom: 24px; }
 
 .product-info__actions {
   display: flex;
@@ -207,10 +210,12 @@
 .faq-item.open .faq-item__body { max-height: 640px; }
 .faq-item__content {
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.7;
   color: var(--color-muted);
   padding: 0 0 18px;
 }
+.faq-item__content strong { font-weight: 600; }
 
 .product-info__share {
   display: flex;
@@ -225,6 +230,103 @@
   transition: color 0.15s;
 }
 .product-info__share:hover { color: var(--color-text); }
+
+/* ===== SPEC LIST + CONTACT BLOCK (product info column) ===== */
+.product-specs {
+  margin-bottom: 24px;
+  border-top: 1px solid var(--color-border);
+}
+.product-specs li {
+  display: flex;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+.product-specs li span {
+  flex: 0 0 96px;
+  color: var(--color-muted);
+}
+
+.product-info__wish {
+  position: static;
+  flex-shrink: 0;
+  width: 52px;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  background: var(--color-white);
+  box-shadow: none;
+}
+.product-info__wish svg { width: 20px; height: 20px; }
+
+.product-contact-heading {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--color-rust);
+  margin: 26px 0 12px;
+}
+.product-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+}
+.product-contact a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--color-text);
+  transition: color 0.15s;
+}
+.product-contact a:hover { color: var(--color-rust); }
+.product-contact svg { width: 17px; height: 17px; flex-shrink: 0; }
+.product-contact__cta {
+  margin-top: 4px;
+  padding: 11px 26px;
+  border: 1px solid var(--color-rust);
+  border-radius: 999px;
+  color: var(--color-rust);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+}
+.product-contact__cta:hover { background: var(--color-rust); color: var(--color-white); }
+
+/* ===== INFORMATION SECTION ===== */
+.product-information {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 8px 32px 56px;
+}
+.product-information__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-size: 19px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.product-information p {
+  font-size: 14.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--color-text-light);
+  margin-bottom: 16px;
+  max-width: 90ch;
+}
+
+@media (max-width: 768px) {
+  .product-information { padding: 4px 20px 40px; }
+  .product-specs li { flex-direction: column; gap: 2px; }
+  .product-specs li span { flex: none; font-size: 12px; }
+}
 
 /* ===== RELATED PRODUCTS CAROUSEL ===== */
 .related-products {
@@ -336,8 +438,9 @@
 }
 .pcard__info { text-align: center; }
 .pcard__name {
-  font-size: 13.5px;
-  font-weight: 500;
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 700;
   margin-bottom: 4px;
   line-height: 1.4;
 }

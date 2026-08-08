@@ -8,6 +8,19 @@ a { color: inherit; text-decoration: none; }
 img, video { max-width: 100%; display: block; }
 button { font: inherit; cursor: pointer; }
 
+/* Visible to screen readers only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 :root {
   --color-bg: #faf3ee;
   --color-topbar: #f6e6dd;
@@ -116,7 +129,13 @@ body {
 .main-nav a:hover,
 .main-nav a[aria-current="page"] { color: var(--color-rust); }
 
-/* Cart button — last item in the header, so it sits at the far right */
+.main-nav a {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Wishlist + cart buttons — last items in the header, at the far right */
+.wishlist-link,
 .cart-link {
   position: relative;
   flex-shrink: 0;
@@ -130,8 +149,15 @@ body {
   color: var(--color-text);
   transition: background 0.15s ease, color 0.15s ease;
 }
+/* The header is space-between, which would spread the two icons apart. Letting
+   the wishlist swallow all the free space keeps the pair glued together. */
+.wishlist-link { margin-left: auto; }
+.cart-link { margin-left: 10px; }
+.wishlist-link:hover,
 .cart-link:hover { background: var(--color-white); color: var(--color-rust); }
+.wishlist-link svg,
 .cart-link svg { width: 22px; height: 22px; }
+.wishlist-link__badge,
 .cart-link__badge {
   position: absolute;
   top: 0;
@@ -147,7 +173,8 @@ body {
   line-height: 17px;
   text-align: center;
 }
-/* Hidden until there's something in the cart */
+/* Hidden until there's something saved */
+.wishlist-link__badge[hidden],
 .cart-link__badge[hidden] { display: none; }
 
 /* ==========================================================================
@@ -172,7 +199,13 @@ body {
 /* ==========================================================================
    Product card (shared: shop grid, related products)
    ========================================================================== */
-.product-card { text-align: center; }
+.product-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.product-card .product-actions { margin-top: auto; }
+.product-card .product-price { margin-top: 6px; }
 .product-card__badge {
   display: inline-block;
   background: var(--color-rust);
@@ -188,7 +221,12 @@ body {
   background: var(--color-white);
   margin-bottom: 14px;
 }
-.product-card p { font-size: 15px; line-height: 1.5; }
+.product-card p {
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+}
 
 .product-price {
   margin-top: 6px;
@@ -196,6 +234,63 @@ body {
   font-weight: 600;
   color: var(--color-rust);
 }
+
+/* Contact / wishlist / cart — the three actions under every product tile.
+   The tile itself is a div now: the image and name sit in their own link, so
+   the Contact link isn't nested inside another <a>. */
+.product-tile__link { display: block; }
+.product-tile__media { position: relative; }
+
+/* Wishlist heart, floating over the top corner of the product image */
+.btn-wish {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  transition: color 0.2s, transform 0.15s ease;
+}
+.btn-wish svg { width: 17px; height: 17px; }
+.btn-wish:hover { color: var(--color-rust); }
+.btn-wish:active { transform: scale(0.9); }
+.btn-wish--active { color: var(--color-rust); }
+.btn-wish--active svg { fill: currentColor; }
+
+/* Contact + cart sit side by side under the tile */
+.product-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  margin-top: 10px;
+}
+.btn-contact {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border: 1px solid var(--color-text);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-contact:hover { background: var(--color-text); color: var(--color-white); }
 
 /* Add-to-cart button shared by every product tile (home carousel, shop grid).
    Matches .pcard__cta on the product page so the two never drift apart. */
@@ -218,6 +313,15 @@ body {
 }
 .add-to-cart:hover { background: var(--color-text); border-color: var(--color-text); }
 .add-to-cart:active { transform: scale(0.96); }
+/* Spacing inside the action stack comes from its gap */
+/* Icon-only inside the tile action row; the label lives in aria-label */
+.product-actions .add-to-cart {
+  flex: 0 0 42px;
+  width: 42px;
+  margin-top: 0;
+  padding: 0;
+}
+.product-actions .add-to-cart .icon-cart { width: 17px; height: 17px; }
 .icon-cart {
   width: 15px;
   height: 15px;
@@ -227,82 +331,312 @@ body {
 /* ==========================================================================
    Footer
    ========================================================================== */
-.site-footer {
-  background: var(--color-bg);
-  padding: 70px 20px 0;
-}
+.site-footer { background: var(--color-bg); }
 
+/* Newsletter strip across the top of the footer */
+.footer-cta {
+  background: var(--color-rust);
+  color: var(--color-white);
+}
+.footer-cta__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+.footer-cta__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.footer-cta__form {
+  display: flex;
+  align-items: center;
+  flex: 0 1 620px;
+  background: var(--color-white);
+  border-radius: 999px;
+  padding: 5px 5px 5px 22px;
+}
+.footer-cta__form input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+}
+.footer-cta__form input:focus { outline: none; }
+.footer-cta__form button {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 30px;
+  transition: background 0.2s;
+}
+.footer-cta__form button:hover { background: var(--color-text); }
+
+/* Four-column body */
 .footer-top {
   max-width: var(--max-width);
   margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
   gap: 40px;
-  justify-content: space-between;
-  padding: 0 40px 50px;
+  padding: 56px 40px 48px;
 }
-
-.footer-logo {
+.footer-heading {
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 34px;
-  color: var(--color-text);
+  font-size: 21px;
+  color: var(--color-rust);
+  margin-bottom: 18px;
 }
 
-.footer-links {
-  display: flex;
-  gap: 90px;
+.footer-brand__logo { width: 132px; margin-bottom: 14px; }
+.footer-brand__name {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 15px;
+  margin-bottom: 16px;
 }
+.footer-social { display: flex; gap: 12px; }
+.footer-social img { width: 30px; height: 30px; }
 
-.footer-col {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  text-align: center;
-}
+.footer-col { display: flex; flex-direction: column; gap: 13px; }
 .footer-col a { font-size: 15px; color: var(--color-text); }
 .footer-col a:hover { color: var(--color-rust); }
 
-.footer-social {
+.footer-hours p,
+.footer-contact p {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+.footer-contact a:hover { color: var(--color-rust); }
+
+.footer-bottom {
+  border-top: 1px solid #e4d9d1;
+  text-align: center;
+  padding: 22px 20px;
+  font-size: 13px;
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Floating contact bar (right edge)
+   ========================================================================== */
+.social-fixed {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 8px;
+  background: var(--color-white);
+  border-radius: 999px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
+.social-fixed a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: transform 0.18s ease;
+}
+.social-fixed a { color: var(--color-text); }
+.social-fixed a:hover { transform: scale(1.12); color: var(--color-rust); }
+.social-fixed svg { width: 24px; height: 24px; }
+
+/* ==========================================================================
+   Live chat widget (bottom-right)
+   ========================================================================== */
+.chat {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.chat__launcher {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-rust);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  transition: transform 0.18s ease, background 0.2s ease;
+}
+.chat__launcher:hover { transform: scale(1.06); }
+.chat__launcher svg { width: 27px; height: 27px; }
+.chat__icon-close { display: none; }
+/* The panel takes over the corner while open — its own X closes it, so the
+   launcher underneath would just be wasted space. */
+.chat--open { gap: 0; }
+.chat--open .chat__launcher { display: none; }
+
+.chat__panel {
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-radius: 14px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+}
+.chat__panel[hidden] { display: none; }
+
+.chat__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--color-rust);
+  color: var(--color-white);
+}
+.chat__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 15px;
+}
+.chat__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+.chat__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7ed321;
+}
+.chat__close {
+  border: none;
+  background: none;
+  color: var(--color-white);
+  font-size: 24px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.chat__body {
+  flex: 1;
+  min-height: 220px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.footer-social img { width: 32px; height: 32px; }
-
-.footer-signup h4 {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  letter-spacing: 2px;
-  font-size: 20px;
-  margin-bottom: 14px;
+.chat__notice {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--color-text-light);
+  background: var(--color-topbar);
+  border-radius: 8px;
+  padding: 10px 12px;
 }
-.footer-signup form {
+.chat__notice a { color: var(--color-rust); text-decoration: underline; }
+
+.chat__msg {
+  max-width: 85%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.chat__msg--them {
+  align-self: flex-start;
+  background: var(--color-white);
+  color: var(--color-text);
+  border-bottom-left-radius: 4px;
+}
+.chat__msg--me {
+  align-self: flex-end;
+  background: var(--color-rust);
+  color: var(--color-white);
+  border-bottom-right-radius: 4px;
+}
+.chat__typing { display: flex; gap: 4px; padding: 13px; }
+.chat__typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-light);
+  animation: chatBlink 1.1s infinite;
+}
+.chat__typing span:nth-child(2) { animation-delay: 0.18s; }
+.chat__typing span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes chatBlink {
+  0%, 60%, 100% { opacity: 0.25; }
+  30% { opacity: 1; }
+}
+
+.chat__form {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 220px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #e4d9d1;
+  background: var(--color-white);
 }
-.footer-signup label {
-  font-size: 13px;
-  color: var(--color-text-light);
-}
-.footer-signup input {
-  width: 100%;
+.chat__form input {
+  flex: 1;
+  min-width: 0;
   border: none;
-  border-bottom: 1px solid #999;
   background: transparent;
-  padding: 6px 2px;
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--color-text);
 }
-.footer-signup input:focus { outline: none; border-color: var(--color-rust); }
-
-.footer-bottom {
-  text-align: center;
-  padding: 30px 20px;
-  font-size: 13px;
-  color: var(--color-text-light);
+.chat__form input:focus { outline: none; }
+.chat__form button {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-rust);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
 }
+.chat__form button:hover { background: var(--color-text); }
+.chat__form button svg { width: 16px; height: 16px; }
 
 /* ==========================================================================
    Responsive
@@ -310,14 +644,16 @@ body {
 @media (max-width: 1024px) {
   .container, .site-header__inner, .footer-top { padding-left: 24px; padding-right: 24px; }
   .main-nav { gap: 20px; }
-  .footer-links { gap: 40px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
 }
 
 @media (max-width: 768px) {
   .site-header__inner { flex-wrap: wrap; }
   .nav-toggle { display: block; order: 3; }
-  /* Keep the cart beside the burger instead of after the collapsed menu */
-  .cart-link { order: 2; margin-left: auto; margin-right: 8px; }
+  /* Keep wishlist + cart beside the burger, not after the collapsed menu */
+  .wishlist-link { order: 2; margin-left: auto; margin-right: 0; }
+  .cart-link { order: 3; margin-left: 10px; margin-right: 8px; }
+  .nav-toggle { order: 4; }
   .main-nav {
     display: none;
     position: absolute;
@@ -335,11 +671,20 @@ body {
   .main-nav a { padding: 12px 0; width: 100%; text-align: center; }
   .site-header { position: relative; }
   .topbar__contact { flex-direction: column; gap: 10px; font-size: 16px; }
-  .footer-top { flex-direction: column; align-items: center; text-align: center; }
-  .footer-links { gap: 24px; }
-  .footer-signup form { width: 100%; max-width: 280px; }
+  .footer-cta__inner { flex-direction: column; align-items: stretch; gap: 16px; padding: 20px 24px; }
+  .footer-cta__title { text-align: center; }
+  .footer-cta__form { flex: 1 1 auto; }
 }
 
-@media (max-width: 480px) {
-  .footer-links { flex-direction: column; gap: 24px; }
+@media (max-width: 560px) {
+  .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px 36px; }
+  /* Smaller and tucked closer in so it doesn't sit over the content */
+  .social-fixed { right: 8px; gap: 6px; padding: 7px 5px; }
+  .chat { right: 14px; bottom: 14px; }
+  .chat__launcher { width: 50px; height: 50px; }
+  /* Clears the product page's sticky buy bar on phones */
+  .chat--above-bar { bottom: 76px; }
+  .social-fixed a { width: 30px; height: 30px; }
+  .social-fixed svg { width: 20px; height: 20px; }
+  .footer-cta__form button { padding: 10px 20px; }
 }
