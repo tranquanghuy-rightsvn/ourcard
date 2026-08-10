@@ -49,10 +49,26 @@
 .product-gallery__thumb:hover { opacity: 0.85; }
 .product-gallery__thumb--active { opacity: 1; box-shadow: 0 0 0 1.5px var(--color-text); }
 .product-gallery__main {
+  position: relative;
   background: var(--color-white);
   border-radius: 6px;
   overflow: hidden;
   aspect-ratio: 1 / 1;
+}
+/* Same pill design as the product tile badge, top-right over the main image. */
+.product-gallery__badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-block;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  padding: 7px 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 .product-gallery__main img,
 .product-gallery__main video { width: 100%; height: 100%; object-fit: contain; }
@@ -76,7 +92,7 @@
 /* Product names carry the accent serif and the bold weight; everything that
    describes the product underneath stays regular so the title leads. */
 .product-info__title {
-  font-family: var(--font-accent);
+  font-family: var(--font-product-title);
   font-size: clamp(24px, 2.6vw, 33px);
   font-weight: 700;
   line-height: 1.25;
@@ -393,7 +409,7 @@
 .pcard__media {
   position: relative;
   background: var(--color-white);
-  border-radius: 4px;
+  border-radius: 24px;
   overflow: hidden;
   margin-bottom: 14px;
   aspect-ratio: 1 / 1;
@@ -427,24 +443,28 @@
 .pcard__wish--active svg { fill: currentColor; }
 .pcard__badge {
   position: absolute;
-  bottom: 10px;
+  top: 10px;
   left: 10px;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.94);
-  font-size: 10.5px;
-  font-weight: 500;
-  padding: 4px 9px;
-  border-radius: 2px;
+  display: inline-block;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  padding: 6px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
 }
 .pcard__info { text-align: center; }
 .pcard__name {
-  font-family: var(--font-accent);
+  font-family: var(--font-product-title);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   margin-bottom: 4px;
   line-height: 1.4;
 }
 .pcard__price {
+  display: none;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 10px;

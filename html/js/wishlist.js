@@ -97,11 +97,14 @@
 
     container.innerHTML = items.map(function (it) {
       var link = fromRoot(it.link) || '#';
+      var badge = it.badge
+        ? '<span class="product-tile__badge' + (it.badge.isNew ? ' product-tile__badge--new' : '') + '">' + it.badge.text + '</span>'
+        : '';
       return (
         '<div class="wish-card" data-id="' + it.id + '">' +
-          '<a class="wish-card__media" href="' + link + '"><img src="' + fromRoot(it.image) + '" alt="' + it.name + '"></a>' +
+          '<a class="wish-card__media" href="' + link + '">' + badge + '<img src="' + fromRoot(it.image) + '" alt="' + it.name + '"></a>' +
           '<a class="wish-card__name" href="' + link + '">' + it.name + '</a>' +
-          '<p class="wish-card__price">' + money(it.price || 0) + '</p>' +
+          // '<p class="wish-card__price">' + money(it.price || 0) + '</p>' +
           '<div class="wish-card__actions">' +
             '<button type="button" class="add-to-cart" data-wish-add>' +
               '<svg class="icon-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">' +

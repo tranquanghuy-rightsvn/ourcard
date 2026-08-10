@@ -42,7 +42,7 @@
   flex-shrink: 0;
   width: 88px;
   height: 88px;
-  border-radius: 4px;
+  border-radius: 24px;
   overflow: hidden;
   background: var(--color-white);
 }
@@ -50,9 +50,9 @@
 .cart-item__info { flex: 1; min-width: 0; }
 .cart-item__name {
   display: block;
-  font-family: var(--font-accent);
+  font-family: var(--font-product-title);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   margin-bottom: 10px;
   transition: opacity 0.2s;
 }

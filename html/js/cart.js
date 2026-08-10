@@ -140,6 +140,15 @@
     return el ? parseInt(el.getAttribute('data-price'), 10) || 0 : 0;
   }
 
+  function readBadge(card) {
+    var el = card.querySelector('.product-tile__badge');
+    if (!el) return null;
+    return {
+      text: el.textContent.trim(),
+      isNew: el.classList.contains('product-tile__badge--new')
+    };
+  }
+
   function readProduct(btn) {
     var card = btn.closest('.bestsellers__item, .product-card, .pcard');
     if (card) {
@@ -152,7 +161,8 @@
         name: name,
         price: readPrice(card.querySelector('.product-price, .pcard__price')),
         image: toRootRelative(img && img.getAttribute('src')),
-        link: toRootRelative(link && link.getAttribute('href'))
+        link: toRootRelative(link && link.getAttribute('href')),
+        badge: readBadge(card)
       };
     }
     // Product detail page: the main CTA and the sticky bar.
