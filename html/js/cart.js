@@ -238,8 +238,8 @@
               '<button type="button" class="cart-item__qty-btn" data-action="inc" aria-label="Increase quantity">+</button>' +
             '</div>' +
           '</div>' +
-          '<div class="cart-item__price">' + formatVnd(it.price * it.qty) +
-            '<span>' + formatVnd(it.price) + ' each</span></div>' +
+          // '<div class="cart-item__price">' + formatVnd(it.price * it.qty) +
+          //   '<span>' + formatVnd(it.price) + ' each</span></div>' +
           '<button type="button" class="cart-item__remove" aria-label="Remove">' +
             '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
             '<path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg>' +
@@ -250,12 +250,12 @@
 
     if (summary) {
       var designs = summary.querySelector('.cart-summary__designs');
-      var total = summary.querySelector('.cart-summary__total-value');
+      // var total = summary.querySelector('.cart-summary__total-value');
       if (designs) {
         designs.textContent = '(' + items.length + (items.length === 1 ? ' design, ' : ' designs, ') +
           totalQty() + (totalQty() === 1 ? ' item)' : ' items)');
       }
-      if (total) total.textContent = formatVnd(totalPrice());
+      // if (total) total.textContent = formatVnd(totalPrice());
     }
 
     container.querySelectorAll('.cart-item').forEach(function (row) {

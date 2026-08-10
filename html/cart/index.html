@@ -51,9 +51,8 @@
   <div class="cart-summary" id="cartSummary" style="display:none;">
     <div class="cart-summary__row">
       <span class="cart-summary__label">Total <span class="cart-summary__designs"></span></span>
-      <span class="cart-summary__total-value">0₫</span>
     </div>
-    <p class="cart-summary__note">Prices are per card and include VAT. Wholesale orders start at 50 pcs per design &mdash; we&rsquo;ll confirm the final quote by email.</p>
+    <!-- <p class="cart-summary__note">Prices are per card and include VAT. Wholesale orders start at 50 pcs per design &mdash; we&rsquo;ll confirm the final quote by email.</p> -->
     <button type="button" class="cart-summary__checkout" id="payNowBtn">Pay now</button>
   </div>
 
@@ -63,8 +62,9 @@
   </div>
 </main>
 
-<!-- Checkout modal. Demo only: nothing is submitted anywhere and the QR is a
-     placeholder pattern, not a real payment code. -->
+<!-- Checkout modal. Disabled for now: "Pay now" opens the contact-notice popup
+     below instead. Kept in the markup (commented out) rather than deleted so
+     it can be switched back on later without rebuilding it.
 <div class="checkout" id="checkout" hidden>
   <div class="checkout__backdrop" data-checkout-close></div>
   <div class="checkout__dialog" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
@@ -152,6 +152,32 @@
     </div>
   </div>
 </div>
+-->
+
+<!-- Contact-notice popup: what "Pay now" actually opens. Orders aren't paid
+     in-browser — the customer reaches KHT directly to confirm and get a quote. -->
+<div class="contact-notice" id="contactNotice" hidden>
+  <div class="contact-notice__backdrop" data-contact-notice-close></div>
+  <div class="contact-notice__dialog" role="dialog" aria-modal="true" aria-labelledby="contactNoticeTitle">
+    <button type="button" class="contact-notice__close" aria-label="Close" data-contact-notice-close>&times;</button>
+    <h2 class="contact-notice__title" id="contactNoticeTitle">Get in touch to complete your order</h2>
+    <p class="contact-notice__text">KHT quotes and confirms every wholesale order directly. Contact us through any of the channels below and we&rsquo;ll take it from there.</p>
+    <div class="contact-notice__links">
+      <a href="tel:+84904152501" class="contact-notice__link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.8 21 3 13.2 3 3.9c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+        (+84) 904 152 501
+      </a>
+      <a href="#" class="contact-notice__link" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.8 3.7-3.8 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
+        Facebook
+      </a>
+      <a href="#" class="contact-notice__link" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="footer-cta">
@@ -216,6 +242,7 @@
 <script src="../js/wishlist.js"></script>
 <script src="../js/search.js"></script>
 <script src="../js/checkout.js"></script>
+<script src="../js/pay-now.js"></script>
 <script src="../js/chat.js"></script>
 </body>
 </html>
