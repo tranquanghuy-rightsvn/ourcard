@@ -49,6 +49,14 @@
   margin-bottom: 4px;
 }
 .wish-card__name:hover { color: var(--color-rust); }
+.wish-card__categories {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-muted);
+  margin-bottom: 15px;
+}
 .wish-card__price {
   font-size: 15px;
   font-weight: 600;

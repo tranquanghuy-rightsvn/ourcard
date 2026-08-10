@@ -100,10 +100,14 @@
       var badge = it.badge
         ? '<span class="product-tile__badge' + (it.badge.isNew ? ' product-tile__badge--new' : '') + '">' + it.badge.text + '</span>'
         : '';
+      var categories = it.categories
+        ? '<p class="wish-card__categories">' + it.categories + '</p>'
+        : '';
       return (
         '<div class="wish-card" data-id="' + it.id + '">' +
           '<a class="wish-card__media" href="' + link + '">' + badge + '<img src="' + fromRoot(it.image) + '" alt="' + it.name + '"></a>' +
           '<a class="wish-card__name" href="' + link + '">' + it.name + '</a>' +
+          categories +
           // '<p class="wish-card__price">' + money(it.price || 0) + '</p>' +
           '<div class="wish-card__actions">' +
             '<button type="button" class="add-to-cart" data-wish-add>' +

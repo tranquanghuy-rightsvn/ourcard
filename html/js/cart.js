@@ -149,6 +149,11 @@
     };
   }
 
+  function readCategories(card) {
+    var el = card.querySelector('.product-tile__categories, .pcard__categories');
+    return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
   function readProduct(btn) {
     var card = btn.closest('.bestsellers__item, .product-card, .pcard');
     if (card) {
@@ -162,7 +167,8 @@
         price: readPrice(card.querySelector('.product-price, .pcard__price')),
         image: toRootRelative(img && img.getAttribute('src')),
         link: toRootRelative(link && link.getAttribute('href')),
-        badge: readBadge(card)
+        badge: readBadge(card),
+        categories: readCategories(card)
       };
     }
     // Product detail page: the main CTA and the sticky bar.

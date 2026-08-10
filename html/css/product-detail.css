@@ -463,6 +463,14 @@
   margin-bottom: 4px;
   line-height: 1.4;
 }
+.pcard__categories {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-light);
+  margin-bottom: 20px;
+}
 .pcard__price {
   display: none;
   font-size: 14px;

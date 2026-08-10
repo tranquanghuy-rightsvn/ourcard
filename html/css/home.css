@@ -396,6 +396,16 @@
   font-weight: 400;
   line-height: 1.45;
 }
+.bestsellers__item .product-tile__categories,
+.new-products__grid .product-tile__categories {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-light);
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
 
 .bestsellers__arrow {
   position: absolute;
