@@ -153,7 +153,7 @@ body {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 0 40px;
 }
 
@@ -180,10 +180,12 @@ body {
   margin: 5px 0;
 }
 
+/* Auto margins on both sides split the leftover header width evenly, so the
+   gap before the nav (logo side) matches the gap after it (icon side). */
 .main-nav {
   display: flex;
-  gap: 30px;
-  margin-left: 10px;
+  gap: clamp(10px, 1.4vw, 30px);
+  margin: 0 auto;
 }
 
 .main-nav a {
@@ -225,10 +227,10 @@ body {
   border: none;
   background: none;
 }
-/* The header is space-between, which would spread the icons apart. Letting
-   the first one swallow all the free space keeps the group glued together. */
+/* The nav's own auto margins already create the gap on this side, so the
+   icon cluster should sit flush against it instead of adding more space. */
 .search-toggle {
-  margin-left: auto;
+  margin-left: 0;
 }
 .wishlist-link {
   margin-left: 10px;
@@ -327,7 +329,7 @@ body {
 }
 .product-card p {
   font-family: var(--font-product-title);
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 600;
   line-height: 1.45;
 }

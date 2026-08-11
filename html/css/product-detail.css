@@ -258,7 +258,7 @@
   padding: 9px 0;
   border-bottom: 1px solid var(--color-border);
   font-family: var(--font-specs);
-  font-size: 13.5px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1.6;
   color: var(--color-text);
@@ -459,7 +459,7 @@
 .pcard__info { text-align: center; }
 .pcard__name {
   font-family: var(--font-product-title);
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 600;
   margin-bottom: 4px;
   line-height: 1.4;

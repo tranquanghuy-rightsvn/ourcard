@@ -43,7 +43,7 @@
 .wish-card__name {
   display: block;
   font-family: var(--font-product-title);
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 600;
   line-height: 1.5;
   margin-bottom: 4px;
