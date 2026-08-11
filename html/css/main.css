@@ -111,23 +111,38 @@ body {
    ========================================================================== */
 .topbar {
   background: var(--color-topbar);
-  text-align: center;
-  padding: 22px 20px 14px;
-  font-size: 14px;
-  letter-spacing: 2px;
+  padding: 14px 20px;
+}
+
+.topbar__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 32px;
+  padding: 0 40px;
+}
+
+.topbar__desc {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 1px;
   color: var(--color-text);
+  text-align: center;
 }
 
 .topbar__contact {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 32px;
-  margin-top: 14px;
+  gap: 28px;
+  margin: 0;
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: 18px;
+  font-size: 17px;
   color: var(--color-rust);
+  flex-shrink: 0;
 }
 
 .topbar__contact a {
@@ -1184,6 +1199,13 @@ body {
 }
 
 @media (max-width: 768px) {
+  .topbar__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .topbar__desc {
+    text-align: center;
+  }
   .topbar__contact {
     flex-direction: column;
     gap: 10px;

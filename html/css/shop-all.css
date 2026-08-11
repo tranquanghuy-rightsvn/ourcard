@@ -3,6 +3,41 @@
   margin: 0 auto;
   padding: 50px 40px 80px;
 }
+
+/* Free Template product tiles: single full-width download action
+   replacing the Contact + Add to cart pair used on other shop grids. */
+.btn-download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 9px 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid var(--color-rust);
+  border-radius: 2px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  transition:
+    transform 0.15s ease,
+    background 0.2s,
+    border-color 0.2s;
+}
+.btn-download:hover {
+  background: var(--color-text);
+  border-color: var(--color-text);
+}
+.btn-download:active {
+  transform: scale(0.96);
+}
+.icon-download {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
 .shop__title {
   font-family: var(--font-heading);
   font-weight: 600;
