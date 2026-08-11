@@ -182,7 +182,8 @@ body {
 
 .main-nav {
   display: flex;
-  gap: 36px;
+  gap: 30px;
+  margin-left: 10px;
 }
 
 .main-nav a {
@@ -1113,10 +1114,9 @@ body {
 /* ==========================================================================
    Responsive
    ========================================================================== */
-/* The full nav (7 links + logo + icons) needs ~1400px to lay out on one line
-   without individual links wrapping onto two rows; below that, collapse to
-   the burger menu rather than let the desktop layout get squeezed. */
-@media (max-width: 1400px) {
+/* The full nav (7 links + logo + icons) needs to stay in desktop form down to
+   1024px, so this only collapses to the burger menu below that. */
+@media (max-width: 1023px) {
   .site-header__inner {
     flex-wrap: wrap;
   }
@@ -1168,7 +1168,7 @@ body {
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1040px) {
   .container,
   .site-header__inner,
   .footer-top {
