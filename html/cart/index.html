@@ -119,9 +119,14 @@
           ></span>
         </div>
         <!-- <p class="cart-summary__note">Prices are per card and include VAT. Wholesale orders start at 50 pcs per design &mdash; we&rsquo;ll confirm the final quote by email.</p> -->
-        <button type="button" class="cart-summary__checkout" id="payNowBtn">
-          Pay now
-        </button>
+        <div class="cart-summary__actions">
+          <button type="button" class="cart-summary__contact" id="contactBtn">
+            Contact
+          </button>
+          <button type="button" class="cart-summary__export" id="exportPdfBtn">
+            Export to PDF
+          </button>
+        </div>
       </div>
 
       <div class="cart-empty-state">
@@ -405,7 +410,7 @@
     <script src="../js/wishlist.js"></script>
     <script src="../js/search.js"></script>
     <script src="../js/checkout.js"></script>
-    <script src="../js/pay-now.js"></script>
+    <script src="../js/cart-actions.js"></script>
     <script src="../js/chat.js"></script>
   </body>
 </html>

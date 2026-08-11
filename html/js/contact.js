@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var form = document.getElementById("contactForm");
   if (!form) return;
   var errorEl = document.getElementById("contactError");
+  var attachmentField = form.querySelector('[name="attachment"]');
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -20,6 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       },
     );
+
+    var attachmentInvalid =
+      attachmentField &&
+      attachmentField.files[0] &&
+      !/\.(pdf|png)$/i.test(attachmentField.files[0].name);
+    if (attachmentInvalid) missing.push(attachmentField);
 
     if (missing.length) {
       missing.forEach(function (f) {

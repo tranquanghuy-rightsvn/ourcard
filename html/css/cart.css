@@ -112,6 +112,47 @@
 }
 .cart-summary__checkout:hover { background: var(--color-text); }
 
+.cart-summary__actions { display: flex; gap: 10px; }
+.cart-summary__contact,
+.cart-summary__export {
+  flex: 1;
+  padding: 14px 0;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 3px;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.cart-summary__contact {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+}
+.cart-summary__contact:hover {
+  background: var(--color-text);
+  color: var(--color-white);
+}
+.cart-summary__export {
+  background: var(--color-rust);
+  color: var(--color-white);
+  border: none;
+}
+.cart-summary__export:hover { background: var(--color-text); }
+
+@media print {
+  .topbar,
+  .site-header,
+  .site-footer,
+  .social-fixed,
+  .chat,
+  .cart-summary__actions {
+    display: none !important;
+  }
+}
+
 .cart-empty-state { text-align: center; padding: 40px 0 60px; }
 .cart-empty-state__msg {
   font-family: var(--font-heading);

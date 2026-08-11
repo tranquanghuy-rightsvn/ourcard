@@ -61,6 +61,14 @@ button {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Linotte Light";
+  src: url("../fonts/better-days/r0c0i - Linotte Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-bg: #faf3ee;
   --color-topbar: #f6e6dd;
@@ -73,6 +81,7 @@ button {
   --font-body: "Open Sans", Helvetica, Arial, sans-serif;
   --font-accent: Georgia, "Times New Roman", serif;
   --font-product-title: "Better Days", Georgia, "Times New Roman", serif;
+  --font-specs: "Linotte Light", "Open Sans", Helvetica, Arial, sans-serif;
   --max-width: 1300px;
 }
 
@@ -399,7 +408,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 8px 4px;
-  border: 1px solid var(--color-text);
+  border: 1px solid #3b82c4;
   border-radius: 2px;
   background: transparent;
   color: var(--color-text);
@@ -413,7 +422,8 @@ body {
     border-color 0.2s;
 }
 .btn-contact:hover {
-  background: var(--color-text);
+  background: #3b82c4;
+  border-color: #3b82c4;
   color: var(--color-white);
 }
 

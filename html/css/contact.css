@@ -118,6 +118,10 @@
   outline: none;
   border-color: var(--color-rust);
 }
+.contact-field input[type="file"] {
+  padding: 8px 12px;
+  font-size: 13px;
+}
 .contact-field .is-invalid { border-color: #c0392b; background: #fdf3f2; }
 
 .contact-form__error {
