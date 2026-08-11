@@ -36,12 +36,12 @@
 
     var panel = el("div", "chat__panel");
     panel.setAttribute("role", "dialog");
-    panel.setAttribute("aria-label", "Chat with KHT Card");
+    panel.setAttribute("aria-label", "Chat with Kyu Craft | Popup Card");
     panel.hidden = true;
     panel.innerHTML =
       '<div class="chat__header">' +
       "<div>" +
-      '<p class="chat__title">KHT Card</p>' +
+      '<p class="chat__title">Kyu Craft | Popup Card</p>' +
       '<p class="chat__status"><span class="chat__dot"></span>Mon&ndash;Sat, 8:00&ndash;17:30 (GMT+7)</p>' +
       "</div>" +
       '<button type="button" class="chat__close" aria-label="Close chat">&times;</button>' +

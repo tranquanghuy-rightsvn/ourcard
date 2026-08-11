@@ -1,5 +1,5 @@
 /* Cart page — structure and styling ported from the Velora cart template.
-   Velora's two extra tokens, mapped onto KHT's palette. */
+   Velora's two extra tokens, mapped onto Kyu Craft's palette. */
 :root {
   --color-muted: var(--color-text-light);
   --color-border: #e4d9d1;
@@ -51,8 +51,8 @@
 .cart-item__name {
   display: block;
   font-family: var(--font-product-title);
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 10px;
   transition: opacity 0.2s;
 }

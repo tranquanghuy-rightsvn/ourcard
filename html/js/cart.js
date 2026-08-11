@@ -1,5 +1,5 @@
 /* Client-side cart, ported from the Velora template: no backend, persisted in
-   localStorage. KHT quotes per order rather than listing prices, so the cart
+   localStorage. Kyu Craft quotes per order rather than listing prices, so the cart
    totals quantities and ends in a quote request instead of a checkout. */
 (function () {
   var STORAGE_KEY = 'kht_cart';
@@ -134,7 +134,7 @@
     return url ? rootPrefix() + url : '';
   }
 
-  /* Read the product a button belongs to. KHT tiles carry no data attributes,
+  /* Read the product a button belongs to. Product tiles carry no data attributes,
      so the details come from the markup around the button. */
   function readPrice(el) {
     return el ? parseInt(el.getAttribute('data-price'), 10) || 0 : 0;

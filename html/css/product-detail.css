@@ -1,6 +1,6 @@
 /* Product detail page — structure and styling ported from the Velora product
-   template. Only the shell (topbar, header, footer) stays KHT's own.
-   Velora leans on two tokens KHT doesn't define; map them onto KHT's palette
+   template. Only the shell (topbar, header, footer) stays Kyu Craft's own.
+   Velora leans on two tokens Kyu Craft doesn't define; map them onto Kyu Craft's palette
    so the ported rules keep working. */
 :root {
   --color-muted: var(--color-text-light);
@@ -294,27 +294,27 @@
   gap: 10px;
   font-size: 14px;
 }
-.product-contact a {
+.product-contact a:not(.product-contact__cta) {
   display: flex;
   align-items: center;
   gap: 9px;
   color: var(--color-text);
   transition: color 0.15s;
 }
-.product-contact a:hover { color: var(--color-rust); }
+.product-contact a:not(.product-contact__cta):hover { color: var(--color-rust); }
 .product-contact svg { width: 17px; height: 17px; flex-shrink: 0; }
 .product-contact__cta {
   margin-top: 4px;
   padding: 11px 26px;
-  border: 1px solid var(--color-rust);
+  border: 1px solid #3b82c4;
   border-radius: 999px;
-  color: var(--color-rust);
+  color: var(--color-text);
   font-size: 13px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   transition: background 0.2s, color 0.2s;
 }
-.product-contact__cta:hover { background: var(--color-rust); color: var(--color-white); }
+.product-contact__cta:hover { background: #3b82c4; color: var(--color-white); }
 
 /* ===== INFORMATION SECTION ===== */
 .product-information {
@@ -459,8 +459,8 @@
 .pcard__info { text-align: center; }
 .pcard__name {
   font-family: var(--font-product-title);
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 4px;
   line-height: 1.4;
 }

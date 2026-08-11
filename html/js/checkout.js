@@ -57,7 +57,7 @@
 
   function orderRef() {
     // Stable per modal opening, just to make the demo feel complete.
-    return 'KHT-' + String(Math.floor(Date.now() / 1000) % 10000).padStart(4, '0');
+    return 'KYU-' + String(Math.floor(Date.now() / 1000) % 10000).padStart(4, '0');
   }
 
   function syncPayment() {
