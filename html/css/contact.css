@@ -140,7 +140,7 @@
   width: 100%;
   padding: 14px 0;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   background: var(--color-rust);
   color: var(--color-white);
   font-family: var(--font-body);

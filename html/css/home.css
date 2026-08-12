@@ -175,6 +175,7 @@
   font-size: 14px;
   letter-spacing: 1px;
   text-transform: uppercase;
+  border-radius: 5px;
 }
 .hero__cta:hover {
   background: var(--color-white);
@@ -987,6 +988,7 @@
 .our-company__stat {
   background: var(--color-topbar);
   padding: 28px 26px;
+  border-radius: 5px;
 }
 .our-company__stat-value {
   font-family: var(--font-heading);
