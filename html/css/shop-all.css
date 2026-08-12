@@ -67,12 +67,23 @@
   flex-direction: column;
   gap: 14px;
 }
-.shop__categories a {
+.shop__category {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 15px;
   color: var(--color-text-light);
+  cursor: pointer;
 }
-.shop__categories a.is-active,
-.shop__categories a:hover { color: var(--color-text); }
+.shop__category:hover { color: var(--color-text); }
+.shop__category input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-rust);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.shop__category:not(.shop__category--all) { margin-left: 22px; }
 
 .shop__grid {
   display: grid;

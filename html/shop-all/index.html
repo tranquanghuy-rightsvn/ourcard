@@ -114,21 +114,51 @@
         <aside class="shop__sidebar">
           <h3>Category <span>&minus;</span></h3>
           <nav class="shop__categories">
-            <a href="index.html" class="is-active">All</a>
-            <a href="#">Christmas</a>
-            <a href="#">Birthday</a>
-            <a href="#">Anniversary</a>
-            <a href="#">Best Sellers</a>
-            <a href="#">Other</a>
-            <a href="#">Seasonal</a>
-            <a href="#">Vehicle &amp; Sports</a>
-            <a href="#">Love &amp; Floral</a>
-            <a href="#">Animals</a>
+            <label class="shop__category shop__category--all">
+              <input type="checkbox" checked data-category="all" />
+              <span>All</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="christmas" />
+              <span>Christmas</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="birthday" />
+              <span>Birthday</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="anniversary" />
+              <span>Anniversary</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="best-sellers" />
+              <span>Best Sellers</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="other" />
+              <span>Other</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="seasonal" />
+              <span>Seasonal</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="vehicle-sports" />
+              <span>Vehicle &amp; Sports</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="love-floral" />
+              <span>Love &amp; Floral</span>
+            </label>
+            <label class="shop__category">
+              <input type="checkbox" checked data-category="animals" />
+              <span>Animals</span>
+            </label>
           </nav>
         </aside>
 
         <div class="shop__grid">
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal best-sellers">
             <div class="product-tile__media">
               <span class="product-tile__badge">Bestseller</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -186,7 +216,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -243,7 +273,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="other">
             <div class="product-tile__media">
               <span class="product-tile__badge">NewProduct</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -301,7 +331,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="birthday">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -358,7 +388,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="birthday love-floral best-sellers">
             <div class="product-tile__media">
               <span class="product-tile__badge">Bestseller</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -416,7 +446,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="birthday">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -471,7 +501,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="other">
             <div class="product-tile__media">
               <span class="product-tile__badge">NewProduct</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -529,7 +559,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="vehicle-sports">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -584,7 +614,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="love-floral best-sellers">
             <div class="product-tile__media">
               <span class="product-tile__badge">Bestseller</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -642,7 +672,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="other">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -697,7 +727,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="love-floral">
             <div class="product-tile__media">
               <span class="product-tile__badge">NewProduct</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -755,7 +785,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="anniversary">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -812,7 +842,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="love-floral best-sellers">
             <div class="product-tile__media">
               <span class="product-tile__badge">Bestseller</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -870,7 +900,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="anniversary">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -927,7 +957,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal">
             <div class="product-tile__media">
               <span class="product-tile__badge">NewProduct</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -985,7 +1015,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal best-sellers">
             <div class="product-tile__media">
               <span class="product-tile__badge">Bestseller</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -1043,7 +1073,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -1098,7 +1128,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal">
             <div class="product-tile__media">
               <span class="product-tile__badge">NewProduct</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -1156,7 +1186,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="birthday best-sellers">
             <div class="product-tile__media">
               <span class="product-tile__badge">Bestseller</span>
               <a class="product-tile__link" href="../product/index.html"
@@ -1212,7 +1242,7 @@
               </button>
             </div>
           </div>
-          <div class="product-card">
+          <div class="product-card" data-categories="seasonal">
             <div class="product-tile__media">
               <a class="product-tile__link" href="../product/index.html"
                 ><img
@@ -1268,16 +1298,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="shop__pagination">
-        <a href="#">&lsaquo;</a>
-        <a href="#" class="is-current">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <span>&hellip;</span>
-        <a href="#">7</a>
-        <a href="#">&rsaquo;</a>
       </div>
     </main>
 
@@ -1390,6 +1410,7 @@
     <script src="../js/cart.js"></script>
     <script src="../js/wishlist.js"></script>
     <script src="../js/search.js"></script>
+    <script src="../js/shop-filter.js"></script>
     <script src="../js/chat.js"></script>
   </body>
 </html>
