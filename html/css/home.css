@@ -831,7 +831,7 @@
 }
 .custom-design__grid {
   display: grid;
-  grid-template-columns: 1fr minmax(280px, 460px) 1fr;
+  grid-template-columns: 1fr minmax(280px, 490px) 1fr;
   gap: 30px;
   align-items: stretch;
   text-align: left;
@@ -842,7 +842,7 @@
   height: 100%;
 }
 .custom-design__col:first-child .custom-design__step {
-  text-align: right;
+  text-align: left;
 }
 .custom-design__step {
   background: var(--color-topbar);
@@ -887,13 +887,14 @@
   text-align: left;
 }
 .custom-design__more {
-  display: inline-block;
+  display: flex;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.6px;
   color: var(--color-text);
   text-decoration: underline;
   text-underline-offset: 3px;
+  justify-content: right;
 }
 .custom-design__more:hover {
   color: var(--color-rust);
