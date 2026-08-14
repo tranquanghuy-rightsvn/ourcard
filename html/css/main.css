@@ -325,6 +325,12 @@ body {
 .product-card .product-price {
   margin-top: 6px;
 }
+
+.product-actions-download {
+  margin-top: 50px;
+}
+
+
 .product-card__badge {
   display: inline-block;
   background: var(--color-rust);
