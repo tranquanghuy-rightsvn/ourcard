@@ -104,4 +104,17 @@
       applyFilter();
     });
   });
+
+  var categoryParam = new URLSearchParams(window.location.search).get('category');
+  var targetSpecial = specialCheckboxes.filter(function (cb) {
+    return cb.getAttribute('data-category') === categoryParam;
+  })[0];
+  if (targetSpecial) {
+    allCheckbox.checked = false;
+    childCheckboxes.forEach(function (cb) {
+      cb.checked = false;
+    });
+    targetSpecial.checked = true;
+    applyFilter();
+  }
 })();

@@ -360,7 +360,7 @@
 .bestsellers__track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 4 * 28px) / 5);
+  grid-auto-columns: calc((100% - 3 * 28px) / 4);
   gap: 28px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -493,7 +493,7 @@
 }
 .new-products__grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 28px 28px;
 }
 .new-products .shop-all-cta {
