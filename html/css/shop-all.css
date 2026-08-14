@@ -83,7 +83,7 @@
   cursor: pointer;
   flex-shrink: 0;
 }
-.shop__category:not(.shop__category--all) { margin-left: 22px; }
+.shop__category--child { margin-left: 22px; }
 
 .shop__grid {
   display: grid;

@@ -110,7 +110,7 @@ body {
    Top announcement bar + header
    ========================================================================== */
 .topbar {
-  background: #BF552F;
+  background: #bf552f;
   padding: 10px 20px;
 }
 
@@ -409,6 +409,9 @@ body {
 }
 .btn-wish:hover {
   color: var(--color-rust);
+}
+.btn-wish:hover svg {
+  fill: var(--color-rust);
 }
 .btn-wish:active {
   transform: scale(0.9);
