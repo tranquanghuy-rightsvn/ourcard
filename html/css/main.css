@@ -603,11 +603,14 @@ body {
 }
 .footer-social {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 .footer-social img {
   width: 30px;
   height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .footer-col {

@@ -1,0 +1,178 @@
+/* Wholesale Pop Up Cards info page */
+
+.wholesale-banner {
+  position: relative;
+  padding: 90px 20px 70px;
+  text-align: center;
+  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-rust) 0%, #d9714a 45%, var(--color-green) 100%);
+}
+.wholesale-banner__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 42px;
+}
+.wholesale-banner__breadcrumb {
+  margin-top: 14px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+.wholesale-banner__breadcrumb a {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.wholesale-banner__breadcrumb a:hover {
+  opacity: 0.8;
+}
+
+.wholesale {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px 20px 90px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+.wholesale__article {
+  order: 1;
+}
+.wholesale__sidebar {
+  order: 2;
+}
+
+.wholesale__intro p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+.wholesale__section {
+  margin-top: 44px;
+  padding-top: 44px;
+  border-top: 1px solid rgba(47, 47, 46, 0.1);
+}
+.wholesale__section:first-of-type {
+  margin-top: 40px;
+  padding-top: 0;
+  border-top: none;
+}
+.wholesale__section h2 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 21px;
+  color: var(--color-rust);
+  margin-bottom: 16px;
+}
+.wholesale__section p {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--color-text);
+  margin-bottom: 14px;
+}
+.wholesale__section ul {
+  margin: 0 0 16px 4px;
+  padding-left: 20px;
+  list-style: disc;
+}
+.wholesale__section li {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--color-text);
+}
+.wholesale__section li + li {
+  margin-top: 4px;
+}
+.wholesale__section a {
+  color: var(--color-rust);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wholesale__sidebar {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.wholesale__sidebar h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+.wholesale__products-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wholesale__products-item {
+  border-bottom: 1px solid rgba(47, 47, 46, 0.12);
+}
+.wholesale__products-item a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+.wholesale__products-item img {
+  width: 90px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.wholesale__products-item p {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--color-text);
+  transition: color 0.2s ease;
+}
+.wholesale__products-item a:hover p {
+  color: var(--color-rust);
+}
+
+.wholesale__categories-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 8px;
+  border-bottom: 1px solid rgba(47, 47, 46, 0.12);
+}
+.wholesale__categories-list a {
+  display: block;
+  padding: 10px 0;
+  font-size: 16px;
+  color: var(--color-text-light);
+  transition: color 0.2s ease;
+}
+.wholesale__categories-list a:hover {
+  color: var(--color-rust);
+}
+
+@media (max-width: 900px) {
+  .wholesale-banner {
+    padding: 60px 20px 46px;
+  }
+  .wholesale-banner__title {
+    font-size: 30px;
+  }
+  .wholesale {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 44px 20px 60px;
+  }
+  .wholesale__sidebar {
+    position: static;
+  }
+}

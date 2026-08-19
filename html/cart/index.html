@@ -56,9 +56,9 @@
           <a href="../index.html">HOME</a>
           <a href="../shop-all/index.html">SHOP ALL</a>
           <a href="../custom-design/index.html">CUSTOM DESIGN</a>
-          <a href="../our-story/index.html">ABOUT US</a>
+          <!-- <a href="../our-story/index.html">About Us</a> -->
           <a href="../contact-us/index.html">CONTACT US</a>
-          <a href="#">WHOLESALE</a>
+          <a href="../wholesale-pop-up-cards/index.html">WHOLESALE</a>
           <a href="../free-template/index.html">FREE TEMPLATE</a>
         </nav>
         <button
@@ -249,56 +249,90 @@
         >
           &times;
         </button>
-        <h2 class="contact-notice__title" id="contactNoticeTitle">
-          Get in touch to complete your order
-        </h2>
-        <p class="contact-notice__text">
-          Kyu Craft | Popup Card quotes and confirms every wholesale order
-          directly. Contact us through any of the channels below and we&rsquo;ll
-          take it from there.
-        </p>
-        <div class="contact-notice__links">
-          <a href="tel:+84708976136" class="contact-notice__link">
+        <div class="contact-notice__view" id="contactNoticeMain">
+          <h2 class="contact-notice__title" id="contactNoticeTitle">
+            Get in touch to complete your order
+          </h2>
+          <p class="contact-notice__text">
+            Kyu Craft | Popup Card quotes and confirms every wholesale order
+            directly. Contact us through any of the channels below and
+            we&rsquo;ll take it from there.
+          </p>
+          <div class="contact-notice__links">
+            <button
+              type="button"
+              class="contact-notice__link"
+              id="contactNoticePhoneBtn"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.8 21 3 13.2 3 3.9c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"
+                />
+              </svg>
+              (+84) 708 976 136
+              <span class="contact-notice__link-note">Zalo / WhatsApp</span>
+            </button>
+            <a href="../contact-us/index.html" class="contact-notice__link">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg>
+              admin@kyucraft.com
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-notice__view contact-notice__view--qr" id="contactNoticeQrView" hidden>
+          <button type="button" class="contact-notice__back" id="contactNoticeBack">
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.6"
+              stroke-width="2"
             >
-              <path
-                d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.8 21 3 13.2 3 3.9c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"
-              />
+              <path d="M15 6l-6 6 6 6" />
             </svg>
-            (+84) 708 976 136
-          </a>
-          <a href="#" class="contact-notice__link" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.8 3.7-3.8 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"
-              />
-            </svg>
-            Facebook
-          </a>
-          <a href="#" class="contact-notice__link" aria-label="Instagram">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              aria-hidden="true"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle
-                cx="17.2"
-                cy="6.8"
-                r="1.1"
-                fill="currentColor"
-                stroke="none"
-              />
-            </svg>
-            Instagram
-          </a>
+            Back
+          </button>
+          <h2 class="contact-notice__title">Scan to chat with us</h2>
+          <p class="contact-notice__text">
+            Open Zalo or WhatsApp and scan a code below, or search the phone
+            number directly if scanning isn&rsquo;t possible.
+          </p>
+          <div class="contact-notice__qr-grid">
+            <div class="contact-notice__qr-card">
+              <div class="contact-notice__qr-code" id="contactNoticeQrZalo"></div>
+              <span class="contact-notice__qr-brand">
+                <span class="contact-notice__qr-logo contact-notice__qr-logo--zalo">Zalo</span>
+              </span>
+              <p class="contact-notice__qr-phone">(+84) 708 976 136</p>
+            </div>
+            <div class="contact-notice__qr-card">
+              <div class="contact-notice__qr-code" id="contactNoticeQrWhatsapp"></div>
+              <span class="contact-notice__qr-brand">
+                <svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true">
+                  <path
+                    d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"
+                  />
+                  <path
+                    d="M12.05 22a9.9 9.9 0 01-5.03-1.37l-.36-.21-3.74.98 1-3.65-.24-.38A9.86 9.86 0 012 12.02C2 6.5 6.51 2 12.05 2c2.68 0 5.2 1.04 7.09 2.94A9.8 9.8 0 0122 12.03C22 17.55 17.55 22 12.05 22zm8.54-18.44A11.86 11.86 0 0012.05 0C5.5 0 .17 5.31.17 11.85c0 2.09.55 4.13 1.59 5.93L.14 24l6.41-1.68a11.9 11.9 0 005.49 1.4h.01c6.54 0 11.87-5.31 11.87-11.85 0-3.16-1.23-6.14-3.46-8.36z"
+                  />
+                </svg>
+                WhatsApp
+              </span>
+              <p class="contact-notice__qr-phone">(+84) 708 976 136</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -333,10 +367,19 @@
               ><img src="../images/icon-facebook.png" alt=""
             /></a>
             <a href="#" aria-label="YouTube"
-              ><img src="../images/icon-tiktok.png" alt=""
+              ><img src="../images/icon-youtube.png" alt=""
             /></a>
             <a href="#" aria-label="Instagram"
               ><img src="../images/icon-instagram.png" alt=""
+            /></a>
+            <a href="#" aria-label="TikTok"
+              ><img src="../images/icon-tiktok.png" alt=""
+            /></a>
+            <a href="#" aria-label="Pinterest"
+              ><img src="../images/icon-pinterest.png" alt=""
+            /></a>
+            <a href="#" aria-label="LinkedIn"
+              ><img src="../images/icon-linkedin.png" alt=""
             /></a>
           </div>
         </div>
@@ -348,7 +391,7 @@
             <a href="../custom-design/index.html">Custom Design</a>
             <a href="../free-template/index.html">Free Template</a>
             <a href="../our-craft/index.html">Our Craft</a>
-            <a href="../our-story/index.html">About Us</a>
+            <!-- <a href="../our-story/index.html">About Us</a> -->
           </div>
         </div>
 
@@ -404,6 +447,24 @@
             r="1.1"
             fill="currentColor"
             stroke="none"
+          /></svg
+      ></a>
+      <a href="#" aria-label="TikTok"
+        ><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"
+          /></svg
+      ></a>
+      <a href="#" aria-label="Pinterest"
+        ><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.171-2.911 1.023 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.995-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345l-.33 1.365c-.052.213-.174.263-.402.159-1.499-.69-2.436-2.878-2.436-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"
+          /></svg
+      ></a>
+      <a href="#" aria-label="LinkedIn"
+        ><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
           /></svg
       ></a>
     </aside>
