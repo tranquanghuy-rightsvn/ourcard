@@ -41,9 +41,11 @@ follows (architecture, gotchas, hosting quotas).
   (`<!-- BESTSELLERS:START/END -->`, `<!-- NEW_PRODUCTS:START/END -->`) in place. Safe to run
   repeatedly (`python3 scripts/build.py`) — idempotent, and deletes orphaned product pages
   for slugs no longer in `data/products.json`.
-- `scripts/import_legacy_products.py` — **one-time** script that seeded `data/products.json`
-  from the original hardcoded shop-all page. Already run; don't run it again against real
-  CMS data (it will stomp on edits).
+- `scripts/import_legacy_products.py` — historical scrape utility, kept for reference only.
+  It was used once to derive the category taxonomy (`data/categories.json`) from the original
+  hardcoded shop-all page. **`data/products.json` starts empty (`[]`) on purpose** — the
+  owner adds every product from scratch through the CMS; nothing is pre-seeded. Don't run
+  this script again (it would repopulate products.json with the old demo catalog).
 - `html/` — the live site. `html/product/*` and `html/shop-all/index.html` are build output
   (don't hand-edit, CI overwrites them). Everything else (`index.html` outside the two
   patched bands, `our-story/`, `our-craft/`, `custom-design/`, `wholesale-pop-up-cards/`,
