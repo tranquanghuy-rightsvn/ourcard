@@ -1,0 +1,34 @@
+[
+  {
+    "key": "christmas",
+    "label": "Christmas"
+  },
+  {
+    "key": "birthday",
+    "label": "Birthday"
+  },
+  {
+    "key": "anniversary",
+    "label": "Anniversary"
+  },
+  {
+    "key": "other",
+    "label": "Other"
+  },
+  {
+    "key": "seasonal",
+    "label": "Seasonal"
+  },
+  {
+    "key": "vehicle-sports",
+    "label": "Vehicle & Sports"
+  },
+  {
+    "key": "love-floral",
+    "label": "Love & Floral"
+  },
+  {
+    "key": "animals",
+    "label": "Animals"
+  }
+]

@@ -1,0 +1,1167 @@
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+  gap: 20px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 24px 40px 40px;
+}
+.hero__main {
+  position: relative;
+  display: grid;
+  /* Ties the height to the viewport so the CTA stays above the fold on short
+     screens — at a flat 560px it fell below it on anything under ~630px tall. */
+  min-height: clamp(320px, 62vh, 560px);
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #efd9c8 0%, #e3c3b0 45%, #cf9a86 100%);
+}
+@supports (height: 1svh) {
+  /* svh, so a phone's collapsing URL bar doesn't change the hero's height */
+  .hero__main {
+    min-height: clamp(320px, 62svh, 560px);
+  }
+}
+
+/* Two promo cards stacked beside the slider */
+.hero__side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+.hero-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 150px;
+  overflow: hidden;
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+  color: var(--color-white);
+}
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 15, 10, 0.82) 0%,
+    rgba(20, 15, 10, 0.55) 55%,
+    rgba(20, 15, 10, 0.3) 100%
+  );
+  transition: background 0.25s ease;
+}
+.hero-card:hover::before {
+  background: linear-gradient(
+    90deg,
+    rgba(20, 15, 10, 0.88) 0%,
+    rgba(20, 15, 10, 0.65) 55%,
+    rgba(20, 15, 10, 0.4) 100%
+  );
+}
+.hero-card__body {
+  position: relative;
+  z-index: 1;
+  padding: 26px 28px;
+}
+.hero-card__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.hero-card p {
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 14px;
+  max-width: 30ch;
+}
+.hero-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
+}
+.hero-card__cta svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.2s ease;
+}
+.hero-card:hover .hero-card__cta svg {
+  transform: translateX(4px);
+}
+.hero__slides {
+  display: grid;
+}
+.hero__slide {
+  /* All slides share one grid cell: they still stack for the crossfade, but the
+     cell grows to the tallest one instead of clipping content that outgrows it. */
+  grid-area: 1 / 1;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s ease;
+}
+/* The outgoing slide stays fully opaque underneath while the incoming one
+   fades in over it. Fading both at once would let the hero's own light
+   background show through the middle of the transition — a visible flash. */
+.hero__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+.hero__slide.is-leaving {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+.hero__slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(47, 47, 46, 0.55) 0%,
+    rgba(47, 47, 46, 0.15) 55%,
+    rgba(47, 47, 46, 0) 100%
+  );
+}
+.hero__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  /* Left gap clears the prev arrow, which is vertically centred over this text */
+  padding: 40px 40px 40px 80px;
+  color: var(--color-white);
+}
+.hero__eyebrow {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+}
+.hero__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+.hero__text {
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.hero__cta {
+  display: inline-block;
+  border: 1px solid var(--color-white);
+  color: var(--color-white);
+  background: transparent;
+  padding: 16px 40px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+.hero__cta:hover {
+  background: var(--color-white);
+  color: var(--color-text);
+}
+.hero__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--color-white);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease;
+}
+.hero__arrow:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+.hero__arrow--prev {
+  left: 16px;
+  border-radius: 50%;
+}
+.hero__arrow--next {
+  right: 16px;
+  border-radius: 50%;
+}
+.hero__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.hero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--color-white);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+.hero__dot.is-active {
+  background: var(--color-white);
+}
+
+@media (max-width: 1024px) {
+  /* Side cards drop below the slider and sit shoulder to shoulder */
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px 20px 32px;
+  }
+  .hero__side {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .hero__title {
+    font-size: 36px;
+  }
+}
+@media (max-width: 768px) {
+  .hero__content {
+    padding: 32px 20px;
+  }
+  .hero__title {
+    font-size: 26px;
+  }
+  .hero__text {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .hero__cta {
+    padding: 12px 28px;
+  }
+  .hero__arrow {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .hero__side {
+    grid-template-columns: 1fr;
+  }
+  .hero-card__body {
+    padding: 22px;
+  }
+}
+
+/* Best sellers band — a tinted strip carved out of the page with a wave at each
+   edge. The waves are filled with the page background so they read as the page
+   curving into the band. Doodle pattern is a generated SVG, kept inline so it
+   costs no extra request. */
+.bestsellers-band {
+  position: relative;
+  margin: 40px 0;
+  padding: 96px 0 84px;
+  background-color: #fffdfa;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg fill='none' stroke='%23e9dfd6' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='.5'%3E%3Cpath d='M30 44h34v25H30z'/%3E%3Cpath d='M30 44l17 12 17-12'/%3E%3Cpath d='M196 36l5 10 11 2-8 7 2 11-10-5-10 5 2-11-8-7 11-2z'/%3E%3Cpath d='M52 196h28v21H52zM66 196v21'/%3E%3Cpath d='M226 176c7 0 7 9 0 9s-7 9 0 9'/%3E%3Ccircle cx='214' cy='236' r='4.5'/%3E%3Ccircle cx='231' cy='236' r='4.5'/%3E%3Cpath d='M218 233l13-13M228 233l-13-13'/%3E%3Cpath d='M140 120c4-6 12-4 12 3 0 6-12 13-12 13s-12-7-12-13c0-7 8-9 12-3z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+.band__wave {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 52px;
+  display: block;
+  fill: var(--color-bg);
+  pointer-events: none;
+}
+.band__wave--top {
+  top: -1px;
+}
+.band__wave--bottom {
+  bottom: -1px;
+  transform: rotate(180deg);
+}
+
+.bestsellers-band .section-heading {
+  padding: 0 20px 44px;
+}
+.section-heading__lead {
+  max-width: 620px;
+  margin: 14px auto 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+.bestsellers-band .shop-all-cta {
+  padding-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .bestsellers-band {
+    padding: 64px 0 56px;
+    margin: 24px 0;
+  }
+  .band__wave {
+    height: 30px;
+  }
+  .bestsellers-band .section-heading {
+    padding-bottom: 32px;
+  }
+  .section-heading__lead {
+    font-size: 14px;
+  }
+}
+
+/* Section heading (used above bestsellers) */
+.section-heading {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+.section-heading__eyebrow {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--color-rust);
+  display: block;
+  margin-bottom: 6px;
+}
+.section-heading__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 30px;
+}
+
+/* Best sellers carousel */
+.bestsellers {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 40px;
+  position: relative;
+}
+.bestsellers__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 3 * 28px) / 4);
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.bestsellers__track::-webkit-scrollbar {
+  display: none;
+}
+.bestsellers__item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  scroll-snap-align: start;
+  position: relative;
+}
+/* Pushes the buttons to the bottom so they line up across the row even when
+   one product name wraps onto an extra line. */
+.bestsellers__item .product-actions {
+  margin-top: auto;
+}
+.bestsellers__item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: var(--color-white);
+  border-radius: 24px;
+  margin: 0 0 16px;
+}
+.bestsellers__item p {
+  font-family: var(--font-product-title);
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.bestsellers__item .product-tile__categories,
+.new-products__grid .product-tile__categories {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-text-light);
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.bestsellers__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-text);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.bestsellers__arrow:hover {
+  background: var(--color-rust);
+  border-color: var(--color-rust);
+  color: var(--color-white);
+}
+/* Inside the section's 40px gutter, not hanging past it: once the viewport is
+   only a little wider than max-width the arrows would poke outside it and give
+   the page a horizontal scrollbar. */
+.bestsellers__arrow--prev {
+  left: 0;
+}
+.bestsellers__arrow--next {
+  right: 0;
+}
+
+.shop-all-cta {
+  text-align: center;
+  padding-bottom: 70px;
+}
+.shop-all-cta .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.shop-all-cta__arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+.shop-all-cta .btn-outline:hover .shop-all-cta__arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1024px) {
+  .bestsellers__track {
+    grid-auto-columns: calc((100% - 2 * 28px) / 3);
+  }
+}
+@media (max-width: 600px) {
+  .bestsellers {
+    padding: 0 34px 40px;
+  }
+  .bestsellers__track {
+    grid-auto-columns: calc((100% - 20px) / 2);
+    gap: 20px;
+  }
+  /* Sized to sit inside the narrowed gutter rather than over the cards. */
+  .bestsellers__arrow {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+}
+
+/* New products — reuses .bestsellers-band for the tinted background/waves
+   (see markup: class="bestsellers-band new-products-band") but lays tiles out
+   as a static two-row grid instead of a scroll-snap carousel (no arrows). */
+.new-products {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 40px;
+}
+.new-products__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px 28px;
+}
+.new-products .shop-all-cta {
+  margin-top: 36px;
+}
+
+@media (max-width: 1024px) {
+  .new-products__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .new-products {
+    padding: 0 34px 40px;
+  }
+  .new-products__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Alternating category rows */
+.category-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.category-row__card {
+  position: relative;
+  background: var(--color-white);
+  border: 1px solid #e4d9d1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  overflow: hidden;
+}
+.category-row__badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--color-rust);
+  color: var(--color-white);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 8px 18px;
+  z-index: 2;
+}
+.category-row__card img {
+  width: 100%;
+  height: 460px;
+  object-fit: contain;
+  padding: 40px;
+}
+.category-row__card-info {
+  position: relative;
+  width: 100%;
+  padding-bottom: 32px;
+}
+.category-row__card p {
+  padding: 0 20px;
+  font-size: 16px;
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+.category-row__card a.detail-link {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  border: 1px solid var(--color-rust);
+  color: var(--color-rust);
+  font-size: 14px;
+  padding: 10px 32px;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+  pointer-events: none;
+}
+.category-row__card:hover p {
+  opacity: 0;
+}
+.category-row__card:hover a.detail-link {
+  opacity: 1;
+  pointer-events: auto;
+}
+.category-row__card a.detail-link:hover {
+  background: var(--color-rust);
+  color: var(--color-white);
+}
+
+.category-row__banner {
+  position: relative;
+  min-height: 460px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Holds the image still against the viewport while the crop stays centred on
+   the banner. background-attachment: fixed can't do this: it sizes the image
+   against the viewport, so a half-width banner only ever shows an off-centre
+   slice of it.
+   The image is sticky inside a track that overhangs the banner by a viewport
+   on each side, so it stays pinned at the top of the viewport for as long as
+   the banner is on screen. overflow: clip — not hidden — is what makes this
+   work: hidden would turn the banner into the sticky element's scrollport.
+   Browsers without overflow: clip keep the banner's own background instead. */
+.category-row__banner--sticky-bg {
+  overflow: clip;
+}
+.category-row__banner--sticky-bg::before {
+  z-index: 1;
+}
+.category-row__banner-bgtrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -100vh;
+  height: calc(100% + 200vh);
+}
+.category-row__banner-bg {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+/* Scales the image up as the banner travels down the viewport, and back down
+   again on the way up — the scroll position drives the animation, so it
+   reverses on its own. Only the transform animates, so it stays composited.
+   Longhands, not the animation shorthand: the shorthand would reset
+   animation-duration to 0s and snap the animation to its end state. */
+.category-row__banner--zoom-bg {
+  /* clip, not hidden: hidden would make the banner a scroll container and the
+     view() timeline would measure against it instead of the page. */
+  overflow: clip;
+}
+.category-row__banner--zoom-bg::before {
+  z-index: 1;
+}
+.category-row__banner-zoom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@keyframes banner-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.75);
+  }
+}
+@supports (animation-timeline: view()) {
+  .category-row__banner-zoom {
+    animation-name: banner-zoom;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+  }
+}
+.category-row__banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 15, 10, 0.38);
+}
+.category-row__banner-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 460px;
+  text-align: center;
+  color: var(--color-white);
+  padding: 40px;
+}
+.category-row__banner-inner h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-size: 26px;
+  margin-bottom: 16px;
+}
+.category-row__banner-inner .divider {
+  width: 60px;
+  height: 2px;
+  background: var(--color-white);
+  margin: 0 auto 20px;
+}
+.category-row__banner-inner p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .category-row {
+    grid-template-columns: 1fr;
+  }
+  .category-row__card img {
+    height: 340px;
+    padding: 24px;
+  }
+  .category-row__banner {
+    min-height: 340px;
+  }
+  .category-row__banner-bgtrack {
+    display: none;
+  }
+}
+
+/* Story / Craft / Custom design cards */
+.info-cards {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 90px 40px 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+.info-card {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  color: var(--color-white);
+}
+.info-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.info-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+.info-card__overlay h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-size: 22px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.info-card__overlay .divider {
+  width: 40px;
+  height: 2px;
+  background: var(--color-white);
+  margin-bottom: 16px;
+}
+.info-card__overlay a {
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .info-cards {
+    grid-template-columns: 1fr;
+    padding: 50px 24px 30px;
+  }
+}
+
+/* Feature strip */
+.feature-strip {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 30px 40px 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+.feature-strip .divider {
+  width: 30px;
+  height: 2px;
+  background: var(--color-rust);
+  margin: 0 auto 14px;
+}
+.feature-strip p {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--color-rust);
+}
+
+@media (max-width: 700px) {
+  .feature-strip {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* Custom Your Design */
+.custom-design {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 20px;
+  text-align: center;
+}
+.custom-design__eyebrow {
+  display: block;
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--color-rust);
+  margin-bottom: 10px;
+}
+.custom-design__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--color-green);
+  margin-bottom: 16px;
+}
+.custom-design__lead {
+  max-width: 620px;
+  margin: 0 auto 50px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--color-text-light);
+}
+.custom-design__grid {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 490px) 1fr;
+  gap: 30px;
+  align-items: stretch;
+  text-align: left;
+}
+.custom-design__col {
+  display: grid;
+  gap: 30px;
+  height: 100%;
+}
+.custom-design__col:first-child .custom-design__step {
+  text-align: left;
+}
+.custom-design__step {
+  background: var(--color-topbar);
+  padding: 30px 26px;
+  border-radius: 4px;
+}
+.custom-design__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-rust);
+}
+.custom-design__icon svg {
+  width: 24px;
+  height: 24px;
+}
+.custom-design__step h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-green);
+  margin-bottom: 10px;
+}
+.custom-design__step p,
+.custom-design__list {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  margin-bottom: 18px;
+}
+.custom-design__list {
+  list-style: disc;
+  list-style-position: outside;
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+  text-align: left;
+}
+.custom-design__more {
+  display: flex;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  justify-content: right;
+}
+.custom-design__more:hover {
+  color: var(--color-rust);
+}
+.custom-design__media {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.custom-design__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .custom-design__grid {
+    grid-template-columns: 1fr;
+  }
+  .custom-design__col:first-child .custom-design__step {
+    text-align: left;
+  }
+  .custom-design__media {
+    order: -1;
+    height: auto;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .custom-design__media img {
+    height: auto;
+    object-fit: contain;
+  }
+}
+@media (max-width: 480px) {
+  .custom-design {
+    padding: 56px 34px 10px;
+  }
+  .custom-design__title {
+    font-size: 32px;
+  }
+  .custom-design__col {
+    gap: 20px;
+  }
+}
+
+/* Our Company */
+.our-company {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 70px 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 70px;
+  align-items: center;
+}
+.our-company__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.our-company__eyebrow {
+  display: block;
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--color-rust);
+  margin-bottom: 10px;
+}
+.our-company__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--color-green);
+  margin-bottom: 20px;
+}
+.our-company__lead {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--color-text-light);
+  margin-bottom: 34px;
+}
+.our-company__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.our-company__stat {
+  background: var(--color-topbar);
+  padding: 28px 26px;
+  border-radius: 5px;
+}
+.our-company__stat-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--color-rust);
+  margin-bottom: 10px;
+}
+.our-company__stat-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-light);
+  margin-bottom: 16px;
+}
+.our-company__stat-more {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.our-company__stat-more:hover {
+  color: var(--color-rust);
+}
+
+@media (max-width: 900px) {
+  .our-company {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 56px 34px;
+  }
+  .our-company__media img {
+    min-height: 320px;
+  }
+}
+@media (max-width: 480px) {
+  .our-company__stats {
+    grid-template-columns: 1fr;
+  }
+  .our-company__title {
+    font-size: 32px;
+  }
+}
+
+/* Our Partners */
+.our-partners {
+  padding: 0 0 90px;
+  text-align: center;
+}
+.partners__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--color-green);
+  margin-bottom: 40px;
+}
+.partners {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+/* Fixed to exactly 5 * (item + gap) so the viewport always clips on an item
+   boundary — no partial logo ever peeks out at the edge for the arrow
+   buttons (sitting outside the track, not overlaid on it) to cover. */
+.partners__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 150px;
+  gap: 80px;
+  width: calc(5 * 150px + 4 * 80px);
+  max-width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.partners__track::-webkit-scrollbar {
+  display: none;
+}
+.partners__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+}
+.partners__item img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--color-white);
+}
+.partners__arrow {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-text);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 20px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.partners__arrow:hover {
+  background: var(--color-rust);
+  border-color: var(--color-rust);
+  color: var(--color-white);
+}
+
+@media (max-width: 1024px) {
+  .partners__track {
+    width: calc(3 * 150px + 2 * 80px);
+  }
+}
+@media (max-width: 600px) {
+  .partners {
+    padding: 0 20px;
+    gap: 10px;
+  }
+  .partners__track {
+    width: calc(2 * 150px + 32px);
+    gap: 32px;
+  }
+  .partners__arrow {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+}
+
+/* SEO intro (plain heading + paragraph, sits above the footer) */
+.seo-intro {
+  padding: 0 0 60px;
+  text-align: center;
+}
+.seo-intro__inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.seo-intro__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--color-text);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.seo-intro__text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-text-light);
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .seo-intro {
+    padding: 40px 0 60px;
+  }
+  .seo-intro__title {
+    font-size: 19px;
+  }
+}

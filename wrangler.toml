@@ -1,0 +1,14 @@
+# Cloudflare Worker (Static Assets) config for khtcard (Kyu Craft) - Cloudflare has folded
+# "Pages" into the Workers model, so there's no separate Pages project to create; this
+# Worker just serves html/ with no server-side logic (name = ... below).
+name = "khtcard"
+compatibility_date = "2026-08-23"
+
+[assets]
+directory = "./html"
+# IMPORTANT: keep the existing .html-suffixed URLs (do not let Cloudflare auto-redirect
+# "/shop-all/index.html" -> "/shop-all/") - the default html_handling would do exactly that.
+html_handling = "none"
+# Multi-page static site (not an SPA) - unknown paths should get a real 404, not a fallback
+# to index.html. Serves html/404.html with an actual HTTP 404 status.
+not_found_handling = "404-page"

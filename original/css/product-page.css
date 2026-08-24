@@ -1,0 +1,95 @@
+.breadcrumb-bar {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 40px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--color-text-light);
+}
+.breadcrumb-bar a { color: var(--color-text-light); }
+.breadcrumb-bar a:hover { color: var(--color-rust); }
+.breadcrumb-bar .current { color: var(--color-text); }
+.breadcrumb-bar .prev-next { display: flex; gap: 16px; align-items: center; }
+.breadcrumb-bar .prev-next a { display: inline-flex; align-items: center; gap: 4px; }
+
+.product {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 40px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.product__gallery-main {
+  background: var(--color-white);
+  border: 1px solid #eee;
+  margin-bottom: 16px;
+}
+.product__gallery-main img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
+
+.product__thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.product__thumbs img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+.product__thumbs img.is-active { border-color: var(--color-rust); }
+
+.product__info h1 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.3;
+  margin-bottom: 24px;
+}
+.product__specs {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--color-text);
+  margin-bottom: 30px;
+}
+.product__specs strong { font-weight: 600; }
+
+.btn-contact {
+  display: inline-block;
+  background: #3b82c4;
+  color: var(--color-white);
+  padding: 14px 40px;
+  font-size: 15px;
+  border: none;
+  border-radius: 2px;
+}
+.btn-contact:hover { background: #2f6ba0; }
+
+.related {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 30px 40px 80px;
+}
+.related h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 26px;
+  margin-bottom: 30px;
+}
+.related__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.related .product-card__badge { position: relative; }
+
+@media (max-width: 900px) {
+  .product { grid-template-columns: 1fr; gap: 30px; }
+  .related__grid { grid-template-columns: repeat(2, 1fr); }
+  .breadcrumb-bar { flex-direction: column; gap: 10px; align-items: flex-start; }
+}

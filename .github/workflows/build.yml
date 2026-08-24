@@ -1,0 +1,47 @@
+name: Build & deploy khtcard
+
+# Trigger CHI o dung file luon la commit CHOT cua moi thao tac CMS (Luu/Xoa san pham) -
+# khong trigger theo ca thu muc data/** (se chay ngay tu commit dau tien/do dang cua 1 thao
+# tac Luu nhieu commit: anh -> data/products.json, xem static-site-build.md muc 5).
+on:
+  push:
+    paths:
+      - "data/products.json"
+      - "data/categories.json"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build static site (scripts/build.py)
+        run: python3 scripts/build.py
+
+      - name: Commit generated html/
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add html/
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "CI: build html from data"
+          git push
+
+      # Cloudflare Workers Static Assets - needs 2 repo secrets (Settings > Secrets and
+      # variables > Actions): CLOUDFLARE_API_TOKEN (Account > Workers Scripts > Edit
+      # permission) and CLOUDFLARE_ACCOUNT_ID.
+      - name: Deploy to Cloudflare (Workers Static Assets)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

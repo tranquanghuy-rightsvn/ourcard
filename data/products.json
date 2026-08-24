@@ -1,0 +1,342 @@
+[
+  {
+    "id": 1,
+    "slug": "pc1052-summer-holiday-beach-popup-card",
+    "sku": "PC1052",
+    "name": "Summer Holiday Beach Popup Card",
+    "category": "seasonal",
+    "tags_text": "Summer, Holiday, For Her, For Him, Best Sellers",
+    "is_bestseller": true,
+    "is_new": false,
+    "cover_image": "pc1052-beach.jpg",
+    "gallery": [
+      "pc1052-beach.jpg"
+    ],
+    "description_html": "<p>\n        Open this card and a whole stretch of coastline rises off the page\n        &mdash; beach huts, palm leaves and rolling waves layered into a scene\n        that stands on its own. Close it again and everything lies flat enough\n        to post in a standard envelope.\n      </p>\n      <p>\n        Every layer is laser-cut, then scored, folded and glued by hand in our\n        workshop in Ha Noi, so the pop-up opens cleanly at ninety degrees and\n        holds its shape. The inside is left blank for your own message, and each\n        card ships with an envelope and a protective sleeve.\n      </p>\n      <p>\n        Kyu Craft | Popup Card manufactures handmade 3D pop-up cards for\n        retailers, distributors and gift shops worldwide. We also take on custom\n        pop-up design and private-label production for wholesale customers\n        &mdash; send us your artwork and we will build it into a working pop-up.\n      </p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 2,
+    "slug": "pc1042-happy-birthday-flower-popup-card",
+    "sku": "PC1042",
+    "name": "Happy birthday flower Popup Card",
+    "category": "birthday",
+    "tags_text": "Birthday, For Her, Best Sellers",
+    "is_bestseller": true,
+    "is_new": false,
+    "cover_image": "pc1042-birthday-flower.png",
+    "gallery": [
+      "pc1042-birthday-flower.png"
+    ],
+    "description_html": "<p>Happy birthday flower Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 3,
+    "slug": "p1039-cornflowers-popup-card",
+    "sku": "P1039",
+    "name": "Cornflowers Popup Card",
+    "category": "love-floral",
+    "tags_text": "Flowers, For Her, Best Sellers",
+    "is_bestseller": true,
+    "is_new": false,
+    "cover_image": "p1039-cornflowers.png",
+    "gallery": [
+      "p1039-cornflowers.png"
+    ],
+    "description_html": "<p>Cornflowers Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 4,
+    "slug": "pc1035-happy-wedding-popup-card",
+    "sku": "PC1035",
+    "name": "Happy Wedding Popup Card",
+    "category": "love-floral",
+    "tags_text": "Wedding, For Her, For Him, Best Sellers",
+    "is_bestseller": true,
+    "is_new": false,
+    "cover_image": "pc1035-happy-wedding.jpg",
+    "gallery": [
+      "pc1035-happy-wedding.jpg"
+    ],
+    "description_html": "<p>Happy Wedding Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 5,
+    "slug": "pc1031-best-dad-ever-popup-card",
+    "sku": "PC1031",
+    "name": "Best Dad Ever Popup Card",
+    "category": "seasonal",
+    "tags_text": "Father's Day, For Him, Best Sellers",
+    "is_bestseller": true,
+    "is_new": false,
+    "cover_image": "pc1031-best-dad-ever.png",
+    "gallery": [
+      "pc1031-best-dad-ever.png"
+    ],
+    "description_html": "<p>Best Dad Ever Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 6,
+    "slug": "pc1029-happy-birthday-popup-card",
+    "sku": "PC1029",
+    "name": "Happy Birthday Popup Card",
+    "category": "birthday",
+    "tags_text": "Birthday, For Her, For Him",
+    "is_bestseller": true,
+    "is_new": false,
+    "cover_image": "pc1029-happy-birthday.png",
+    "gallery": [
+      "pc1029-happy-birthday.png"
+    ],
+    "description_html": "<p>Happy Birthday Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 7,
+    "slug": "pc1046-back-to-school-popup-card",
+    "sku": "PC1046",
+    "name": "Back to school Popup Card",
+    "category": "other",
+    "tags_text": "Back to School, For Kids, New Product",
+    "is_bestseller": false,
+    "is_new": true,
+    "cover_image": "pc1046-back-to-school.png",
+    "gallery": [
+      "pc1046-back-to-school.png"
+    ],
+    "description_html": "<p>Back to school Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 8,
+    "slug": "pc1044-travel-adventure-popup-card",
+    "sku": "PC1044",
+    "name": "Travel Adventure Popup Card",
+    "category": "other",
+    "tags_text": "Travel, For Her, For Him, New Product",
+    "is_bestseller": false,
+    "is_new": true,
+    "cover_image": "pc1044-travel-adventure.jpg",
+    "gallery": [
+      "pc1044-travel-adventure.jpg"
+    ],
+    "description_html": "<p>Travel Adventure Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 9,
+    "slug": "pc1038-happy-wedding-popup-card",
+    "sku": "PC1038",
+    "name": "Happy Wedding Popup Card",
+    "category": "love-floral",
+    "tags_text": "Wedding, For Her, For Him, New Product",
+    "is_bestseller": false,
+    "is_new": true,
+    "cover_image": "pc1038-happy-wedding.png",
+    "gallery": [
+      "pc1038-happy-wedding.png"
+    ],
+    "description_html": "<p>Happy Wedding Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 10,
+    "slug": "pc1034-farthers-day-camping-popup-card",
+    "sku": "PC1034",
+    "name": "Farther's day camping Popup Card",
+    "category": "seasonal",
+    "tags_text": "Father's Day, For Him, New Product",
+    "is_bestseller": false,
+    "is_new": true,
+    "cover_image": "pc1034-fathers-day-camping.png",
+    "gallery": [
+      "pc1034-fathers-day-camping.png"
+    ],
+    "description_html": "<p>Farther's day camping Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 11,
+    "slug": "pc1030-happy-mothers-day-popup-card",
+    "sku": "PC1030",
+    "name": "Happy Mother's Day Popup Card",
+    "category": "seasonal",
+    "tags_text": "Mother's Day, For Her, New Product",
+    "is_bestseller": false,
+    "is_new": true,
+    "cover_image": "pc1030-mothers-day.png",
+    "gallery": [
+      "pc1030-mothers-day.png"
+    ],
+    "description_html": "<p>Happy Mother's Day Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 12,
+    "slug": "pc1051-summer-holiday-mountain-popup-card",
+    "sku": "PC1051",
+    "name": "Summer Holiday Mountain Popup Card",
+    "category": "seasonal",
+    "tags_text": "Summer, Holiday, For Her, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1051-mountain.png",
+    "gallery": [
+      "pc1051-mountain.png"
+    ],
+    "description_html": "<p>Summer Holiday Mountain Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 13,
+    "slug": "pc1043-happy-birthday-with-numbers-popup-card",
+    "sku": "PC1043",
+    "name": "Happy birthday with numbers Popup Card",
+    "category": "birthday",
+    "tags_text": "Birthday, For Her, For Him, For Kids",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1043-birthday-numbers.png",
+    "gallery": [
+      "pc1043-birthday-numbers.png"
+    ],
+    "description_html": "<p>Happy birthday with numbers Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 14,
+    "slug": "pc1041-happy-birthday-60th-popup-card",
+    "sku": "PC1041",
+    "name": "Happy Birthday 60th Popup Card",
+    "category": "birthday",
+    "tags_text": "Birthday, For Her, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1041-birthday-60th.png",
+    "gallery": [
+      "pc1041-birthday-60th.png"
+    ],
+    "description_html": "<p>Happy Birthday 60th Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 15,
+    "slug": "pc1040-badminton-popup-card",
+    "sku": "PC1040",
+    "name": "Badminton Popup Card",
+    "category": "vehicle-sports",
+    "tags_text": "Sports, For Him, For Kids",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1040-badminton.jpg",
+    "gallery": [
+      "pc1040-badminton.jpg"
+    ],
+    "description_html": "<p>Badminton Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 16,
+    "slug": "pc1036-camera-popup-card",
+    "sku": "PC1036",
+    "name": "Camera Popup Card",
+    "category": "other",
+    "tags_text": "Travel, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1036-camera.png",
+    "gallery": [
+      "pc1036-camera.png"
+    ],
+    "description_html": "<p>Camera Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 17,
+    "slug": "pc1037-happy-anniversary-popup-card",
+    "sku": "PC1037",
+    "name": "Happy Anniversary Popup Card",
+    "category": "anniversary",
+    "tags_text": "Anniversary, For Her, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1037-happy-anniversary.png",
+    "gallery": [
+      "pc1037-happy-anniversary.png"
+    ],
+    "description_html": "<p>Happy Anniversary Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 18,
+    "slug": "pc1033-happy-anniversary-with-numbers-popup-card",
+    "sku": "PC1033",
+    "name": "Happy Anniversary with numbers Popup Card",
+    "category": "anniversary",
+    "tags_text": "Anniversary, For Her, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1033-happy-anniversary-numbers.png",
+    "gallery": [
+      "pc1033-happy-anniversary-numbers.png"
+    ],
+    "description_html": "<p>Happy Anniversary with numbers Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 19,
+    "slug": "pc1032-super-dad-popup-card",
+    "sku": "PC1032",
+    "name": "Super Dad Popup Card",
+    "category": "seasonal",
+    "tags_text": "Father's Day, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1032-super-dad.png",
+    "gallery": [
+      "pc1032-super-dad.png"
+    ],
+    "description_html": "<p>Super Dad Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  },
+  {
+    "id": 20,
+    "slug": "pc1028-saint-patrick-beer-popup-card",
+    "sku": "PC1028",
+    "name": "Saint Patrick Beer Popup Card",
+    "category": "seasonal",
+    "tags_text": "Holiday, For Him",
+    "is_bestseller": false,
+    "is_new": false,
+    "cover_image": "pc1028-saint-patrick-beer.png",
+    "gallery": [
+      "pc1028-saint-patrick-beer.png"
+    ],
+    "description_html": "<p>Saint Patrick Beer Popup Card pop-up card, laser-cut and hand-assembled in our workshop. Every layer folds flat for shipping and pops back into shape the moment the card is opened.</p>\n<p>Mix into any wholesale order — the 50 pcs minimum applies per design, not per shipment. Own artwork, logo and private-label packaging available on request.</p>",
+    "status": "published",
+    "updated_at": "2026-08-24"
+  }
+]

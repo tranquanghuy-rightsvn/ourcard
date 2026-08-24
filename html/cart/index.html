@@ -342,14 +342,16 @@
       <div class="footer-cta">
         <div class="footer-cta__inner">
           <p class="footer-cta__title">Receive catalogs from us</p>
-          <form class="footer-cta__form" onsubmit="return false;">
+          <form class="footer-cta__form" data-lead-form>
             <label class="sr-only" for="footer-email">Email</label>
             <input
               type="email"
               id="footer-email"
+              name="email"
               placeholder="Type your email"
               required
             />
+            <input type="text" name="_hp" class="sr-only" tabindex="-1" autocomplete="off" />
             <button type="submit">Send</button>
           </form>
         </div>
@@ -477,5 +479,6 @@
     <script src="../js/checkout.js"></script>
     <script src="../js/cart-actions.js"></script>
     <script src="../js/chat.js"></script>
+    <script src="../js/lead-form.js"></script>
   </body>
 </html>

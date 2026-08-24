@@ -539,11 +539,23 @@ body {
 }
 .footer-cta__form {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   flex: 0 1 620px;
   background: var(--color-white);
   border-radius: 999px;
   padding: 5px 5px 5px 22px;
+}
+.lead-form__note {
+  flex-basis: 100%;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--color-text);
+}
+.lead-form__note--error {
+  color: #c0392b;
 }
 .footer-cta__form input {
   flex: 1;

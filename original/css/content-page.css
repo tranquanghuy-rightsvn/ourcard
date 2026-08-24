@@ -1,0 +1,107 @@
+/* Shared layout for Our Story / Our Craft style content pages */
+.page-title {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 4px;
+  font-size: 34px;
+  padding: 70px 20px 40px;
+}
+
+.page-hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 40px 20px;
+}
+.page-hero__video {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #efd9c8 0%, #e3c3b0 45%, #cf9a86 100%);
+}
+
+.split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+}
+.split-row__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px;
+}
+.split-row__text h2 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+.split-row__text .divider {
+  width: 50px;
+  height: 2px;
+  background: var(--color-rust);
+  margin: 0 auto 26px;
+}
+.split-row__text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-text);
+  max-width: 420px;
+}
+.split-row__text p + p { margin-top: 16px; }
+.split-row__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 520px;
+}
+
+.photo-statement {
+  position: relative;
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photo-statement img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.photo-statement::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 15, 10, 0.45);
+  z-index: 1;
+}
+.photo-statement__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  text-align: center;
+  color: var(--color-white);
+  padding: 40px;
+}
+.photo-statement__inner h2 {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 30px;
+  margin-bottom: 24px;
+}
+.photo-statement__inner p {
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+@media (max-width: 900px) {
+  .split-row { grid-template-columns: 1fr; min-height: unset; }
+  .split-row__image img { min-height: 320px; }
+  .split-row__text { padding: 40px 24px; }
+  .photo-statement { min-height: 480px; }
+}
