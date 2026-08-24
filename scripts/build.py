@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Build html/product/*.html + html/shop-all/index.html from data/*.json +
-templates/*.html, and patch the two dynamic bands on html/index.html in
-place. Stdlib only. Safe to run repeatedly (idempotent) and safe to run in
-CI (GitHub Actions) right after the CMS commits data/products.json.
+"""Build html/product/*.html + html/shop-all.html + html/free-template.html
+from data/*.json + templates/*.html, and patch the two dynamic bands on
+html/index.html in place. Stdlib only. Safe to run repeatedly (idempotent)
+and safe to run in CI (GitHub Actions) right after the CMS commits
+data/products.json / data/categories.json / data/free-templates.json.
 
     python3 scripts/build.py
 """
@@ -15,6 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 TEMPLATES = ROOT / "templates"
 OUT = ROOT / "html"
+BASE_URL = "https://www.kyucraft.com"
 
 WISH_SVG = """<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
                   <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1-1.1a5.5 5.5 0 000-7.7z" />
@@ -30,9 +32,17 @@ PCARD_WISH_SVG = """<svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                   </svg>"""
 
+DOWNLOAD_SVG = """<svg class="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" />
+                <path d="M4 19h16" />
+              </svg>"""
 
-def load_json(name):
-    return json.loads((DATA / name).read_text())
+
+def load_json(name, default=None):
+    path = DATA / name
+    if not path.exists():
+        return default if default is not None else []
+    return json.loads(path.read_text())
 
 
 def badge_of(product):
@@ -76,7 +86,7 @@ def render_card(product, prefix, with_data_categories, wrapper_class="product-ca
             <a class="product-tile__link" href="{href}"><p>{title_line(product)}</p></a>
             <p class="product-tile__categories">{html.escape(product.get("tags_text", ""))}</p>
             <div class="product-actions">
-              <a class="btn-contact" href="{prefix}contact-us/index.html">Contact</a>
+              <a class="btn-contact" href="{prefix}contact-us.html">Contact</a>
               <button type="button" class="add-to-cart" aria-label="Add to cart" title="Add to cart">
                 {CART_SVG}
               </button>
@@ -108,7 +118,7 @@ def render_pcard(product, prefix):
                   <p class="pcard__name">{title_line(product)}</p>
                   <p class="pcard__categories">{html.escape(product.get("tags_text", ""))}</p>
                   <div class="product-actions">
-                    <a class="btn-contact" href="{prefix}contact-us/index.html">Contact</a>
+                    <a class="btn-contact" href="{prefix}contact-us.html">Contact</a>
                     <button type="button" class="add-to-cart" aria-label="Add to cart" title="Add to cart">
                       {CART_SVG}
                     </button>
@@ -131,17 +141,59 @@ def render_gallery_thumbs(product):
     return "\n          ".join(thumbs)
 
 
+def product_jsonld(product, canonical_url, description):
+    product_obj = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": f'{product["sku"]} - {product["name"]}',
+        "sku": product["sku"],
+        "description": description,
+        "image": [f"{BASE_URL}/images/{img}" for img in product["gallery"]],
+        "brand": {"@type": "Brand", "name": "Kyu Craft"},
+        "category": product["category"],
+        "url": canonical_url,
+    }
+    breadcrumb_obj = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{BASE_URL}/"},
+            {"@type": "ListItem", "position": 2, "name": "Shop All", "item": f"{BASE_URL}/shop-all.html"},
+            {"@type": "ListItem", "position": 3, "name": f'{product["sku"]} - {product["name"]}'},
+        ],
+    }
+    return (
+        '<script type="application/ld+json">' + json.dumps(product_obj, ensure_ascii=False) + "</script>\n"
+        '    <script type="application/ld+json">' + json.dumps(breadcrumb_obj, ensure_ascii=False) + "</script>"
+    )
+
+
+def plain_text_from_html(text, limit=160):
+    stripped = re.sub(r"<[^>]+>", " ", text)
+    stripped = re.sub(r"\s+", " ", stripped).strip()
+    return (stripped[: limit - 1] + "…") if len(stripped) > limit else stripped
+
+
 def render_product_page(product, all_products, template):
     others = [p for p in all_products if p["id"] != product["id"]][:8]
     related_html = "\n              ".join(render_pcard(p, "../") for p in others)
     badge = badge_of(product)
     badge_html = f'<span class="product-gallery__badge">{badge}</span>' if badge else ""
 
+    canonical_url = f'{BASE_URL}/product/{product["slug"]}.html'
+    description = plain_text_from_html(product["description_html"]) or title_line(product)
+    og_title = f'{html.escape(product["sku"])} – {html.escape(product["name"])} | Kyu Craft'
+
     page = template
     page = page.replace(
         "{{PAGE_TITLE}}",
         f'{html.escape(product["sku"])} &ndash; {html.escape(product["name"])} | Kyu Craft | Popup Card',
     )
+    page = page.replace("{{META_DESCRIPTION}}", html.escape(description))
+    page = page.replace("{{CANONICAL_URL}}", canonical_url)
+    page = page.replace("{{OG_TITLE}}", og_title)
+    page = page.replace("{{OG_IMAGE}}", f'{BASE_URL}/images/{product["gallery"][0]}')
+    page = page.replace("{{JSONLD}}", product_jsonld(product, canonical_url, description))
     page = page.replace("{{BREADCRUMB_NAME}}", f'{html.escape(product["sku"])} &mdash; {html.escape(product["name"])}')
     page = page.replace("{{GALLERY_THUMBS}}", render_gallery_thumbs(product))
     page = page.replace("{{GALLERY_BADGE_HTML}}", badge_html)
@@ -167,7 +219,9 @@ def build_product_pages(products, template):
         valid_files.add(filename)
         (product_dir / filename).write_text(render_product_page(product, products, template))
 
-    # Orphan cleanup (gotcha #19): top-level scan only, no recursion.
+    # Orphan cleanup (gotcha #19): top-level scan only, no recursion. product/ only ever
+    # contains CMS-generated files, so it's always safe to delete anything not in the
+    # current index (unlike html/'s root, which also holds hand-authored pages).
     removed = []
     for f in product_dir.glob("*.html"):
         if f.name not in valid_files:
@@ -178,7 +232,7 @@ def build_product_pages(products, template):
 
 def build_shop_all(products, categories, template):
     published = [p for p in products if p.get("status") == "published"]
-    cards_html = "\n          ".join(render_card(p, "../", with_data_categories=True) for p in published)
+    cards_html = "\n          ".join(render_card(p, "", with_data_categories=True) for p in published)
 
     checkboxes = "\n            ".join(
         f'<label class="shop__category shop__category--child">\n'
@@ -190,9 +244,34 @@ def build_shop_all(products, categories, template):
 
     page = template.replace("{{PRODUCT_CARDS}}", cards_html)
     page = page.replace("{{CATEGORY_CHECKBOXES}}", checkboxes)
-    shop_all_dir = OUT / "shop-all"
-    shop_all_dir.mkdir(parents=True, exist_ok=True)
-    (shop_all_dir / "index.html").write_text(page)
+    (OUT / "shop-all.html").write_text(page)
+
+
+def render_template_card(item):
+    title = html.escape(item["title"])
+    return f"""<div class="product-card">
+          <div class="product-tile__media">
+            <a class="product-tile__link" href="images/{item['cover_image']}"><img
+                src="images/{item['cover_image']}"
+                alt="{title}"
+                loading="lazy"
+            /></a>
+          </div>
+          <a class="product-tile__link"><p>{title}</p></a>
+          <div class="product-actions product-actions-download">
+            <a class="btn-download" href="downloads/{item['file']}" download>
+              {DOWNLOAD_SVG}
+              Download
+            </a>
+          </div>
+        </div>"""
+
+
+def build_free_template(templates_data, page_template):
+    published = [t for t in templates_data if t.get("status") == "published"]
+    cards_html = "\n        ".join(render_template_card(t) for t in published)
+    page = page_template.replace("{{TEMPLATE_CARDS}}", cards_html)
+    (OUT / "free-template.html").write_text(page)
 
 
 def patch_band(text, marker, products, prefix, wrapper_class, with_data_categories, limit=8):
@@ -221,32 +300,58 @@ def patch_homepage(products):
     index_path.write_text(text)
 
 
-def build_sitemap(products, base_url="https://khtcard.com"):
+def build_search_data(products):
+    published = [p for p in products if p.get("status") == "published"]
+    index = [
+        {
+            "id": p["slug"],
+            "name": title_line_plain(p),
+            "image": f"images/{p['cover_image']}",
+            "link": f'product/{p["slug"]}.html',
+        }
+        for p in published
+    ]
+    js = "window.KHT_SEARCH_INDEX = " + json.dumps(index, ensure_ascii=False) + ";\n"
+    (OUT / "js" / "search-data.js").write_text(js)
+
+
+def title_line_plain(product):
+    return f'{product["sku"]} - {product["name"]}'
+
+
+def build_sitemap(products, free_templates):
     published = [p for p in products if p.get("status") == "published"]
     static_pages = [
-        "", "shop-all/", "custom-design/", "our-story/", "our-craft/",
-        "wholesale-pop-up-cards/", "contact-us/", "free-template/",
+        "", "shop-all.html", "custom-design.html", "our-story.html", "our-craft.html",
+        "wholesale-pop-up-cards.html", "contact-us.html", "free-template.html",
     ]
-    urls = [f"{base_url}/{p}" for p in static_pages]
-    urls += [f'{base_url}/product/{p["slug"]}.html' for p in published]
+    urls = [f"{BASE_URL}/{p}" for p in static_pages]
+    urls += [f'{BASE_URL}/product/{p["slug"]}.html' for p in published]
     body = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
     xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{body}\n</urlset>\n'
     (OUT / "sitemap.xml").write_text(xml)
 
 
 def main():
-    products = load_json("products.json")
-    categories = load_json("categories.json")
+    products = load_json("products.json", default=[])
+    categories = load_json("categories.json", default=[])
+    free_templates = load_json("free-templates.json", default=[])
 
     product_template = (TEMPLATES / "product.html").read_text()
     category_template = (TEMPLATES / "category.html").read_text()
+    free_template_template = (TEMPLATES / "free-template.html").read_text()
 
     valid_files, removed = build_product_pages(products, product_template)
     build_shop_all(products, categories, category_template)
+    build_free_template(free_templates, free_template_template)
     patch_homepage(products)
-    build_sitemap(products)
+    build_search_data(products)
+    build_sitemap(products, free_templates)
 
-    print(f"Built {len(valid_files)} product pages, shop-all/index.html, sitemap.xml, patched index.html")
+    print(
+        f"Built {len(valid_files)} product pages, shop-all.html, free-template.html, "
+        f"search-data.js, sitemap.xml, patched index.html"
+    )
     if removed:
         print(f"Removed {len(removed)} orphaned product page(s): {', '.join(removed)}")
 

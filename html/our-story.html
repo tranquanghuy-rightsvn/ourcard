@@ -3,23 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{PAGE_TITLE}}</title>
-    <meta name="description" content="{{META_DESCRIPTION}}" />
-    <link rel="canonical" href="{{CANONICAL_URL}}" />
-    <meta property="og:type" content="product" />
+    <title>Our Story | Kyu Craft | Popup Card</title>
+    <meta name="description" content="The story behind Kyu Craft — how a small team in Ha Noi started hand-crafting 3D pop-up greeting cards for retailers and gift shops worldwide." />
+    <link rel="canonical" href="https://www.kyucraft.com/our-story.html" />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kyu Craft" />
-    <meta property="og:title" content="{{OG_TITLE}}" />
-    <meta property="og:description" content="{{META_DESCRIPTION}}" />
-    <meta property="og:url" content="{{CANONICAL_URL}}" />
-    <meta property="og:image" content="{{OG_IMAGE}}" />
+    <meta property="og:title" content="Our Story | Kyu Craft" />
+    <meta property="og:description" content="The story behind Kyu Craft — how a small team in Ha Noi started hand-crafting 3D pop-up greeting cards for retailers and gift shops worldwide." />
+    <meta property="og:url" content="https://www.kyucraft.com/our-story.html" />
+    <meta property="og:image" content="https://www.kyucraft.com/images/story-team-beach.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{{OG_TITLE}}" />
-    <meta name="twitter:description" content="{{META_DESCRIPTION}}" />
-    <meta name="twitter:image" content="{{OG_IMAGE}}" />
-    {{JSONLD}}
-    <link rel="icon" type="image/png" href="../images/favicon.png" />
-    <link rel="stylesheet" href="../css/main.css" />
-    <link rel="stylesheet" href="../css/product-detail.css" />
+    <meta name="twitter:title" content="Our Story | Kyu Craft" />
+    <meta name="twitter:description" content="The story behind Kyu Craft — how a small team in Ha Noi started hand-crafting 3D pop-up greeting cards for retailers and gift shops worldwide." />
+    <meta name="twitter:image" content="https://www.kyucraft.com/images/story-team-beach.jpg" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "AboutPage", "name": "Our Story", "description": "The story behind Kyu Craft.", "url": "https://www.kyucraft.com/our-story.html"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.kyucraft.com/"}, {"@type": "ListItem", "position": 2, "name": "Our Story"}]}</script>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/content-page.css" />
   </head>
   <body>
     <div class="topbar">
@@ -60,20 +61,20 @@
 
     <header class="site-header">
       <div class="site-header__inner">
-        <a href="../index.html" class="logo"
-          ><img src="../images/logo-kht.png" alt="Kyu Craft | Popup Card"
+        <a href="index.html" class="logo"
+          ><img src="images/logo-kht.png" alt="Kyu Craft | Popup Card"
         /></a>
         <button class="nav-toggle" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
         <nav class="main-nav">
-          <a href="../index.html">HOME</a>
-          <a href="../shop-all.html">SHOP ALL</a>
-          <a href="../custom-design.html">CUSTOM DESIGN</a>
-          <!-- <a href="../our-story.html">About Us</a> -->
-          <a href="../contact-us.html">CONTACT US</a>
-          <a href="../wholesale-pop-up-cards.html">WHOLESALE</a>
-          <a href="../free-template.html">FREE TEMPLATE</a>
+          <a href="index.html">HOME</a>
+          <a href="shop-all.html">SHOP ALL</a>
+          <a href="custom-design.html">CUSTOM DESIGN</a>
+          <a href="our-story.html" aria-current="page">ABOUT US</a>
+          <a href="contact-us.html">CONTACT US</a>
+          <a href="wholesale-pop-up-cards.html">WHOLESALE</a>
+          <a href="free-template.html">FREE TEMPLATE</a>
         </nav>
         <button
           type="button"
@@ -93,7 +94,7 @@
           </svg>
         </button>
         <a
-          href="../wishlist.html"
+          href="wishlist.html"
           class="wishlist-link"
           aria-label="Wishlist"
           ><svg
@@ -107,7 +108,7 @@
             /></svg
           ><span class="wishlist-link__badge" hidden>0</span></a
         >
-        <a href="../cart.html" class="cart-link" aria-label="Cart"
+        <a href="cart.html" class="cart-link" aria-label="Cart"
           ><svg
             viewBox="0 0 24 24"
             fill="none"
@@ -122,212 +123,119 @@
       </div>
     </header>
 
-    <nav class="breadcrumb">
-      <a href="../index.html">Home</a>
-      <span class="breadcrumb__sep">/</span>
-      <a href="../shop-all.html">Shop All</a>
-      <span class="breadcrumb__sep">/</span>
-      <span>{{BREADCRUMB_NAME}}</span>
-    </nav>
+    <main>
+      <div class="page-hero">
+        <div
+          class="page-hero__video"
+          role="img"
+          aria-label="Kyu Craft | Popup Card team introduction"
+        ></div>
+      </div>
 
-    <div class="product-detail" id="main-content">
-      <div class="product-gallery">
-        <div class="product-gallery__thumbs">
-          {{GALLERY_THUMBS}}
+      <section class="split-row">
+        <div class="split-row__text">
+          <h2>FASTER &ndash; BETTER &ndash; CHEAPER</h2>
+          <div class="divider"></div>
         </div>
-        <div class="product-gallery__main">
-          {{GALLERY_BADGE_HTML}}
+        <div class="split-row__image">
           <img
-            src="{{GALLERY_MAIN_SRC}}"
-            alt="{{GALLERY_MAIN_ALT}}"
-            id="productMainImg"
+            src="images/story-team-beach.jpg"
+            alt="Kyu Craft | Popup Card team"
+            loading="lazy"
           />
         </div>
-      </div>
+      </section>
 
-      <div class="product-info">
-        <p class="product-info__vendor">Kyu Craft | Popup Card</p>
-        <h1 class="product-info__title">{{PRODUCT_TITLE}}</h1>
-
-        <ul class="product-specs">
-          <li><span>Size</span>127 x 178 mm (5 x 7 inch), closed</li>
-          <li><span>Code</span>{{SKU}}</li>
-          <li><span>Colour</span>As shown, or matched to your artwork</li>
-          <li><span>Capacity</span>40,000 pcs per month</li>
-          <li><span>MOQ</span>50 pcs per design, designs can be mixed</li>
-          <li>
-            <span>Packing</span>Envelope and protective sleeve per card &middot;
-            50 pcs/box, 500 pcs/carton
-          </li>
-          <li><span>Port</span>Ho Chi Minh</li>
-          <li>
-            <span>Custom</span>Own artwork, logo and private label on request
-          </li>
-          <li>
-            <span>Categories</span>{{TAGS_TEXT}}
-          </li>
-        </ul>
-
-        <div class="product-info__actions">
-          <a href="#" class="product-info__add-to-cart">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path
-                d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"
-              />
-              <line x1="12" y1="9" x2="12" y2="13" />
-              <line x1="10" y1="11" x2="14" y2="11" />
-            </svg>
-            <span class="product-info__add-to-cart-label">Add to cart</span>
-          </a>
-          <button
-            type="button"
-            class="btn-wish product-info__wish"
-            aria-label="Add to wishlist"
-            title="Add to wishlist"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-            >
-              <path
-                d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1-1.1a5.5 5.5 0 000-7.7z"
-              />
-            </svg>
-          </button>
+      <section class="photo-statement">
+        <img src="images/story-our-story-bg.jpg" alt="" loading="lazy" />
+        <div class="photo-statement__inner">
+          <h2>Our Story</h2>
+          <p>
+            Not sure how to spend your time in Kyu Craft | Popup Card? We have
+            provided and manufactured 3D pop-up cards for our customers with the
+            hope to spread Vietnamese people&rsquo;s beauty, ingenuity, warmth,
+            and generosity to recipients all over the world. Would you like to
+            join our journey?
+          </p>
+          <p>
+            Kyu Craft | Popup Card&rsquo;s story. In the context of complete
+            turmoil and full of physical and mental difficulties after covid,
+            our Kyu Craft | Popup Card team was born with the desire of bringing
+            spiritual food through 3D hand-made cards to every corner in the
+            world, because more than ever we understand the value of sharing the
+            great love sent through each card when we can't see each other.
+          </p>
+          <p>
+            Working and dedicating with the motto as well as the core value
+            "Faster &ndash; Better &ndash; Cheaper", we not only would like to
+            reach the position of the top company in the industry, but more than
+            ever, we strive to bring quality products and the most perfect
+            service to touch every customer's heart.
+          </p>
+          <p>
+            Kyu Craft | Popup Card might not be anything without you, dear
+            customers, but we will be really strong, thrive and overcome all
+            challenges when we have your companion, support and trust.
+          </p>
+          <p>
+            Kyu Craft | Popup Card&rsquo;s product. Our range of premium quality
+            pop up cards are all lovingly designed in Vietnam and then hand
+            assembled, creating a keepsake that will leave a lasting impression
+            on the lucky recipient.
+          </p>
         </div>
+      </section>
 
-        <p class="product-contact-heading">Contact</p>
-        <div class="product-contact">
-          <a href="tel:+84708976136">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-            >
-              <path
-                d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.8 21 3 13.2 3 3.9c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"
-              />
-            </svg>
-            (+84) 708 976 136
-          </a>
-          <a href="mailto:admin@kyucraft.com">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-            >
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-            admin@kyucraft.com
-          </a>
-          <a href="../contact-us.html" class="product-contact__cta"
-            >Send an enquiry</a
-          >
+      <section class="split-row">
+        <div class="split-row__text">
+          <h2>OUR VISION</h2>
+          <div class="divider"></div>
+          <p>Thriving Vietnam 3D Handmade cards all over the globe</p>
+          <p>
+            Affirming the quality of Vietnamese products and integrating with
+            worldwide friends
+          </p>
+          <p>
+            Building up Popup Greeting Card Company to become the leading
+            company in Vietnam in designing and manufacturing 3D Cards for
+            export
+          </p>
         </div>
-      </div>
-    </div>
-
-    <section class="product-information">
-      <h2 class="product-information__title">Information</h2>
-      {{PRODUCT_INFO_HTML}}
-      <button class="product-info__share" type="button">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-        >
-          <circle cx="18" cy="5" r="3" />
-          <circle cx="6" cy="12" r="3" />
-          <circle cx="18" cy="19" r="3" />
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-        </svg>
-        Share
-      </button>
-    </section>
-    <section class="related-products">
-      <div class="products__header">
-        <h2 class="products__heading">Other products</h2>
-        <p class="products__sub">
-          Mix any of these into the same order &mdash; the 50 pcs minimum
-          applies per design, not per shipment.
-        </p>
-      </div>
-      <div class="products__carousel" id="productsCarousel">
-        <button
-          class="products__arrow products__arrow--prev"
-          id="prevBtn"
-          aria-label="Previous"
-        >
-          <svg width="9" height="16" viewBox="0 0 9 16">
-            <path
-              d="M8 1L1 8l7 7"
-              stroke="currentColor"
-              stroke-width="1.5"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-        <div class="products__track-wrap">
-          <div class="products__viewport">
-            <div class="products__track" id="productsTrack">
-              {{RELATED_PRODUCTS_CARDS}}
-            </div>
-          </div>
+        <div class="split-row__image">
+          <img
+            src="images/story-vision.jpg"
+            alt="Crafting pop up cards"
+            loading="lazy"
+          />
         </div>
-        <button
-          class="products__arrow products__arrow--next"
-          id="nextBtn"
-          aria-label="Next"
-        >
-          <svg width="9" height="16" viewBox="0 0 9 16">
-            <path
-              d="M1 1l7 7-7 7"
-              stroke="currentColor"
-              stroke-width="1.5"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        class="products__dots"
-        id="productsDots"
-        role="tablist"
-        aria-label="Product slide position"
-      ></div>
-    </section>
+      </section>
 
-    <!-- Sticky mobile purchase bar -->
-    <div class="sticky-buy-bar" id="stickyBuyBar">
-      <div class="sticky-buy-bar__info">
-        <p class="sticky-buy-bar__name">{{STICKY_BAR_NAME}}</p>
-      </div>
-      <a href="#" class="sticky-buy-bar__cta">Add to cart</a>
-    </div>
+      <section class="split-row">
+        <div class="split-row__image">
+          <img
+            src="images/story-mission.jpg"
+            alt="Laser cutting pop up card pieces"
+            loading="lazy"
+          />
+        </div>
+        <div class="split-row__text">
+          <h2>OUR MISSION</h2>
+          <div class="divider"></div>
+          <p>
+            To become an interconnected, happy and prosperous team, we keep on
+            trying
+          </p>
+          <p>
+            To help strengthen and tie up the connection between friends and
+            family, we create unique and meaningful 3D card designs
+          </p>
+          <p>
+            To accomplish our vision, we <strong>Keep Hard-working</strong> to
+            reach the <strong>Top</strong>
+          </p>
+        </div>
+      </section>
+    </main>
 
     <footer class="site-footer">
       <div class="footer-cta">
@@ -352,28 +260,28 @@
         <div class="footer-brand">
           <img
             class="footer-brand__logo"
-            src="../images/logo-kht.png"
+            src="images/logo-kht.png"
             alt="Kyu Craft | Popup Card"
           />
           <p class="footer-brand__name">Kyu Craft CO., LTD</p>
           <div class="footer-social">
             <a href="#" aria-label="Facebook"
-              ><img src="../images/icon-facebook.png" alt=""
+              ><img src="images/icon-facebook.png" alt=""
             /></a>
             <a href="#" aria-label="YouTube"
-              ><img src="../images/icon-youtube.png" alt=""
+              ><img src="images/icon-youtube.png" alt=""
             /></a>
             <a href="#" aria-label="Instagram"
-              ><img src="../images/icon-instagram.png" alt=""
+              ><img src="images/icon-instagram.png" alt=""
             /></a>
             <a href="#" aria-label="TikTok"
-              ><img src="../images/icon-tiktok.png" alt=""
+              ><img src="images/icon-tiktok.png" alt=""
             /></a>
             <a href="#" aria-label="Pinterest"
-              ><img src="../images/icon-pinterest.png" alt=""
+              ><img src="images/icon-pinterest.png" alt=""
             /></a>
             <a href="#" aria-label="LinkedIn"
-              ><img src="../images/icon-linkedin.png" alt=""
+              ><img src="images/icon-linkedin.png" alt=""
             /></a>
           </div>
         </div>
@@ -381,11 +289,11 @@
         <div>
           <p class="footer-heading">Work with Kyu Craft | Popup Card</p>
           <div class="footer-col">
-            <a href="../shop-all.html">Wholesale</a>
-            <a href="../custom-design.html">Custom Design</a>
-            <a href="../free-template.html">Free Template</a>
-            <a href="../our-craft.html">Our Craft</a>
-            <!-- <a href="../our-story.html">About Us</a> -->
+            <a href="shop-all.html">Wholesale</a>
+            <a href="custom-design.html">Custom Design</a>
+            <a href="free-template.html">Free Template</a>
+            <a href="our-craft.html">Our Craft</a>
+            <!-- <a href="our-story.html">About Us</a> -->
           </div>
         </div>
 
@@ -463,13 +371,12 @@
       ></a>
     </aside>
 
-    <script src="../js/main.js"></script>
-    <script src="../js/product-detail.js"></script>
-    <script src="../js/cart.js"></script>
-    <script src="../js/wishlist.js"></script>
-    <script src="../js/search-data.js"></script>
-    <script src="../js/search.js"></script>
-    <script src="../js/chat.js"></script>
-    <script src="../js/lead-form.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/search-data.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/lead-form.js"></script>
   </body>
 </html>
