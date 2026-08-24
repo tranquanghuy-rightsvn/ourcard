@@ -6,7 +6,7 @@
    [data-lead-form] footer newsletter boxes wired up below. */
 (function () {
   // Fill this in after deploying the GAS web app (Deploy > New deployment > Web app).
-  var ENDPOINT = 'PASTE_GAS_EXEC_URL_HERE';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbze46G0S-cX3WGMfxD73hiF0nXYCNRe7THG1inp_5Nc25ayh-jyTtEGKr80LR9bRJFQ/exec';
 
   function isConfigured() {
     return ENDPOINT && ENDPOINT.indexOf('PASTE_') !== 0;
