@@ -127,10 +127,29 @@ def render_pcard(product, prefix):
               </div>"""
 
 
+PLAY_SVG = """<svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>"""
+
+
 def render_gallery_thumbs(product):
+    videos = product.get("videos") or []
+    cover = product["gallery"][0]
     thumbs = []
-    for i, img in enumerate(product["gallery"]):
+    # Video thumbs first (matches the original hand-built demo page), poster = cover image.
+    for i, vid in enumerate(videos):
         active = " product-gallery__thumb--active" if i == 0 else ""
+        thumbs.append(
+            f'<button class="product-gallery__thumb{active} product-gallery__thumb--video" '
+            f'data-video="../videos/{vid}">\n'
+            f'            <img src="../images/{cover}" alt="Watch the video" />\n'
+            f'            <span class="product-gallery__play" aria-hidden="true">\n'
+            f"              {PLAY_SVG}\n"
+            f"            </span>\n"
+            f"          </button>"
+        )
+    for i, img in enumerate(product["gallery"]):
+        active = " product-gallery__thumb--active" if (not videos and i == 0) else ""
         lazy = ' loading="lazy"' if i > 0 else ""
         thumbs.append(
             f'<button class="product-gallery__thumb{active}">\n'
@@ -139,6 +158,22 @@ def render_gallery_thumbs(product):
             f"          </button>"
         )
     return "\n          ".join(thumbs)
+
+
+def render_gallery_main_extras(product):
+    """Returns (img_hidden_attr, video_html). A video (if any) is the default
+    active view, matching render_gallery_thumbs' first-thumb-active choice."""
+    videos = product.get("videos") or []
+    if not videos:
+        return "", ""
+    cover = product["gallery"][0]
+    video_html = (
+        '<video id="productMainVideo" controls playsinline preload="metadata" '
+        f'poster="../images/{cover}">\n'
+        f'            <source src="../videos/{videos[0]}" type="video/mp4" />\n'
+        "          </video>"
+    )
+    return "hidden", video_html
 
 
 def product_jsonld(product, canonical_url, description):
@@ -195,10 +230,13 @@ def render_product_page(product, all_products, template):
     page = page.replace("{{OG_IMAGE}}", f'{BASE_URL}/images/{product["gallery"][0]}')
     page = page.replace("{{JSONLD}}", product_jsonld(product, canonical_url, description))
     page = page.replace("{{BREADCRUMB_NAME}}", f'{html.escape(product["sku"])} &mdash; {html.escape(product["name"])}')
+    img_hidden, video_html = render_gallery_main_extras(product)
     page = page.replace("{{GALLERY_THUMBS}}", render_gallery_thumbs(product))
     page = page.replace("{{GALLERY_BADGE_HTML}}", badge_html)
     page = page.replace("{{GALLERY_MAIN_SRC}}", f"../images/{product['gallery'][0]}")
     page = page.replace("{{GALLERY_MAIN_ALT}}", title_line(product))
+    page = page.replace("{{GALLERY_MAIN_IMG_HIDDEN}}", img_hidden)
+    page = page.replace("{{GALLERY_MAIN_VIDEO_HTML}}", video_html)
     page = page.replace("{{PRODUCT_TITLE}}", f'{html.escape(product["sku"])} &mdash; {html.escape(product["name"])}')
     page = page.replace("{{SKU}}", html.escape(product["sku"]))
     page = page.replace("{{TAGS_TEXT}}", html.escape(product.get("tags_text", "")))
@@ -274,6 +312,23 @@ def build_free_template(templates_data, page_template):
     (OUT / "free-template.html").write_text(page)
 
 
+def render_custom_design_card(item):
+    title = html.escape(item["title"])
+    return f"""<div class="product-card">
+          <div class="product-tile__media">
+            <img src="images/{item['cover_image']}" alt="{title}" loading="lazy" />
+          </div>
+          <p>{title}</p>
+        </div>"""
+
+
+def build_custom_design(items, page_template):
+    published = [i for i in items if i.get("status") == "published"]
+    cards_html = "\n        ".join(render_custom_design_card(i) for i in published)
+    page = page_template.replace("{{CUSTOM_DESIGN_CARDS}}", cards_html)
+    (OUT / "custom-design.html").write_text(page)
+
+
 def patch_band(text, marker, products, prefix, wrapper_class, with_data_categories, limit=8):
     start = f"<!-- {marker}:START -->"
     end = f"<!-- {marker}:END -->"
@@ -336,21 +391,24 @@ def main():
     products = load_json("products.json", default=[])
     categories = load_json("categories.json", default=[])
     free_templates = load_json("free-templates.json", default=[])
+    custom_designs = load_json("custom-designs.json", default=[])
 
     product_template = (TEMPLATES / "product.html").read_text()
     category_template = (TEMPLATES / "category.html").read_text()
     free_template_template = (TEMPLATES / "free-template.html").read_text()
+    custom_design_template = (TEMPLATES / "custom-design.html").read_text()
 
     valid_files, removed = build_product_pages(products, product_template)
     build_shop_all(products, categories, category_template)
     build_free_template(free_templates, free_template_template)
+    build_custom_design(custom_designs, custom_design_template)
     patch_homepage(products)
     build_search_data(products)
     build_sitemap(products, free_templates)
 
     print(
         f"Built {len(valid_files)} product pages, shop-all.html, free-template.html, "
-        f"search-data.js, sitemap.xml, patched index.html"
+        f"custom-design.html, search-data.js, sitemap.xml, patched index.html"
     )
     if removed:
         print(f"Removed {len(removed)} orphaned product page(s): {', '.join(removed)}")

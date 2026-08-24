@@ -1,9 +1,10 @@
 # khtcard (Kyu Craft) — static site + CMS + CI/CD
 
 Kyu Craft is a wholesale pop-up card catalog site. The product catalog, categories, free
-downloadable templates, and the "Liên hệ" inbox (contact form + footer newsletter box) are
-managed through a small free CMS (Google Apps Script + Sheets). Everything else (homepage
-hero, About/Craft/Custom Design/Wholesale marketing pages) is hand-authored static HTML.
+downloadable templates, the Custom Design gallery, and the "Liên hệ" inbox (contact form +
+footer newsletter box) are managed through a small free CMS (Google Apps Script + Sheets).
+Everything else (homepage hero, About/Craft/Wholesale marketing pages) is hand-authored
+static HTML.
 
 Canonical domain: **https://www.kyucraft.com** (baked into `scripts/build.py`'s `BASE_URL`
 and every hand-authored page's canonical/OG tags — update both places together if this ever
@@ -20,18 +21,20 @@ the homepage itself** (which has to be `index.html`/`/` per static-hosting conve
 
 ```
 CMS (Google Apps Script, gas/)
-   │  edit products/categories/free templates, read contact submissions
+   │  edit products/categories/free templates/custom designs, read contact submissions
    │  commits straight to GitHub via Contents API
    ▼
-data/products.json, data/categories.json, data/free-templates.json   ← source of truth
-html/images/*, html/downloads/*                                     ← assets, written straight to the site
+data/products.json, data/categories.json, data/free-templates.json,
+data/custom-designs.json                                            ← source of truth
+html/images/*, html/videos/*, html/downloads/*                      ← assets, written straight to the site
    │  push to the relevant *.json (the commit-closing file per entity)
    ▼
 GitHub Actions (.github/workflows/build.yml)
    │  runs scripts/build.py
    ▼
 html/product/<slug>.html, html/shop-all.html, html/free-template.html,
-html/js/search-data.js, sitemap.xml, html/index.html (2 patched bands)
+html/custom-design.html, html/js/search-data.js, sitemap.xml,
+html/index.html (2 patched bands)
    │  commit "CI: build html from data", push
    ▼
 Cloudflare Workers Static Assets (wrangler deploy)
@@ -43,17 +46,18 @@ follows (architecture, gotchas, hosting quotas).
 
 ## Repo layout
 
-- `data/products.json`, `data/categories.json`, `data/free-templates.json` — CMS-owned.
-  **Never hand-edit** — the CMS overwrites these on every save, and `scripts/build.py` reads
-  them as input. All three start empty/seeded-categories-only on purpose (see "Scope
-  decisions").
-- `templates/product.html`, `templates/category.html`, `templates/free-template.html` — the
-  design source for generated pages (`{{PLACEHOLDER}}` string-replace, no templating engine).
-  Edit these by hand to change the product/shop-all/free-template page design;
-  `scripts/build.py` reads them, doesn't own them.
+- `data/products.json`, `data/categories.json`, `data/free-templates.json`,
+  `data/custom-designs.json` — CMS-owned. **Never hand-edit** — the CMS overwrites these on
+  every save, and `scripts/build.py` reads them as input. All start empty/seeded-categories-only
+  on purpose (see "Scope decisions").
+- `templates/product.html`, `templates/category.html`, `templates/free-template.html`,
+  `templates/custom-design.html` — the design source for generated pages (`{{PLACEHOLDER}}`
+  string-replace, no templating engine). Edit these by hand to change the
+  product/shop-all/free-template/custom-design page design; `scripts/build.py` reads them,
+  doesn't own them.
 - `scripts/build.py` — builds `html/product/*.html`, `html/shop-all.html`,
-  `html/free-template.html`, `html/js/search-data.js` and `sitemap.xml` from data + templates,
-  and patches the two dynamic bands on `html/index.html`
+  `html/free-template.html`, `html/custom-design.html`, `html/js/search-data.js` and
+  `sitemap.xml` from data + templates, and patches the two dynamic bands on `html/index.html`
   (`<!-- BESTSELLERS:START/END -->`, `<!-- NEW_PRODUCTS:START/END -->`) in place. Safe to run
   repeatedly (`python3 scripts/build.py`) — idempotent, and deletes orphaned product pages
   for slugs no longer in `data/products.json`.
@@ -68,14 +72,15 @@ follows (architecture, gotchas, hosting quotas).
     and it can only do that blindly-and-safely because `product/` *only* ever contains
     CMS-generated files. If products lived flat at the root alongside hand-authored pages,
     the cleanup step could delete hand-written pages by mistake.
-  - `html/shop-all.html`, `html/free-template.html` — build output (flat, don't hand-edit).
+  - `html/shop-all.html`, `html/free-template.html`, `html/custom-design.html` — build output
+    (flat, don't hand-edit).
   - `html/js/search-data.js` — build output (flat data file, not templated) — the header
     search overlay's product index, regenerated from `data/products.json` every build so it
     can never drift out of sync with the real catalog.
   - Everything else (`index.html` outside the two patched bands, `our-story.html`,
-    `our-craft.html`, `custom-design.html`, `wholesale-pop-up-cards.html`, `contact-us.html`,
-    `cart.html`, `wishlist.html`, `404.html`) is hand-authored, flat `<slug>.html` — these are
-    bespoke one-off marketing pages, not repeating list items, so they're intentionally
+    `our-craft.html`, `wholesale-pop-up-cards.html`, `contact-us.html`, `cart.html`,
+    `wishlist.html`, `404.html`, `admin.html`) is hand-authored, flat `<slug>.html` — these are
+    bespoke one-off marketing/utility pages, not repeating list items, so they're intentionally
     **not** CMS-managed (see "Scope decisions" below).
 - `gas/` — the CMS backend (Google Apps Script). **Gitignored** — deployed via `clasp`, not
   git. After changing any file here, run `clasp push` then in the Apps Script editor:
@@ -106,10 +111,20 @@ forget to update `canonical`/`og:url`/the breadcrumb's `name`) rather than skipp
 
 ## Scope decisions (read before extending)
 
-- **Products, categories, free templates, and contacts are CMS-managed.** The marketing pages
-  listed above change rarely and have bespoke layouts — forcing them through a generic
-  rich-text CMS field would flatten the design for content that's edited by hand a few times
-  a year at most.
+- **Products, categories, free templates, custom design gallery, and contacts are
+  CMS-managed.** The marketing pages listed above change rarely and have bespoke layouts —
+  forcing them through a generic rich-text CMS field would flatten the design for content
+  that's edited by hand a few times a year at most.
+- **Products optionally support video** (`videos: []`, alongside `gallery: []`) — no canvas
+  resize (can't resize video with a `<canvas>`), uploaded as-is to `html/videos/`. If a
+  product has at least one video, its thumb is shown first and active by default in the
+  gallery (matches the original hand-built demo page's behavior); `html/js/product-detail.js`
+  swaps the `<video>`'s `<source>` (and calls `.load()`) when a different video thumb is
+  clicked, so more than one video per product actually works, not just the first.
+- **Custom Design** (`data/custom-designs.json`): each entry is `{slug, title, cover_image,
+  status}` — its own CMS tab, deliberately unrelated to Products or Free Template (own data
+  file, own template, own GAS functions) even though the card markup looks similar. Replaces
+  what used to be a copy-pasted, broken Shop All layout on `custom-design.html`.
 - **No prices are shown anywhere** (wholesale catalog — every product has a "Contact" CTA
   instead) — this matches the original design, so `data/products.json` doesn't have a price
   field.
@@ -175,20 +190,16 @@ one), update the redirect URL in **both** `html/admin.html` (two occurrences: th
 
 ## Day-to-day
 
-- Editing a product/category/free-template in the CMS commits the relevant `data/*.json`
-  straight to GitHub → triggers the Actions workflow → rebuilds `html/` → deploys to
-  Cloudflare. Allow **about a minute** for the live site to catch up after saving.
+- Editing a product/category/free-template/custom-design in the CMS commits the relevant
+  `data/*.json` straight to GitHub → triggers the Actions workflow (watches all four files,
+  see `.github/workflows/build.yml`) → rebuilds `html/` → deploys to Cloudflare. Allow **about
+  a minute** for the live site to catch up after saving.
 - To change the homepage/marketing page copy: edit the relevant `html/<slug>.html` file by
   hand and commit — these aren't touched by `scripts/build.py` except for the two anchored
   bestseller/new-product bands on `html/index.html`.
-- To change the product/shop-all/free-template page design: edit `templates/product.html` /
-  `templates/category.html` / `templates/free-template.html`, then run
-  `python3 scripts/build.py` locally to verify, commit.
+- To change the product/shop-all/free-template/custom-design page design: edit
+  `templates/product.html` / `templates/category.html` / `templates/free-template.html` /
+  `templates/custom-design.html`, then run `python3 scripts/build.py` locally to verify,
+  commit.
 - New hand-authored page: keep it flat (`<slug>.html` at the root, no subfolder, no
   `index.html`) and give it the full SEO head block (see "SEO" above).
-
-## Known pre-existing issue (not fixed, out of scope for this pass)
-
-`custom-design.html`'s main content is literally a copy of the Shop All page layout (grid +
-category sidebar) rather than a real "send us your artwork" design — this predates the CMS
-work and wasn't something this pass touched. Worth a real content/design pass separately.

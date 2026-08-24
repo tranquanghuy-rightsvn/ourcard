@@ -3,21 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shop All | Kyu Craft | Popup Card</title>
-    <meta name="description" content="Browse Kyu Craft's catalog of handmade 3D pop-up greeting cards for every occasion — laser-cut, hand-assembled, wholesale-ready from 50 pcs per design." />
-    <link rel="canonical" href="https://www.kyucraft.com/shop-all.html" />
+    <title>Custom Design | Kyu Craft | Popup Card</title>
+    <meta name="description" content="Send Kyu Craft your artwork or idea and we'll turn it into a working 3D pop-up card — custom design and private-label production for wholesale orders." />
+    <link rel="canonical" href="https://www.kyucraft.com/custom-design.html" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kyu Craft" />
-    <meta property="og:title" content="Shop All Pop-Up Cards | Kyu Craft" />
-    <meta property="og:description" content="Browse Kyu Craft's catalog of handmade 3D pop-up greeting cards for every occasion — laser-cut, hand-assembled, wholesale-ready from 50 pcs per design." />
-    <meta property="og:url" content="https://www.kyucraft.com/shop-all.html" />
-    <meta property="og:image" content="https://www.kyucraft.com/images/card-banner-2.webp" />
+    <meta property="og:title" content="Custom Design | Kyu Craft" />
+    <meta property="og:description" content="Send Kyu Craft your artwork or idea and we'll turn it into a working 3D pop-up card — custom design and private-label production for wholesale orders." />
+    <meta property="og:url" content="https://www.kyucraft.com/custom-design.html" />
+    <meta property="og:image" content="https://www.kyucraft.com/images/hero-side-custom.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Shop All Pop-Up Cards | Kyu Craft" />
-    <meta name="twitter:description" content="Browse Kyu Craft's catalog of handmade 3D pop-up greeting cards for every occasion — laser-cut, hand-assembled, wholesale-ready from 50 pcs per design." />
-    <meta name="twitter:image" content="https://www.kyucraft.com/images/card-banner-2.webp" />
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Shop All", "description": "Browse Kyu Craft's full pop-up card catalog.", "url": "https://www.kyucraft.com/shop-all.html"}</script>
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.kyucraft.com/"}, {"@type": "ListItem", "position": 2, "name": "Shop All"}]}</script>
+    <meta name="twitter:title" content="Custom Design | Kyu Craft" />
+    <meta name="twitter:description" content="Send Kyu Craft your artwork or idea and we'll turn it into a working 3D pop-up card — custom design and private-label production for wholesale orders." />
+    <meta name="twitter:image" content="https://www.kyucraft.com/images/hero-side-custom.jpg" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Custom Design", "description": "Custom pop-up card design and private-label production.", "url": "https://www.kyucraft.com/custom-design.html"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.kyucraft.com/"}, {"@type": "ListItem", "position": 2, "name": "Custom Design"}]}</script>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/shop-all.css" />
@@ -69,8 +69,10 @@
         </button>
         <nav class="main-nav">
           <a href="index.html">HOME</a>
-          <a href="shop-all.html" aria-current="page">SHOP ALL</a>
-          <a href="custom-design.html">CUSTOM DESIGN</a>
+          <a href="shop-all.html">SHOP ALL</a>
+          <a href="custom-design.html" aria-current="page"
+            >CUSTOM DESIGN</a
+          >
           <!-- <a href="our-story.html">About Us</a> -->
           <a href="contact-us.html">CONTACT US</a>
           <a href="wholesale-pop-up-cards.html">WHOLESALE</a>
@@ -124,30 +126,10 @@
     </header>
 
     <main class="shop">
-      <h1 class="shop__title">Product category</h1>
-      <div class="shop__layout">
-        <aside class="shop__sidebar">
-          <h3>Category <span>&minus;</span></h3>
-          <nav class="shop__categories">
-            <label class="shop__category">
-              <input type="checkbox" data-category="best-sellers" />
-              <span>Best Seller</span>
-            </label>
-            <label class="shop__category">
-              <input type="checkbox" data-category="new-product" />
-              <span>New Product</span>
-            </label>
-            <label class="shop__category shop__category--all">
-              <input type="checkbox" checked data-category="all" />
-              <span>All</span>
-            </label>
-            {{CATEGORY_CHECKBOXES}}
-          </nav>
-        </aside>
-
-        <div class="shop__grid">
-          {{PRODUCT_CARDS}}
-        </div>
+      <h1 class="shop__title">Custom Design Gallery</h1>
+      <p class="custom-design-gallery__lead">Real pop-up cards we've built from customer artwork and ideas &mdash; send us yours and we'll do the same.</p>
+      <div class="shop__grid">
+        {{CUSTOM_DESIGN_CARDS}}
       </div>
     </main>
 
@@ -160,6 +142,7 @@
             <input
               type="email"
               id="footer-email"
+              name="email"
               placeholder="Type your email"
               required
             />
@@ -204,7 +187,7 @@
           <div class="footer-col">
             <a href="shop-all.html">Wholesale</a>
             <a href="custom-design.html">Custom Design</a>
-            <a href="free-template.html">Free Template</a>
+            <a href="free-template.html">FREE TEMPLATE</a>
             <a href="our-craft.html">Our Craft</a>
             <!-- <a href="our-story.html">About Us</a> -->
           </div>

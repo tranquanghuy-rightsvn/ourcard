@@ -13,10 +13,19 @@ document.querySelectorAll('.product-gallery__thumb').forEach(function (thumb) {
     var main = document.getElementById('productMainImg');
     var video = document.getElementById('productMainVideo');
 
-    // The first thumb is the clip; the rest swap the still image back in.
+    // A product can have more than one video thumb - swap the <source> and
+    // reload so clicking a second clip doesn't just replay the first one.
     if (this.hasAttribute('data-video')) {
       if (main) main.hidden = true;
-      if (video) video.hidden = false;
+      if (video) {
+        var src = this.getAttribute('data-video');
+        var sourceEl = video.querySelector('source');
+        if (sourceEl && sourceEl.getAttribute('src') !== src) {
+          sourceEl.setAttribute('src', src);
+          video.load();
+        }
+        video.hidden = false;
+      }
       return;
     }
     if (video) {

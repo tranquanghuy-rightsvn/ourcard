@@ -8,6 +8,8 @@ on:
     paths:
       - "data/products.json"
       - "data/categories.json"
+      - "data/free-templates.json"
+      - "data/custom-designs.json"
   workflow_dispatch: {}
 
 permissions:
