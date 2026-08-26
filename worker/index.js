@@ -95,7 +95,7 @@ async function handleChat(request, env, url) {
   // Can MOT trong hai duong goi Gemini: relay qua GAS (mac dinh, xem callViaRelay_) hoac
   // goi thang bang key cua chinh Worker. Thieu ca hai -> bao ro de client rot ve khoi lien
   // he, KHONG de trang trang.
-  if (!env.GEMINI_RELAY_URL && !env.GEMINI_API_KEY) {
+  if (provider_(env) !== "workers-ai" && !env.GEMINI_RELAY_URL && !env.GEMINI_API_KEY) {
     return json_({ ok: false, error: "not_configured" }, 503);
   }
 
@@ -177,8 +177,47 @@ function normalizeMessages_(messages) {
  * Bo GEMINI_RELAY_URL di la Worker tu dong quay lai goi thang Google - dung khi ban bat
  * billing cho Gemini, vi ban tra phi thi khong con bi chan dia ly nua.
  */
+/**
+ * Chon nha cung cap. Ba duong, doi bang bien CHAT_PROVIDER trong wrangler.toml:
+ *
+ *   "workers-ai"   (mac dinh) - Workers AI cua chinh Cloudflare. Chay NGAY trong Worker nay,
+ *                  khong hop nao them, khong bi chan dia ly, mien phi 10.000 Neuron/ngay.
+ *   "gemini-relay" - Gemini goi vong qua Apps Script. Ne duoc chan dia ly nhung DO THUC TE
+ *                  3-19 giay: rieng to hop "web app + UrlFetchApp" cua GAS moi cham, con
+ *                  UrlFetchApp chay trong editor chi 1.1-1.8s va doPost khong goi
+ *                  UrlFetchApp chi ~2s. Giu lai lam duong lui.
+ *   "gemini"       - goi thang Google. Chi dung duoc o vung Google cho phep.
+ */
+function provider_(env) {
+  const p = String(env.CHAT_PROVIDER || "").trim();
+  if (p) return p;
+  return env.GEMINI_RELAY_URL ? "gemini-relay" : "gemini";
+}
+
 function useRelay_(env) {
-  return !!env.GEMINI_RELAY_URL;
+  return provider_(env) === "gemini-relay" && !!env.GEMINI_RELAY_URL;
+}
+
+const DEFAULT_WORKERS_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast";
+
+/** Doi tu dinh dang `contents` cua Gemini sang `messages` kieu OpenAI ma Workers AI dung. */
+function toMessages_(systemText, contents) {
+  const messages = [{ role: "system", content: systemText }];
+  contents.forEach((c) => {
+    const text = (c.parts || []).map((x) => x.text || "").join("");
+    messages.push({ role: c.role === "model" ? "assistant" : "user", content: text });
+  });
+  return messages;
+}
+
+async function callWorkersAI_(payload, env) {
+  const model = env.WORKERS_AI_MODEL || DEFAULT_WORKERS_AI_MODEL;
+  const res = await env.AI.run(model, {
+    messages: toMessages_(payload.systemInstruction.parts[0].text, payload.contents),
+    max_tokens: MAX_OUTPUT_TOKENS,
+    temperature: 0.3,
+  });
+  return String((res && (res.response !== undefined ? res.response : res.result)) || "").trim();
 }
 
 /** fetch co han thoi gian - Gemini/GAS cham hoac treo thi widget phai rot ve khoi lien he
@@ -202,9 +241,13 @@ async function callGemini_(contents, env, meta) {
       maxOutputTokens: MAX_OUTPUT_TOKENS,
     },
   };
-  if (!useRelay_(env)) return callGeminiDirect_(payload, env);
-  payload.meta = meta || {};
-  return callViaRelay_(payload, env);
+  const which = provider_(env);
+  if (which === "workers-ai") return callWorkersAI_(payload, env);
+  if (which === "gemini-relay" && env.GEMINI_RELAY_URL) {
+    payload.meta = meta || {};
+    return callViaRelay_(payload, env);
+  }
+  return callGeminiDirect_(payload, env);
 }
 
 /** Nho GAS goi Gemini ho. GAS chi la ong dan: system prompt, rate limit theo IP, cat bot

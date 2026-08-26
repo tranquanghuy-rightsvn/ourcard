@@ -184,7 +184,44 @@ Gemini generateContent
    ▼  (any failure ⇒ chat.js shows the real contact channels instead)
 ```
 
-### Why the call detours through Apps Script
+### Provider: Workers AI (default), with Gemini kept as a fallback
+
+`CHAT_PROVIDER` in `wrangler.toml` picks one of three paths:
+
+| value | path | measured |
+| --- | --- | --- |
+| `workers-ai` *(default)* | Worker → Workers AI, same network, no extra hop | **0.9–3.0s, 5/5 ok** |
+| `gemini-relay` | Worker → Apps Script → Gemini | **3–19s, ~1 in 3 failing** |
+| `gemini` | Worker → Gemini directly | blocked outside supported regions |
+
+The Apps Script relay was built to dodge Gemini's geo block and it does, but it is not a
+viable transport for interactive chat. Every piece measures fine alone — five rapid calls to
+GAS with a bad token: 1.8–5.9s, all ok; five rapid calls to Gemini from a laptop: 1.0–1.2s,
+all ok; `UrlFetchApp`→Gemini timed *inside the editor*: 1.1–1.8s, all ok. Only the composed
+web-app path is slow, so the cost lives in Apps Script's web-app execution, which nothing in
+this repo can tune. Keep `gemini-relay` as an escape hatch, not as the default.
+
+**Model choice is a real trade-off.** `@cf/meta/llama-3.1-8b-instruct-fast` answers in ~1s
+and holds the guardrails, but it does not use the grounding: asked the MOQ, it deflected to
+the contact channels even though the numbers were in its prompt.
+`@cf/meta/llama-3.3-70b-instruct-fp8-fast` answers correctly (50 per design, 500 total; USD
+bank transfer / PayPal; worldwide shipping) in ~2.7–3.0s and still refuses to quote a price.
+The 70B model is the default for that reason.
+
+**Free-tier budget.** Workers AI includes 10,000 Neurons/day on the Workers Free plan, with
+**no paid overage on Free — it simply stops**, and the widget then shows the contact block.
+At ~2,500 prompt tokens and ~120 output tokens per turn:
+
+| model | neurons/turn | turns/day |
+| --- | --- | --- |
+| llama-3.3-70b-fp8-fast | ~91 | **~109** |
+| llama-3.1-8b-fast | ~14 | ~690 |
+
+The system prompt is **73% of the 70B cost**, so trimming `html/wholesale-pop-up-cards.html`
+(or the Q&A list) buys daily capacity directly. Multi-turn conversations also cost more: up
+to 12 previous messages ride along on every request.
+
+### Why the Gemini path detours through Apps Script
 
 Gemini is **geo-restricted**, and a Worker runs in the colo nearest the visitor.
 Vietnamese traffic lands in Hong Kong, which Google blocks — every direct call came back

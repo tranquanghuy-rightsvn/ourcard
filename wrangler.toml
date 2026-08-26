@@ -44,7 +44,14 @@ mode = "smart"
 
 # Model Gemini dung cho widget chat. Doi o day (rot roi `wrangler deploy`) neu muon dung
 # ban khac - khong phai sua code.
+# Workers AI: suy luan chay ngay tren mang Cloudflare, cung cho voi Worker nay.
+[ai]
+binding = "AI"
+
 [vars]
+# "workers-ai" | "gemini-relay" | "gemini" - xem provider_() trong worker/index.js.
+CHAT_PROVIDER = "workers-ai"
+WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 GEMINI_MODEL = "gemini-3.5-flash-lite"
 
 # Worker KHONG goi thang Gemini: Google chan theo vi tri va Worker chay o colo gan khach
