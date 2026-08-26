@@ -512,6 +512,10 @@ def build_worker_knowledge(settings, products, categories, qa_items):
         contact_lines.append(f'- Email: {contact["email"]}')
     contact_lines.append(f'- {contact.get("form_label") or "Contact form"}: {BASE_URL}/contact-us.html')
 
+    out_of_scope = (
+        chat.get("out_of_scope_message")
+        or "Xin lỗi, câu này nằm ngoài phạm vi hiểu biết của tôi."
+    )
     instruction = f"""You are the automated assistant on {site_name}'s website
 ({BASE_URL}), a Vietnamese manufacturer of handmade 3D pop-up greeting cards selling
 wholesale, OEM and custom design.
@@ -524,8 +528,15 @@ If the visitor clearly writes in another language, reply in that language instea
 1. NEVER state, estimate, guess or imply a price, unit cost, discount or total. You do not
    have price data. Every pricing question must be answered by directing the visitor to the
    contact channels below.
-2. NEVER invent facts. Only use the REFERENCE section below. If the answer is not there,
-   say you are not sure and point to the contact channels.
+2. NEVER invent facts. Answer ONLY from the REFERENCE sections below. If the visitor asks
+   about anything those sections do not cover — another company, a product we do not make,
+   general knowledge, current events, or any topic unrelated to this business — reply with
+   EXACTLY this one sentence and nothing else:
+   "{out_of_scope}"
+   No apology before it, no explanation after it, no guess, no suggestion. Just that
+   sentence on its own.
+   This does NOT apply to: greetings and ordinary courtesy, or pricing questions (rule 1
+   already covers those — send those to the contact channels instead).
 3. NEVER promise a delivery date, a production slot, a discount, or accept an order. You
    cannot commit anything on the company's behalf.
 4. You are an automated assistant, not a staff member. If asked to speak to a person, or if
@@ -682,6 +693,7 @@ DEFAULT_SETTINGS = {
         "start_hint": "",
         "input_placeholder": "Nhập tin nhắn…",
         "error_message": "",
+        "out_of_scope_message": "Xin lỗi, câu này nằm ngoài phạm vi hiểu biết của tôi.",
         "privacy_note": "",
         "contact": {"zalo_phone": "", "email": "", "form_url": "/contact-us.html",
                     "form_label": "Form liên hệ"},

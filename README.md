@@ -357,8 +357,13 @@ phone numbers into chat boxes, and that lands in this sheet. Treat it as custome
 
 The generated prompt hard-forbids the things that would hurt the business more than a
 missing answer: quoting any price, inventing facts outside the reference sections,
-promising delivery dates, accepting orders, or claiming to be a human. Anything it cannot
-answer is routed to Zalo / email / the contact form. It is also told to ignore instructions
+promising delivery dates, accepting orders, or claiming to be a human.
+
+Anything the reference sections do not cover gets one fixed sentence and nothing else —
+`chat.out_of_scope_message`, editable in the CMS. No guess, no apology wrapped around it, no
+invented suggestion. Two deliberate exceptions: greetings are answered normally, and pricing
+questions keep their own rule (contact channels), since "outside my knowledge" would be a
+worse answer than "here is who to ask". It is also told to ignore instructions
 embedded in visitor messages (prompt injection).
 
 The Worker adds the limits a public endpoint needs: same-origin check (`Origin` or

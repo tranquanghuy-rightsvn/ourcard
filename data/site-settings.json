@@ -97,6 +97,7 @@
     "start_hint": "",
     "input_placeholder": "Nhập tin nhắn…",
     "error_message": "Xin lỗi, trợ lý đang bận. Bạn vui lòng liên hệ trực tiếp để được hỗ trợ ngay:",
+    "out_of_scope_message": "Xin lỗi, câu này nằm ngoài phạm vi hiểu biết của tôi.",
     "privacy_note": "Đừng gửi thông tin nhạy cảm — nội dung trò chuyện được xử lý bởi dịch vụ AI của bên thứ ba.",
     "contact": {
       "zalo_phone": "(+84) 708 976 136",
