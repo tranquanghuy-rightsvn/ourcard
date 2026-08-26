@@ -15,6 +15,11 @@ on:
       # phai cho lan Luu tiep theo tren CMS moi thay doi moi len duoc site.
       - "templates/**"
       - "scripts/build.py"
+      # Ha tang cung phai trigger deploy: doi ten Worker, doi model Gemini, sua rate limit
+      # hay sua logic /api/chat deu KHONG nam trong data/ hay templates/, nen truoc day
+      # chung khong bao gio duoc deploy tu dong.
+      - "wrangler.toml"
+      - "worker/**"
   workflow_dispatch: {}
 
 permissions:
