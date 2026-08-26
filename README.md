@@ -204,8 +204,20 @@ assistant knows is `python3 scripts/build.py && wrangler deploy`, with no clasp 
 goes straight to Google again** — do that only after enabling billing on the Gemini project,
 since paying removes the geo restriction (and the free tier's training/privacy terms).
 
-Cost of the detour: one extra hop (GAS cold start, roughly 1–3s) and GAS's 30-simultaneous-
-executions ceiling. Fine at this site's volume; revisit if the chat ever gets busy.
+**Two hops, done manually.** `/exec` does not answer directly: it runs `doPost`, then 302s
+to `script.googleusercontent.com/macros/echo`, which holds the result. The Worker follows
+that redirect itself (`redirect: "manual"`, then an explicit **GET** — the echo URL rejects
+POST with 405) so each leg gets its own timeout and failures say which leg broke.
+
+**Measured behaviour.** Warm, the whole round trip is ~2.5–3s. Apps Script cold starts are
+erratic though: a first run measured 2.7 / 2.9 / 8.5 / 11.7s and one outright hang. So the
+relay path caps each attempt at 12s and retries once — a second attempt almost always lands
+on a warm instance. After that change, 6/6 requests succeeded in 2.5–6.2s. Business errors
+(bad token, GAS quota) are **not** retried; only hangs and 5xx are.
+
+Free-tier Gemini rate limits are per-key and still apply — firing several requests within a
+minute during testing produced `upstream_error`. GAS's 30-simultaneous-executions ceiling
+also still applies. Both are fine at this site's volume; revisit if the chat gets busy.
 
 ### Why a Worker at all
 

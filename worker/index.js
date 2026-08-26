@@ -18,7 +18,13 @@ import { SYSTEM_INSTRUCTION } from "./knowledge.generated.js";
 // dong quota Gemini nao.
 const MAX_MESSAGE_CHARS = 600;
 const MAX_HISTORY_MESSAGES = 12;
-const GEMINI_TIMEOUT_MS = 20000;
+const GEMINI_TIMEOUT_MS = 25000;
+
+// Cold start cua Apps Script rat that thuong: do thuc te 2.7s / 2.9s / 8.5s / 11.7s va mot
+// lan treo han. Nen thay vi cho that lau MOT lan, cho ngan roi thu lai - lan thu 2 gan nhu
+// luon roi vao instance da am (~3s). Toi da ~24s cho ca hai lan, bang mot lan cho cu.
+const RELAY_ATTEMPT_TIMEOUT_MS = 12000;
+const RELAY_ATTEMPTS = 2;
 const MAX_OUTPUT_TOKENS = 400;
 
 const DEFAULT_MODEL = "gemini-3.5-flash-lite";
@@ -167,9 +173,9 @@ function useRelay_(env) {
 
 /** fetch co han thoi gian - Gemini/GAS cham hoac treo thi widget phai rot ve khoi lien he
  * chu khong duoc quay mai. */
-async function fetchWithTimeout_(url, init) {
+async function fetchWithTimeout_(url, init, timeoutMs) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeoutMs || GEMINI_TIMEOUT_MS);
   try {
     return await fetch(url, Object.assign({}, init, { signal: controller.signal }));
   } finally {
@@ -186,29 +192,75 @@ async function callGemini_(contents, env) {
       maxOutputTokens: MAX_OUTPUT_TOKENS,
     },
   };
-  return useRelay_(env) ? callViaRelay_(payload, env) : callGeminiDirect_(payload, env);
+  if (!useRelay_(env)) return callGeminiDirect_(payload, env);
+
+  let lastError;
+  for (let attempt = 1; attempt <= RELAY_ATTEMPTS; attempt++) {
+    try {
+      return await callViaRelay_(payload, env);
+    } catch (err) {
+      lastError = err;
+      // Loi nghiep vu (token sai, het quota GAS) thi thu lai cung vo ich - chi thu lai voi
+      // loi ha tang: treo, dut ket noi, 5xx.
+      if (/relay error:/.test(err.message) && !/upstream 5/.test(err.message)) throw err;
+      console.error("relay attempt " + attempt + " that bai:", err.message);
+    }
+  }
+  throw lastError;
 }
 
 /** Nho GAS goi Gemini ho. GAS chi la ong dan: system prompt, rate limit theo IP, cat bot
  * lich su... deu da lam xong o tren truoc khi goi ham nay. */
 async function callViaRelay_(payload, env) {
-  const res = await fetchWithTimeout_(env.GEMINI_RELAY_URL, {
+  const body = JSON.stringify({
+    action: "chat",
+    // GAS khong doc duoc header tuy chinh trong doPost, nen token phai di trong body.
+    token: env.CHAT_RELAY_TOKEN || "",
+    model: env.GEMINI_MODEL || DEFAULT_MODEL,
+    systemInstruction: payload.systemInstruction.parts[0].text,
+    contents: payload.contents,
+    generationConfig: payload.generationConfig,
+  });
+
+  // GAS /exec KHONG tra ket qua ngay: no chay doPost roi tra 302 sang
+  // script.googleusercontent.com/macros/echo, noi giu san ket qua. Tu di 2 chang thay vi de
+  // runtime tu follow - de kiem soat duoc timeout tung chang va biet chang nao hong.
+  const first = await fetchWithTimeout_(env.GEMINI_RELAY_URL, {
     method: "POST",
     // text/plain de ne CORS preflight ma GAS khong tra loi duoc - giong html/js/lead-form.js.
     headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify({
-      action: "chat",
-      // GAS khong doc duoc header tuy chinh trong doPost, nen token phai di trong body.
-      token: env.CHAT_RELAY_TOKEN || "",
-      model: env.GEMINI_MODEL || DEFAULT_MODEL,
-      systemInstruction: payload.systemInstruction.parts[0].text,
-      contents: payload.contents,
-      generationConfig: payload.generationConfig,
-    }),
-  });
+    body: body,
+    redirect: "manual",
+    // GAS tu quyet dinh cache; ep bo qua cache cua Cloudflare cho chac.
+    cf: { cacheTtl: 0, cacheEverything: false },
+  }, RELAY_ATTEMPT_TIMEOUT_MS);
+
+  let res = first;
+  if (first.status >= 300 && first.status < 400) {
+    const location = first.headers.get("Location");
+    if (!location) throw new Error("relay redirect thieu Location (" + first.status + ")");
+    // Chang 2 PHAI la GET: URL echo chi phuc vu GET, POST vao do se bi 405.
+    res = await fetchWithTimeout_(location, { method: "GET" }, RELAY_ATTEMPT_TIMEOUT_MS);
+  }
+
   if (!res.ok) throw new Error("relay http " + res.status);
-  const data = await res.json();
-  if (!data.ok) throw new Error("relay error: " + (data.error || "unknown"));
+
+  const text = await res.text();
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    // GAS tra HTML (trang loi/dang nhap) thay vi JSON - thuong la deployment sai quyen
+    // truy cap hoac chua tao version moi.
+    throw new Error("relay tra ve khong phai JSON: " + text.slice(0, 200));
+  }
+  if (!data.ok) {
+    // GAS kem theo `status` khi loi den tu Gemini - giu lai de `wrangler tail` chi thang
+    // duoc nguyen nhan (429 = cham tran tan suat, 400 = payload sai...).
+    throw new Error(
+      "relay error: " + (data.error || "unknown") + (data.status ? " (upstream " + data.status + ")" : "")
+    );
+  }
   return String(data.reply || "").trim();
 }
 
