@@ -1,7 +1,10 @@
 # Cloudflare Worker (Static Assets) config for khtcard (Kyu Craft) - Cloudflare has folded
 # "Pages" into the Workers model, so there's no separate Pages project to create. This
 # Worker serves html/ AND hosts one server-side endpoint, /api/chat (see worker/index.js).
-name = "khtcard"
+# Ten Worker THAT tren Cloudflare (khac ten thu muc repo o local, von la "khtcard").
+# Sai ten o day = wrangler tao ra mot Worker moi thay vi cap nhat production, va secret
+# gan theo tung Worker nen key cung se nam nham cho.
+name = "ourcard"
 compatibility_date = "2026-08-23"
 
 # Truoc day Worker nay khong co code (chi phuc vu file tinh). Gio no chay worker/index.js
