@@ -57,4 +57,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Ghim wrangler 4: mac dinh cua action la 3.90.0, KHONG hieu `run_worker_first`
+          # va `[[ratelimits]]` trong wrangler.toml -> deploy se hong hoac bo qua binding.
+          wranglerVersion: "4"
           command: deploy
