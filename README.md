@@ -173,14 +173,39 @@ The chat bubble is answered by Gemini, not by a person and not by canned text.
 html/js/chat.js (browser)
    │  POST /api/chat  {messages:[{role,text}]}      ← no key, no prompt, same origin
    ▼
-worker/index.js (Cloudflare Worker)                 ← holds GEMINI_API_KEY as a secret
+worker/index.js (Cloudflare Worker)
    │  origin check → rate limit → size caps
    │  + worker/knowledge.generated.js (system prompt, built from the site)
+   ▼
+GAS doPost({action:"chat"})                         ← holds GEMINI_API_KEY, dumb relay
    ▼
 Gemini generateContent
    │  reply
    ▼  (any failure ⇒ chat.js shows the real contact channels instead)
 ```
+
+### Why the call detours through Apps Script
+
+Gemini is **geo-restricted**, and a Worker runs in the colo nearest the visitor.
+Vietnamese traffic lands in Hong Kong, which Google blocks — every direct call came back
+`400 FAILED_PRECONDITION: User location is not supported`. Apps Script runs on Google's own
+infrastructure and is not blocked, so the Worker asks GAS to make the call.
+
+Smart Placement was tried first and **did not work**: 34 requests over 17 minutes all
+reported `cf-placement: local-HKG`, because placement needs consistent traffic from multiple
+locations and the site has none yet. The config is left in place (harmless, may help later)
+but it is not the fix.
+
+GAS is a **dumb pipe** — it knows nothing about the chat. The system prompt, origin check,
+per-IP rate limit and history truncation all stay in the Worker, so changing what the
+assistant knows is `python3 scripts/build.py && wrangler deploy`, with no clasp push.
+
+`GEMINI_RELAY_URL` in `wrangler.toml` selects this path. **Delete that line and the Worker
+goes straight to Google again** — do that only after enabling billing on the Gemini project,
+since paying removes the geo restriction (and the free tier's training/privacy terms).
+
+Cost of the detour: one extra hop (GAS cold start, roughly 1–3s) and GAS's 30-simultaneous-
+executions ceiling. Fine at this site's volume; revisit if the chat ever gets busy.
 
 ### Why a Worker at all
 
@@ -230,12 +255,22 @@ A visitor is never left staring at a dead chat box.
 
 ### Setup
 
+In Apps Script (Project Settings → Script Properties):
+
+- `GEMINI_API_KEY` — the Gemini key. It lives **here**, not in Cloudflare, because GAS is
+  what actually calls Google.
+- `CHAT_RELAY_TOKEN` — run `generateChatRelayToken()` once in the editor; it generates the
+  value, stores it, and logs it. The `/exec` URL is public (it is already in
+  `html/js/lead-form.js`), so without this shared token anyone could drain the quota.
+
+Then in Cloudflare:
+
 ```bash
-npx wrangler secret put GEMINI_API_KEY     # paste the key; never commit it
+npx wrangler secret put CHAT_RELAY_TOKEN   # paste the value logged above
 npx wrangler deploy
 ```
 
-The key lives only in Cloudflare. `.key` in the repo root is a local scratch copy and is
+`GEMINI_API_KEY` as a Worker secret is only needed on the direct path (post-billing). `.key` in the repo root is a local scratch copy and is
 gitignored — keep it that way. Change the model in `wrangler.toml`'s `[vars] GEMINI_MODEL`
 (no code edit needed). Without the secret set, `/api/chat` returns `503 not_configured` and
 the widget degrades to the contact block, so deploying before setting the key is safe.

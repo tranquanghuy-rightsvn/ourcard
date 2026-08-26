@@ -83,8 +83,10 @@ async function handleChat(request, env, url) {
     return json_({ ok: false, error: "forbidden_origin" }, 403);
   }
 
-  // Chua cau hinh secret -> bao ro de client rot ve khoi lien he, KHONG de trang trang.
-  if (!env.GEMINI_API_KEY) {
+  // Can MOT trong hai duong goi Gemini: relay qua GAS (mac dinh, xem callViaRelay_) hoac
+  // goi thang bang key cua chinh Worker. Thieu ca hai -> bao ro de client rot ve khoi lien
+  // he, KHONG de trang trang.
+  if (!env.GEMINI_RELAY_URL && !env.GEMINI_API_KEY) {
     return json_({ ok: false, error: "not_configured" }, 503);
   }
 
@@ -148,7 +150,71 @@ function normalizeMessages_(messages) {
   return contents;
 }
 
+/**
+ * Gemini CHAN theo vi tri dia ly va Worker chay o colo gan khach nhat - khach Viet Nam roi
+ * vao colo Hong Kong, vung Google khong cho phep, tra 400 "User location is not supported".
+ * GAS thi chay tren ha tang cua chinh Google nen goi duoc. Vi vay mac dinh la nho GAS goi ho.
+ *
+ * Da thu Smart Placement de Cloudflare tu doi cho chay Worker: 34/34 request van bao
+ * `cf-placement: local-HKG` (xem ghi chu trong wrangler.toml) - khong an.
+ *
+ * Bo GEMINI_RELAY_URL di la Worker tu dong quay lai goi thang Google - dung khi ban bat
+ * billing cho Gemini, vi ban tra phi thi khong con bi chan dia ly nua.
+ */
+function useRelay_(env) {
+  return !!env.GEMINI_RELAY_URL;
+}
+
+/** fetch co han thoi gian - Gemini/GAS cham hoac treo thi widget phai rot ve khoi lien he
+ * chu khong duoc quay mai. */
+async function fetchWithTimeout_(url, init) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  try {
+    return await fetch(url, Object.assign({}, init, { signal: controller.signal }));
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function callGemini_(contents, env) {
+  const payload = {
+    contents: contents,
+    systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+    generationConfig: {
+      temperature: 0.4,
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+    },
+  };
+  return useRelay_(env) ? callViaRelay_(payload, env) : callGeminiDirect_(payload, env);
+}
+
+/** Nho GAS goi Gemini ho. GAS chi la ong dan: system prompt, rate limit theo IP, cat bot
+ * lich su... deu da lam xong o tren truoc khi goi ham nay. */
+async function callViaRelay_(payload, env) {
+  const res = await fetchWithTimeout_(env.GEMINI_RELAY_URL, {
+    method: "POST",
+    // text/plain de ne CORS preflight ma GAS khong tra loi duoc - giong html/js/lead-form.js.
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      action: "chat",
+      // GAS khong doc duoc header tuy chinh trong doPost, nen token phai di trong body.
+      token: env.CHAT_RELAY_TOKEN || "",
+      model: env.GEMINI_MODEL || DEFAULT_MODEL,
+      systemInstruction: payload.systemInstruction.parts[0].text,
+      contents: payload.contents,
+      generationConfig: payload.generationConfig,
+    }),
+  });
+  if (!res.ok) throw new Error("relay http " + res.status);
+  const data = await res.json();
+  if (!data.ok) throw new Error("relay error: " + (data.error || "unknown"));
+  return String(data.reply || "").trim();
+}
+
+/** Goi thang Google. Chi dung duoc khi Worker khong bi chan dia ly - tuc la sau khi ban bat
+ * billing cho Gemini (luc do bo GEMINI_RELAY_URL di la tu dong roi vao nhanh nay). */
+async function callGeminiDirect_(payload, env) {
   const model = env.GEMINI_MODEL || DEFAULT_MODEL;
   const endpoint =
     "https://generativelanguage.googleapis.com/v1beta/models/" +
@@ -156,29 +222,11 @@ async function callGemini_(contents, env) {
     ":generateContent?key=" +
     encodeURIComponent(env.GEMINI_API_KEY);
 
-  // Gemini cham/treo thi widget phai rot ve khoi lien he chu khong duoc quay mai.
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
-
-  let res;
-  try {
-    res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      signal: controller.signal,
-      body: JSON.stringify({
-        contents: contents,
-        systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-        generationConfig: {
-          temperature: 0.4,
-          maxOutputTokens: MAX_OUTPUT_TOKENS,
-        },
-      }),
-    });
-  } finally {
-    clearTimeout(timer);
-  }
-
+  const res = await fetchWithTimeout_(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
   if (!res.ok) {
     throw new Error("gemini http " + res.status + ": " + (await res.text()).slice(0, 400));
   }
@@ -191,7 +239,7 @@ async function callGemini_(contents, env) {
       ? data.candidates[0].content.parts || []
       : [];
   return parts
-    .map((p) => (typeof p.text === "string" ? p.text : ""))
+    .map((x) => (typeof x.text === "string" ? x.text : ""))
     .join("")
     .trim();
 }
