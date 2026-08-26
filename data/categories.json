@@ -1,34 +1,42 @@
 [
   {
     "key": "christmas",
-    "label": "Christmas"
+    "label": "Christmas",
+    "order": 0
   },
   {
     "key": "birthday",
-    "label": "Birthday"
+    "label": "Birthday",
+    "order": 1
   },
   {
     "key": "anniversary",
-    "label": "Anniversary"
+    "label": "Anniversary",
+    "order": 2
   },
   {
     "key": "other",
-    "label": "Other"
+    "label": "Other",
+    "order": 3
   },
   {
     "key": "seasonal",
-    "label": "Seasonal"
+    "label": "Seasonal",
+    "order": 4
   },
   {
     "key": "vehicle-sports",
-    "label": "Vehicle & Sports"
+    "label": "Vehicle & Sports",
+    "order": 5
   },
   {
     "key": "love-floral",
-    "label": "Love & Floral"
+    "label": "Love & Floral",
+    "order": 6
   },
   {
     "key": "animals",
-    "label": "Animals"
+    "label": "Animals",
+    "order": 7
   }
 ]

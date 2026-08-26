@@ -10,6 +10,11 @@ on:
       - "data/categories.json"
       - "data/free-templates.json"
       - "data/custom-designs.json"
+      - "data/site-settings.json"
+      # Sua thiet ke trang (templates/) hoac logic build cung phai build lai - khong thi
+      # phai cho lan Luu tiep theo tren CMS moi thay doi moi len duoc site.
+      - "templates/**"
+      - "scripts/build.py"
   workflow_dispatch: {}
 
 permissions:
@@ -30,18 +35,24 @@ jobs:
       - name: Build static site (scripts/build.py)
         run: python3 scripts/build.py
 
-      - name: Commit generated html/
+      # worker/knowledge.generated.js cung la dau ra cua build.py (system prompt cua tro ly
+      # chat, dung lai tu noi dung site) - phai commit kem html/ de `wrangler deploy` o buoc
+      # sau day len dung phien ban khop voi html/ vua build.
+      - name: Commit generated html/ + worker/
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add html/
+          git add html/ worker/
           git diff --cached --quiet && echo "No changes to commit" || git commit -m "CI: build html from data"
           git push
 
       # Cloudflare Workers Static Assets - needs 2 repo secrets (Settings > Secrets and
       # variables > Actions): CLOUDFLARE_API_TOKEN (Account > Workers Scripts > Edit
       # permission) and CLOUDFLARE_ACCOUNT_ID.
-      - name: Deploy to Cloudflare (Workers Static Assets)
+      # Deploy day len ca html/ (static assets) LAN worker/index.js (endpoint /api/chat).
+      # GEMINI_API_KEY KHONG nam o day - no la Worker secret, dat 1 lan bang
+      # `npx wrangler secret put GEMINI_API_KEY` (xem README).
+      - name: Deploy to Cloudflare (Workers Static Assets + /api/chat)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

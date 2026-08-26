@@ -3,3 +3,4 @@
 # GAS CMS backend: deployed via clasp, not tracked in git (backend logic + Sheet
 # structure — see docs/research playbook gotcha #10).
 gas/
+.key

@@ -1,14 +1,40 @@
 # Cloudflare Worker (Static Assets) config for khtcard (Kyu Craft) - Cloudflare has folded
-# "Pages" into the Workers model, so there's no separate Pages project to create; this
-# Worker just serves html/ with no server-side logic (name = ... below).
+# "Pages" into the Workers model, so there's no separate Pages project to create. This
+# Worker serves html/ AND hosts one server-side endpoint, /api/chat (see worker/index.js).
 name = "khtcard"
 compatibility_date = "2026-08-23"
 
+# Truoc day Worker nay khong co code (chi phuc vu file tinh). Gio no chay worker/index.js
+# CHI cho /api/* (xem run_worker_first ben duoi) de lam proxy goi Gemini - API key phai nam
+# server-side, khong duoc xuong trinh duyet.
+main = "./worker/index.js"
+
 [assets]
 directory = "./html"
+# Worker doc file tinh qua binding nay (env.ASSETS.fetch) cho moi duong dan khong phai /api/*.
+binding = "ASSETS"
+# Chi /api/* moi chay Worker truoc; moi duong dan khac van uu tien file tinh y nhu truoc,
+# nen html_handling/not_found_handling ben duoi giu nguyen hanh vi cu.
+run_worker_first = ["/api/*"]
 # IMPORTANT: keep the existing .html-suffixed URLs (do not let Cloudflare auto-redirect
 # "/shop-all/index.html" -> "/shop-all/") - the default html_handling would do exactly that.
 html_handling = "none"
 # Multi-page static site (not an SPA) - unknown paths should get a real 404, not a fallback
 # to index.html. Serves html/404.html with an actual HTTP 404 status.
 not_found_handling = "404-page"
+
+# Model Gemini dung cho widget chat. Doi o day (rot roi `wrangler deploy`) neu muon dung
+# ban khac - khong phai sua code.
+[vars]
+GEMINI_MODEL = "gemini-3.5-flash-lite"
+
+# Chan spam vao /api/chat. Binding nay dem theo tung Cloudflare location va "eventually
+# consistent" - du de chan lam dung, khong phai he thong tinh cuoc chinh xac.
+# period CHI nhan 10 hoac 60 (giay).
+[[ratelimits]]
+name = "CHAT_RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60

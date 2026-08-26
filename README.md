@@ -21,11 +21,11 @@ the homepage itself** (which has to be `index.html`/`/` per static-hosting conve
 
 ```
 CMS (Google Apps Script, gas/)
-   │  edit products/categories/free templates/custom designs, read contact submissions
-   │  commits straight to GitHub via Contents API
+   │  edit products/categories/free templates/custom designs/site settings,
+   │  read contact submissions; commits straight to GitHub via Contents API
    ▼
 data/products.json, data/categories.json, data/free-templates.json,
-data/custom-designs.json                                            ← source of truth
+data/custom-designs.json, data/site-settings.json                   ← source of truth
 html/images/*, html/videos/*, html/downloads/*                      ← assets, written straight to the site
    │  push to the relevant *.json (the commit-closing file per entity)
    ▼
@@ -33,11 +33,15 @@ GitHub Actions (.github/workflows/build.yml)
    │  runs scripts/build.py
    ▼
 html/product/<slug>.html, html/shop-all.html, html/free-template.html,
-html/custom-design.html, html/js/search-data.js, sitemap.xml,
-html/index.html (2 patched bands)
+html/custom-design.html, html/js/search-data.js, sitemap.xml, html/ads.txt,
+every hand-authored page's <!-- CMS_* --> bands (hero, head/analytics, logo, socials),
+html/index.html (2 product bands), html/wholesale-pop-up-cards.html (sidebar bands)
+worker/knowledge.generated.js                       ← the chat assistant's system prompt
    │  commit "CI: build html from data", push
    ▼
-Cloudflare Workers Static Assets (wrangler deploy)
+Cloudflare Worker (wrangler deploy)
+   ├── static assets from html/
+   └── /api/chat → Gemini (key = Worker secret, never in the repo)
 ```
 
 No server runs 24/7, no paid database. See
@@ -47,9 +51,15 @@ follows (architecture, gotchas, hosting quotas).
 ## Repo layout
 
 - `data/products.json`, `data/categories.json`, `data/free-templates.json`,
-  `data/custom-designs.json` — CMS-owned. **Never hand-edit** — the CMS overwrites these on
-  every save, and `scripts/build.py` reads them as input. All start empty/seeded-categories-only
-  on purpose (see "Scope decisions").
+  `data/custom-designs.json`, `data/site-settings.json` — CMS-owned. **Never hand-edit** —
+  the CMS overwrites these on every save, and `scripts/build.py` reads them as input. All
+  start empty/seeded-categories-only on purpose (see "Scope decisions").
+  - `data/categories.json` carries an explicit `order` field per category. That order is the
+    display order of the "Category" filter list on Shop All *and* the Categories list in the
+    Wholesale sidebar; the owner changes it with the ↑ ↓ buttons in the CMS's "Danh mục" tab
+    ("Lưu thứ tự" writes the whole list back in one commit). `build.py` sorts by `order` and
+    falls back to the file's array order for records written before the field existed.
+  - `data/site-settings.json` is the "website admin" file — see "Site settings" below.
 - `templates/product.html`, `templates/category.html`, `templates/free-template.html`,
   `templates/custom-design.html` — the design source for generated pages (`{{PLACEHOLDER}}`
   string-replace, no templating engine). Edit these by hand to change the
@@ -82,6 +92,8 @@ follows (architecture, gotchas, hosting quotas).
     `wishlist.html`, `404.html`, `admin.html`) is hand-authored, flat `<slug>.html` — these are
     bespoke one-off marketing/utility pages, not repeating list items, so they're intentionally
     **not** CMS-managed (see "Scope decisions" below).
+- `worker/` — the Cloudflare Worker. `index.js` is hand-written (the `/api/chat` endpoint);
+  `knowledge.generated.js` is build output — **never hand-edit it** (see "Chat" below).
 - `gas/` — the CMS backend (Google Apps Script). **Gitignored** — deployed via `clasp`, not
   git. After changing any file here, run `clasp push` then in the Apps Script editor:
   Deploy → Manage deployments → Edit → **New version** (not "New deployment" — that mints a
@@ -97,7 +109,10 @@ Every page (build-generated and hand-authored) carries: `<meta name="description
 Graph + Twitter Card tags (with a representative banner image per page — the product's own
 cover photo for product pages), and JSON-LD structured data appropriate to the page type:
 
-- Homepage: `Organization` + `WebSite`.
+- Homepage: `Organization` + `WebSite`. The homepage's whole head block (title, description,
+  canonical, OG/Twitter, both JSON-LD scripts) is generated from `data/site-settings.json`
+  into `<!-- CMS_HOME_META -->` — the only page whose SEO tags are CMS-driven rather than
+  hand-authored (see "Site settings").
 - Product pages: `Product` (name/sku/image/brand/category) + `BreadcrumbList`, generated per
   product in `scripts/build.py` (`product_jsonld()`).
 - Shop All / Free Template: `CollectionPage` + `BreadcrumbList`.
@@ -107,14 +122,153 @@ cover photo for product pages), and JSON-LD structured data appropriate to the p
   they're per-visitor utility pages with no unique content, not real pages to index.
 
 If you add a new hand-authored page, copy the head block from a similar existing page (don't
-forget to update `canonical`/`og:url`/the breadcrumb's `name`) rather than skipping it.
+forget to update `canonical`/`og:url`/the breadcrumb's `name`) rather than skipping it — and
+copy the `<!-- CMS_* -->` bands with it, plus add the filename to `CHROME_PAGES` in
+`scripts/build.py`, so it picks up the shared favicon/analytics/logo/social settings.
+
+## Site settings (`data/site-settings.json` + the CMS's "Cài đặt website" tab)
+
+One CMS tab, one JSON file, one commit. It owns everything that is site-wide rather than
+per-product:
+
+| Setting | Where it lands |
+| --- | --- |
+| Hero banner: 3 slider slides + the 2 fixed cards beside them (image, headings, body, button label + link) | `<!-- CMS_HERO -->` on `html/index.html` |
+| Site title, brand name, OG title, meta description, OG image | `<!-- CMS_HOME_META -->` on `html/index.html` (title/description/canonical/OG/Twitter + the `Organization`/`WebSite` JSON-LD) |
+| Logo | `<!-- CMS_LOGO -->` (header) + `<!-- CMS_FOOTER_LOGO -->` on every page |
+| Favicon, Google Analytics (GA4), extra `<head>` HTML (Search Console tag, ad pixels…) | `<!-- CMS_HEAD -->` on every page |
+| Social links | `<!-- CMS_SOCIAL_FOOTER -->` (footer row) + `<!-- CMS_SOCIAL_FIXED -->` (the fixed rail on the right edge) on every page — **one URL drives both**, and clearing a URL removes that icon from both |
+| `ads.txt` contents | written to `html/ads.txt` (removed entirely if the field is blank) |
+| Organization phone/email/city/country | the homepage `Organization` JSON-LD only — SEO metadata, **not** the visible footer contact block, which stays hand-authored |
+
+### How the bands work
+
+Every page — hand-authored (`html/*.html`) and generated (`templates/*.html`) — carries
+`<!-- CMS_NAME:START -->` / `<!-- CMS_NAME:END -->` comment pairs. `scripts/build.py`'s
+`replace_band()` rewrites what is between them and re-indents to the START marker, the same
+mechanism as the existing `<!-- BESTSELLERS -->` / `<!-- NEW_PRODUCTS -->` homepage bands.
+Hand-authored pages are patched on disk (`patch_chrome_pages()`); templates are patched in
+memory before the `{{PLACEHOLDER}}` pass, with `prefix="../"` for product pages. A missing
+band is skipped silently (`404.html` has no footer, `admin.html` has only `CMS_HEAD`), so
+adding a new page just means pasting whichever bands it needs.
+
+**Anything inside a band is build output — editing it by hand is pointless**, it gets
+overwritten on the next build. Change the renderer in `scripts/build.py` instead.
+
+### Images
+
+Hero/logo/favicon/OG uploads go to `html/images/` with a `site-<slot>-<n>.<ext>` name.
+Photos (hero slides, OG image) are canvas-resized to 1600px JPEG client-side like product
+images; **logo and favicon are uploaded byte-for-byte** — pushing them through the canvas
+would flatten PNG transparency and break `.ico`/`.svg`. When a slot's image is replaced, the
+old file is deleted only if its name starts with `site-`, so the site's original
+hand-committed images (`card-banner-1.webp`, `logo-ngang.png`, …) can never be deleted by a
+CMS save.
+
+## Chat: AI assistant (Gemini via a Cloudflare Worker)
+
+The chat bubble is answered by Gemini, not by a person and not by canned text.
+
+```
+html/js/chat.js (browser)
+   │  POST /api/chat  {messages:[{role,text}]}      ← no key, no prompt, same origin
+   ▼
+worker/index.js (Cloudflare Worker)                 ← holds GEMINI_API_KEY as a secret
+   │  origin check → rate limit → size caps
+   │  + worker/knowledge.generated.js (system prompt, built from the site)
+   ▼
+Gemini generateContent
+   │  reply
+   ▼  (any failure ⇒ chat.js shows the real contact channels instead)
+```
+
+### Why a Worker at all
+
+**The API key must never reach the browser.** Anything shipped in `html/js/*` is readable
+with View Source, and bots scan JS bundles for keys. So the Worker — which until now only
+served `html/` — gained exactly one endpoint. `wrangler.toml` sets `main`, an `ASSETS`
+binding, and `run_worker_first = ["/api/*"]`, so **every path except `/api/*` keeps the
+old asset-first behavior** (`html_handling`/`not_found_handling` are unchanged).
+
+### The system prompt is generated, not hand-written
+
+`build_worker_knowledge()` in `scripts/build.py` writes `worker/knowledge.generated.js` on
+every build from three live sources:
+
+1. **`html/wholesale-pop-up-cards.html`'s body copy**, flattened to text — MOQ, payment
+   terms, shipping, production time, packaging. Extracted rather than retyped so the bot
+   can never contradict the page.
+2. **`data/products.json`** — SKU, name, category, tags, product URL.
+3. **`data/site-settings.json` → `chat`** — contact channels, reply language, and the
+   owner's free-text `extra_notes` (CMS tab "Cài đặt website" → "Chat AI").
+
+Edit the Wholesale page or add a product, and the assistant's knowledge follows on the next
+build. **Never hand-edit `worker/knowledge.generated.js`** — it is overwritten every build.
+It *is* committed (CI does `git add html/ worker/`) so `wrangler deploy` always ships a
+prompt matching the deployed HTML.
+
+### Guardrails
+
+The generated prompt hard-forbids the things that would hurt the business more than a
+missing answer: quoting any price, inventing facts outside the reference sections,
+promising delivery dates, accepting orders, or claiming to be a human. Anything it cannot
+answer is routed to Zalo / email / the contact form. It is also told to ignore instructions
+embedded in visitor messages (prompt injection).
+
+The Worker adds the limits a public endpoint needs: same-origin check (`Origin` or
+`Referer` must match), a rate-limit binding (10 requests / 60s per IP), message truncation
+at 600 chars, history capped at 12 turns, `maxOutputTokens` 400, and a 20s timeout.
+Upstream error text is never forwarded to the client — a Gemini error that echoes the key
+must not reach the browser.
+
+### Failure behaviour
+
+Every failure path (no key configured, quota exhausted, rate limited, timeout, safety
+block, network error) ends the same way: `chat.js` renders `chat.error_message` followed by
+the real contact block, built from `chat.contact` so it can never drift from the footer.
+A visitor is never left staring at a dead chat box.
+
+### Setup
+
+```bash
+npx wrangler secret put GEMINI_API_KEY     # paste the key; never commit it
+npx wrangler deploy
+```
+
+The key lives only in Cloudflare. `.key` in the repo root is a local scratch copy and is
+gitignored — keep it that way. Change the model in `wrangler.toml`'s `[vars] GEMINI_MODEL`
+(no code edit needed). Without the secret set, `/api/chat` returns `503 not_configured` and
+the widget degrades to the contact block, so deploying before setting the key is safe.
+
+### Privacy — decide before pointing real customers at it
+
+On the Gemini **free tier**, Google may use submitted content to improve its products and
+human reviewers may read it; the paid tier excludes training. Visitors will paste names,
+emails and order quantities into this box. Either move to the paid tier or keep a visible
+notice — `chat.privacy_note` exists in `data/site-settings.json` for that purpose. Free-tier
+rate limits are no longer published in the docs; check your own at
+<https://aistudio.google.com/rate-limit>.
+
+## Wholesale sidebar
+
+`html/wholesale-pop-up-cards.html`'s sidebar is generated, not hand-maintained:
+
+- **Products** — 5 of the published bestsellers, shuffled with a seed derived from the
+  bestseller slugs themselves (`bestseller_sample()`). Deliberately *not* time-random: the
+  order must be stable across CI runs (otherwise every unrelated build would rewrite the page)
+  but has to reshuffle the moment the owner marks another product as Bestseller in the CMS.
+  Fewer than 5 bestsellers → it shows what exists; none → the list renders empty.
+- **Categories** — `data/categories.json` in its CMS order, prefixed with the two virtual
+  ones (Best Seller, New Product), so it can never drift from the Shop All sidebar.
 
 ## Scope decisions (read before extending)
 
-- **Products, categories, free templates, custom design gallery, and contacts are
-  CMS-managed.** The marketing pages listed above change rarely and have bespoke layouts —
-  forcing them through a generic rich-text CMS field would flatten the design for content
-  that's edited by hand a few times a year at most.
+- **Products, categories, free templates, custom design gallery, contacts and the site-wide
+  settings (hero banner, title/description, logo, favicon, analytics, social links) are
+  CMS-managed.** The *body copy* of the marketing pages stays hand-authored: those pages change
+  rarely and have bespoke layouts — forcing them through a generic rich-text CMS field would
+  flatten the design for content that's edited by hand a few times a year at most. Only their
+  shared chrome (head, logo, socials) is CMS-driven, through the `<!-- CMS_* -->` bands.
 - **Products optionally support video** (`videos: []`, alongside `gallery: []`) — no canvas
   resize (can't resize video with a `<canvas>`), uploaded as-is to `html/videos/`. If a
   product has at least one video, its thumb is shown first and active by default in the
@@ -128,6 +282,9 @@ forget to update `canonical`/`og:url`/the breadcrumb's `name`) rather than skipp
 - **No prices are shown anywhere** (wholesale catalog — every product has a "Contact" CTA
   instead) — this matches the original design, so `data/products.json` doesn't have a price
   field.
+- **The chat widget is an AI assistant, not a human inbox and not canned text.** It cannot
+  quote prices or accept orders by design (see "Chat" above) — its job is to answer factual
+  questions from the site's own content and hand everything else to a real channel.
 - **Cart / wishlist / checkout are unchanged** — pure client-side (localStorage), and the
   checkout modal is explicitly a demo (no payment is taken, see `html/js/checkout.js`). They
   read product info straight from the DOM (`.product-card`, `img[src]`, etc.), so
@@ -163,6 +320,9 @@ forget to update `canonical`/`og:url`/the breadcrumb's `name`) rather than skipp
 3. **GitHub Actions**: repo Settings → Secrets and variables → Actions, add
    `CLOUDFLARE_API_TOKEN` (Account → Workers Scripts → Edit permission) and
    `CLOUDFLARE_ACCOUNT_ID`.
+3b. **Gemini key for the chat widget**: run `npx wrangler secret put GEMINI_API_KEY` once,
+   locally. It is a Worker secret, *not* a GitHub secret — CI never needs it. Until it is
+   set, the chat widget degrades to the contact block instead of breaking.
 4. **Cloudflare**: create the Worker (`wrangler deploy` once locally, or let the first CI run
    create it), then Workers & Pages → the Worker → Domains & Routes → Add Custom Domain to
    point `www.kyucraft.com` at it. Adding the domain to Cloudflare + switching nameservers is
@@ -190,13 +350,15 @@ one), update the redirect URL in **both** `html/admin.html` (two occurrences: th
 
 ## Day-to-day
 
-- Editing a product/category/free-template/custom-design in the CMS commits the relevant
-  `data/*.json` straight to GitHub → triggers the Actions workflow (watches all four files,
-  see `.github/workflows/build.yml`) → rebuilds `html/` → deploys to Cloudflare. Allow **about
-  a minute** for the live site to catch up after saving.
+- Editing a product/category/free-template/custom-design/site setting in the CMS commits the
+  relevant `data/*.json` straight to GitHub → triggers the Actions workflow (watches all five
+  files plus `templates/**` and `scripts/build.py`, see `.github/workflows/build.yml`) →
+  rebuilds `html/` → deploys to Cloudflare. Allow **about a minute** for the live site to
+  catch up after saving.
 - To change the homepage/marketing page copy: edit the relevant `html/<slug>.html` file by
-  hand and commit — these aren't touched by `scripts/build.py` except for the two anchored
-  bestseller/new-product bands on `html/index.html`.
+  hand and commit — these aren't touched by `scripts/build.py` **except inside a
+  `<!-- CMS_*:START -->…<!-- CMS_*:END -->` band**, which is regenerated on every build. Edit
+  what a band contains in `scripts/build.py`'s renderers, not in the page.
 - To change the product/shop-all/free-template/custom-design page design: edit
   `templates/product.html` / `templates/category.html` / `templates/free-template.html` /
   `templates/custom-design.html`, then run `python3 scripts/build.py` locally to verify,
