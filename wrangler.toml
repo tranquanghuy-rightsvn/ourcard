@@ -34,8 +34,11 @@ not_found_handling = "404-page"
 # LUU Y: chi anh huong fetch handler (tuc /api/chat). File tinh VAN luon duoc phuc vu tu
 # colo gan khach nhat, nen toc do trang web khong bi cham di.
 #
-# Khong dam bao an: Cloudflare can "luu luong on dinh tu nhieu vi tri" moi ra duoc quyet
-# dinh; site it khach se ket o trang thai INSUFFICIENT_INVOCATIONS va khong bao gio doi cho.
+# DA THU, KHONG AN (26/08/2026): 34 request trong 17 phut, ca 34 deu tra ve header
+# `cf-placement: local-HKG` - Cloudflare khong he doi cho chay. Ly do: no can "luu luong on
+# dinh tu NHIEU vi tri" moi quyet dinh duoc, ma site chua co khach thuc. Giu lai cau hinh
+# nay vi no vo hai va co the tu kich hoat khi site dong khach hon, NHUNG dung trong cho no
+# de go chan dia ly Gemini - phai dung GAS lam proxy hoac bat billing.
 [placement]
 mode = "smart"
 
