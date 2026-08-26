@@ -62,9 +62,9 @@ GEMINI_MODEL = "gemini-3.5-flash-lite"
 # Day dung la URL /exec ma html/js/lead-form.js dang dung (form lien he), khong phai
 # deployment khac - 1 GAS web app phuc vu ca hai.
 #
-# XOA dong nay di la Worker tu dong quay lai goi thang Google. Chi lam vay SAU KHI bat
-# billing cho Gemini, vi tra phi thi khong con bi chan dia ly.
-GEMINI_RELAY_URL = "https://script.google.com/macros/s/AKfycbze46G0S-cX3WGMfxD73hiF0nXYCNRe7THG1inp_5Nc25ayh-jyTtEGKr80LR9bRJFQ/exec"
+# Dung cho HAI viec: duong lui goi Gemini qua GAS (CHAT_PROVIDER="gemini-relay"), VA ghi
+# nhat ky hoi thoai xuong Sheet - viec sau chay o moi provider, sau khi da tra loi khach.
+GAS_URL = "https://script.google.com/macros/s/AKfycbze46G0S-cX3WGMfxD73hiF0nXYCNRe7THG1inp_5Nc25ayh-jyTtEGKr80LR9bRJFQ/exec"
 
 # Chan spam vao /api/chat. Binding nay dem theo tung Cloudflare location va "eventually
 # consistent" - du de chan lam dung, khong phai he thong tinh cuoc chinh xac.

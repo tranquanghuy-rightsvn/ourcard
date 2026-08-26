@@ -331,6 +331,12 @@ between the site's static pages but does not follow a visitor across sessions. T
 truncates it (64 chars) and the page path (300) before passing them on; neither is trusted
 and neither affects the reply.
 
+The Worker is what logs, not GAS — `logTurnToGas_()` POSTs `{action:"chatlog"}` after the
+reply has already gone out (`ctx.waitUntil`), so it adds nothing to the wait and runs on
+**every** provider. It used to live inside the GAS relay handler, which silently stopped
+logging anything the moment the assistant moved to Workers AI. GAS no longer logs from the
+relay path either, or a relayed turn would be written twice.
+
 Writes never happen on the visitor's path. Opening a Spreadsheet costs several hundred ms to
 over a second, and that would land squarely in the window where someone is watching the
 typing dots. `logChatTurn_()` pushes the turn into `CacheService` (a few ms) and the

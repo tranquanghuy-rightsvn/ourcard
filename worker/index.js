@@ -33,10 +33,10 @@ const MAX_OUTPUT_TOKENS = 400;
 const DEFAULT_MODEL = "gemini-3.5-flash-lite";
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/chat") {
-      return handleChat(request, env, url);
+      return handleChat(request, env, url, ctx);
     }
     // Moi thu con lai: tra file tinh trong html/ (binding khai o wrangler.toml).
     return env.ASSETS.fetch(request);
@@ -84,7 +84,7 @@ function isAllowedOrigin_(request, url, env) {
   return false;
 }
 
-async function handleChat(request, env, url) {
+async function handleChat(request, env, url, ctx) {
   if (request.method !== "POST") {
     return json_({ ok: false, error: "method_not_allowed" }, 405);
   }
@@ -95,7 +95,7 @@ async function handleChat(request, env, url) {
   // Can MOT trong hai duong goi Gemini: relay qua GAS (mac dinh, xem callViaRelay_) hoac
   // goi thang bang key cua chinh Worker. Thieu ca hai -> bao ro de client rot ve khoi lien
   // he, KHONG de trang trang.
-  if (provider_(env) !== "workers-ai" && !env.GEMINI_RELAY_URL && !env.GEMINI_API_KEY) {
+  if (provider_(env) !== "workers-ai" && !env.GAS_URL && !env.GEMINI_API_KEY) {
     return json_({ ok: false, error: "not_configured" }, 503);
   }
 
@@ -133,6 +133,14 @@ async function handleChat(request, env, url) {
     if (!reply) {
       return json_({ ok: false, error: "empty_reply" }, 502);
     }
+    // Ghi nhat ky vao Sheet qua GAS. Chay SAU khi da tra loi khach (ctx.waitUntil) nen
+    // khong cong them mot mili giay nao vao thoi gian cho - va chi ton khi that su co
+    // nguoi nhan tin, khong phai chay nen dinh ky.
+    //
+    // Truoc day viec nay nam trong handleChatRelay_ ben GAS, nhung tu khi doi sang
+    // Workers AI thi Worker khong con goi GAS nua, nen phai goi rieng o day.
+    const logging = logTurnToGas_(env, meta, contents, reply);
+    if (logging && ctx && ctx.waitUntil) ctx.waitUntil(logging);
     return json_({ ok: true, reply: reply });
   } catch (err) {
     // Khong tra chi tiet loi ve client (co the lo thong tin upstream); log de xem o
@@ -174,7 +182,7 @@ function normalizeMessages_(messages) {
  * Da thu Smart Placement de Cloudflare tu doi cho chay Worker: 34/34 request van bao
  * `cf-placement: local-HKG` (xem ghi chu trong wrangler.toml) - khong an.
  *
- * Bo GEMINI_RELAY_URL di la Worker tu dong quay lai goi thang Google - dung khi ban bat
+ * Bo GAS_URL di la Worker tu dong quay lai goi thang Google - dung khi ban bat
  * billing cho Gemini, vi ban tra phi thi khong con bi chan dia ly nua.
  */
 /**
@@ -191,11 +199,32 @@ function normalizeMessages_(messages) {
 function provider_(env) {
   const p = String(env.CHAT_PROVIDER || "").trim();
   if (p) return p;
-  return env.GEMINI_RELAY_URL ? "gemini-relay" : "gemini";
+  return env.GAS_URL ? "gemini-relay" : "gemini";
+}
+
+/** Day mot luot chat sang GAS de no xep vao hang doi ghi Sheet. Loi thi im lang bo qua -
+ * mat mot dong nhat ky khong duoc phep anh huong den khach. */
+function logTurnToGas_(env, meta, contents, reply) {
+  if (!env.GAS_URL || !env.CHAT_RELAY_TOKEN) return null;
+  const lastUser = contents[contents.length - 1];
+  const question = lastUser && lastUser.parts && lastUser.parts[0] ? lastUser.parts[0].text : "";
+  return fetchWithTimeout_(env.GAS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      action: "chatlog",
+      token: env.CHAT_RELAY_TOKEN,
+      conversationId: (meta || {}).conversationId || "",
+      page: (meta || {}).page || "",
+      q: question,
+      a: reply,
+    }),
+    redirect: "manual",
+  }, RELAY_TIMEOUT_MS).catch(() => {});
 }
 
 function useRelay_(env) {
-  return provider_(env) === "gemini-relay" && !!env.GEMINI_RELAY_URL;
+  return provider_(env) === "gemini-relay" && !!env.GAS_URL;
 }
 
 const DEFAULT_WORKERS_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast";
@@ -243,7 +272,7 @@ async function callGemini_(contents, env, meta) {
   };
   const which = provider_(env);
   if (which === "workers-ai") return callWorkersAI_(payload, env);
-  if (which === "gemini-relay" && env.GEMINI_RELAY_URL) {
+  if (which === "gemini-relay" && env.GAS_URL) {
     payload.meta = meta || {};
     return callViaRelay_(payload, env);
   }
@@ -269,7 +298,7 @@ async function callViaRelay_(payload, env) {
   // GAS /exec KHONG tra ket qua ngay: no chay doPost roi tra 302 sang
   // script.googleusercontent.com/macros/echo, noi giu san ket qua. Tu di 2 chang thay vi de
   // runtime tu follow - de kiem soat duoc timeout tung chang va biet chang nao hong.
-  const first = await fetchWithTimeout_(env.GEMINI_RELAY_URL, {
+  const first = await fetchWithTimeout_(env.GAS_URL, {
     method: "POST",
     // text/plain de ne CORS preflight ma GAS khong tra loi duoc - giong html/js/lead-form.js.
     headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -309,7 +338,7 @@ async function callViaRelay_(payload, env) {
 }
 
 /** Goi thang Google. Chi dung duoc khi Worker khong bi chan dia ly - tuc la sau khi ban bat
- * billing cho Gemini (luc do bo GEMINI_RELAY_URL di la tu dong roi vao nhanh nay). */
+ * billing cho Gemini (luc do bo GAS_URL di la tu dong roi vao nhanh nay). */
 async function callGeminiDirect_(payload, env) {
   const model = env.GEMINI_MODEL || DEFAULT_MODEL;
   const endpoint =
