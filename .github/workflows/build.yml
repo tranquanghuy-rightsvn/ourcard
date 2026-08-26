@@ -11,6 +11,7 @@ on:
       - "data/free-templates.json"
       - "data/custom-designs.json"
       - "data/site-settings.json"
+      - "data/chat-qa.json"
       # Sua thiet ke trang (templates/) hoac logic build cung phai build lai - khong thi
       # phai cho lan Luu tiep theo tren CMS moi thay doi moi len duoc site.
       - "templates/**"

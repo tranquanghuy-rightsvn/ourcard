@@ -244,6 +244,41 @@ build. **Never hand-edit `worker/knowledge.generated.js`** — it is overwritten
 It *is* committed (CI does `git add html/ worker/`) so `wrangler deploy` always ships a
 prompt matching the deployed HTML.
 
+### What the assistant knows, and who writes it
+
+Three layers, in increasing priority:
+
+1. **The site itself** — the Wholesale page's body copy and `data/products.json`, extracted
+   by `build.py` so the bot can never contradict the page.
+2. **`chat.extra_notes`** in site settings — free text for anything not on the site.
+3. **`data/chat-qa.json`** — Q&A pairs written in the CMS tab **"Hỏi đáp AI"**, injected as
+   *owner-approved answers, HIGHEST priority*. When a visitor's question matches one, the
+   model answers from it instead of inferring from the page. They do **not** override the
+   hard rules — an owner-written answer still cannot make the bot quote a price.
+
+`draft` rows are skipped. All three are baked into the prompt at build time, so a Q&A edit
+goes live the same way any content edit does (CMS → commit → CI → deploy, about a minute).
+Nothing is read from a Sheet at chat time — that would add a round trip to every reply, and
+latency is the scarce resource on this path. `build.py` prints a warning if the prompt grows
+past 40 KB, since the whole thing is sent on every turn.
+
+### Conversation log
+
+Every exchange is appended to a **`ChatLogs`** sheet (`conversation_id, submitted_at, role,
+message, page`) and read back grouped per conversation in the CMS tab **"Hội thoại AI"**.
+
+`conversationId` is a random id `chat.js` keeps in `sessionStorage` — it survives navigation
+between the site's static pages but does not follow a visitor across sessions. The Worker
+truncates it (64 chars) and the page path (300) before passing them on; neither is trusted
+and neither affects the reply.
+
+Both rows (question and answer) are written in a single `setValues` call — two `appendRow`
+calls would add roughly half a second to every turn. The write is wrapped in try/catch after
+the reply is computed: **a Sheets failure must never cost the visitor their answer.**
+
+Visitors are anonymous, so the log carries no identity — but people do type names, emails and
+phone numbers into chat boxes, and that lands in this sheet. Treat it as customer data.
+
 ### Guardrails
 
 The generated prompt hard-forbids the things that would hurt the business more than a

@@ -118,8 +118,15 @@ async function handleChat(request, env, url) {
     return json_({ ok: false, error: "empty_message" }, 400);
   }
 
+  // Chi de gom nhom trong nhat ky CMS - khong dung vao logic nao, va khong tin tuong:
+  // cat ngan o day roi de GAS tu cat tiep.
+  const meta = {
+    conversationId: String((body && body.conversationId) || "").slice(0, 64),
+    page: String((body && body.page) || "").slice(0, 300),
+  };
+
   try {
-    const reply = await callGemini_(contents, env);
+    const reply = await callGemini_(contents, env, meta);
     if (!reply) {
       return json_({ ok: false, error: "empty_reply" }, 502);
     }
@@ -183,7 +190,7 @@ async function fetchWithTimeout_(url, init, timeoutMs) {
   }
 }
 
-async function callGemini_(contents, env) {
+async function callGemini_(contents, env, meta) {
   const payload = {
     contents: contents,
     systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
@@ -193,6 +200,7 @@ async function callGemini_(contents, env) {
     },
   };
   if (!useRelay_(env)) return callGeminiDirect_(payload, env);
+  payload.meta = meta || {};
 
   let lastError;
   for (let attempt = 1; attempt <= RELAY_ATTEMPTS; attempt++) {
@@ -220,6 +228,9 @@ async function callViaRelay_(payload, env) {
     systemInstruction: payload.systemInstruction.parts[0].text,
     contents: payload.contents,
     generationConfig: payload.generationConfig,
+    // Chi de gom nhom trong nhat ky CMS, khong anh huong cau tra loi.
+    conversationId: (payload.meta || {}).conversationId || "",
+    page: (payload.meta || {}).page || "",
   });
 
   // GAS /exec KHONG tra ket qua ngay: no chay doPost roi tra 302 sang

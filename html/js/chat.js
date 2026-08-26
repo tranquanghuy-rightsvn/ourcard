@@ -14,6 +14,25 @@
   if (!CFG || !CFG.enabled) return;
 
   var MAX_INPUT = 600; // khop MAX_MESSAGE_CHARS ben worker/index.js
+  var CONV_KEY = "kht_chat_conversation";
+
+  /** Ma cuoc tro chuyen, de chu site doc lai trong CMS theo tung cuoc thay vi mot dong tin
+   * nhan roi rac. Dung sessionStorage: song qua viec chuyen trang (site nhieu trang tinh)
+   * nhung khong theo doi khach qua nhieu phien khac nhau. */
+  function conversationId() {
+    try {
+      var id = sessionStorage.getItem(CONV_KEY);
+      if (!id) {
+        id = (window.crypto && crypto.randomUUID)
+          ? crypto.randomUUID()
+          : String(Date.now()) + "-" + Math.random().toString(16).slice(2);
+        sessionStorage.setItem(CONV_KEY, id);
+      }
+      return id;
+    } catch (e) {
+      return "no-storage"; // che do rieng tu: van chat duoc, chi la khong gom nhom duoc
+    }
+  }
   var history = []; // [{role:"user"|"model", text:"..."}] - gui kem moi luot de bot nho ngu canh
   var started = false;
   var busy = false;
@@ -242,7 +261,11 @@
       return fetch(CFG.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: messages }),
+        body: JSON.stringify({
+          messages: messages,
+          conversationId: conversationId(),
+          page: location.pathname,
+        }),
       })
         .then(function (res) {
           return res.json().catch(function () {
