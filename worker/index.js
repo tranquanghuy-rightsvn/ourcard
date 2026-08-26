@@ -20,11 +20,12 @@ const MAX_MESSAGE_CHARS = 600;
 const MAX_HISTORY_MESSAGES = 12;
 const GEMINI_TIMEOUT_MS = 25000;
 
-// Cold start cua Apps Script rat that thuong: do thuc te 2.7s / 2.9s / 8.5s / 11.7s va mot
-// lan treo han. Nen thay vi cho that lau MOT lan, cho ngan roi thu lai - lan thu 2 gan nhu
-// luon roi vao instance da am (~3s). Toi da ~24s cho ca hai lan, bang mot lan cho cu.
-const RELAY_ATTEMPT_TIMEOUT_MS = 12000;
-const RELAY_ATTEMPTS = 2;
+// KHONG retry qua relay. Da tung cho 12s roi thu lai, nhung do la SAI: khi GAS cham hon 12s
+// no VAN DANG CHAY chu khong chet - Worker bo cuoc va gui lai lam Gemini bi hoi 2 lan, nhat
+// ky ghi 2 dong va quota bi dot gap doi. Retry chi an toan voi thao tac khong co tac dung
+// phu; thao tac nay co. Thay vao do cho han mot lan that rong, va giu GAS luon am bang
+// trigger moi phut ben gas/Code.js (chatKeepWarm_) de cold start hiem khi xay ra.
+const RELAY_TIMEOUT_MS = 25000;
 const MAX_OUTPUT_TOKENS = 400;
 
 const DEFAULT_MODEL = "gemini-3.5-flash-lite";
@@ -201,20 +202,7 @@ async function callGemini_(contents, env, meta) {
   };
   if (!useRelay_(env)) return callGeminiDirect_(payload, env);
   payload.meta = meta || {};
-
-  let lastError;
-  for (let attempt = 1; attempt <= RELAY_ATTEMPTS; attempt++) {
-    try {
-      return await callViaRelay_(payload, env);
-    } catch (err) {
-      lastError = err;
-      // Loi nghiep vu (token sai, het quota GAS) thi thu lai cung vo ich - chi thu lai voi
-      // loi ha tang: treo, dut ket noi, 5xx.
-      if (/relay error:/.test(err.message) && !/upstream 5/.test(err.message)) throw err;
-      console.error("relay attempt " + attempt + " that bai:", err.message);
-    }
-  }
-  throw lastError;
+  return callViaRelay_(payload, env);
 }
 
 /** Nho GAS goi Gemini ho. GAS chi la ong dan: system prompt, rate limit theo IP, cat bot
@@ -244,14 +232,14 @@ async function callViaRelay_(payload, env) {
     redirect: "manual",
     // GAS tu quyet dinh cache; ep bo qua cache cua Cloudflare cho chac.
     cf: { cacheTtl: 0, cacheEverything: false },
-  }, RELAY_ATTEMPT_TIMEOUT_MS);
+  }, RELAY_TIMEOUT_MS);
 
   let res = first;
   if (first.status >= 300 && first.status < 400) {
     const location = first.headers.get("Location");
     if (!location) throw new Error("relay redirect thieu Location (" + first.status + ")");
     // Chang 2 PHAI la GET: URL echo chi phuc vu GET, POST vao do se bi 405.
-    res = await fetchWithTimeout_(location, { method: "GET" }, RELAY_ATTEMPT_TIMEOUT_MS);
+    res = await fetchWithTimeout_(location, { method: "GET" }, RELAY_TIMEOUT_MS);
   }
 
   if (!res.ok) throw new Error("relay http " + res.status);

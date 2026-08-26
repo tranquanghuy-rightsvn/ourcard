@@ -209,11 +209,24 @@ to `script.googleusercontent.com/macros/echo`, which holds the result. The Worke
 that redirect itself (`redirect: "manual"`, then an explicit **GET** — the echo URL rejects
 POST with 405) so each leg gets its own timeout and failures say which leg broke.
 
-**Measured behaviour.** Warm, the whole round trip is ~2.5–3s. Apps Script cold starts are
-erratic though: a first run measured 2.7 / 2.9 / 8.5 / 11.7s and one outright hang. So the
-relay path caps each attempt at 12s and retries once — a second attempt almost always lands
-on a warm instance. After that change, 6/6 requests succeeded in 2.5–6.2s. Business errors
-(bad token, GAS quota) are **not** retried; only hangs and 5xx are.
+**Cold start is the whole problem.** Gemini itself is steady at ~1.1–1.3s (measured
+directly, and `maxOutputTokens` 400 vs 160 made no difference — replies run ~115 tokens).
+The variance is Apps Script: a *warm* `/exec` answers in 1.6–3.5s, a cold one took 12–28s —
+even on the path that only rejects a bad token, with no Gemini call and no Sheet write. In
+the GAS editor you never see this, because there is no web-app cold start there.
+
+**Do not retry this call.** An earlier version waited 12s then retried. That was wrong: a
+slow GAS is still *running*, not dead, so the retry made Gemini answer the same question
+twice, wrote the turn to `ChatLogs` twice and burned double the quota. Retries are only safe
+for side-effect-free work, and this has side effects. There is now one attempt with a 25s
+budget, and the fix for cold starts is warmth, not repetition:
+
+- `chatKeepWarm_()` runs on a **one-minute trigger** and POSTs `{action:"ping"}` to the web
+  app so Apps Script keeps an instance alive. Install it once by running `setupChatTrigger()`
+  in the editor; it needs the Script Property `WEB_APP_URL`. Quota: 1,440 UrlFetch calls/day
+  against a 20,000 limit, and roughly 24–48 of the 90 daily trigger minutes. Dial it to five
+  minutes in `setupChatTrigger()` if that budget gets tight.
+- The same trigger flushes the chat log queue (below), so logging costs the visitor nothing.
 
 Free-tier Gemini rate limits are per-key and still apply — firing several requests within a
 minute during testing produced `upstream_error`. GAS's 30-simultaneous-executions ceiling
@@ -272,9 +285,14 @@ between the site's static pages but does not follow a visitor across sessions. T
 truncates it (64 chars) and the page path (300) before passing them on; neither is trusted
 and neither affects the reply.
 
-Both rows (question and answer) are written in a single `setValues` call — two `appendRow`
-calls would add roughly half a second to every turn. The write is wrapped in try/catch after
-the reply is computed: **a Sheets failure must never cost the visitor their answer.**
+Writes never happen on the visitor's path. Opening a Spreadsheet costs several hundred ms to
+over a second, and that would land squarely in the window where someone is watching the
+typing dots. `logChatTurn_()` pushes the turn into `CacheService` (a few ms) and the
+one-minute trigger drains the queue into the sheet in one `setValues` call. The trade: if the
+cache is evicted before the flush, those turns are lost — acceptable, since this is a log the
+owner reads for reference, not an accounting record. The enqueue is still wrapped in
+try/catch after the reply is computed: **a logging failure must never cost the visitor their
+answer.**
 
 Visitors are anonymous, so the log carries no identity — but people do type names, emails and
 phone numbers into chat boxes, and that lands in this sheet. Treat it as customer data.
