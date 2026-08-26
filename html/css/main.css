@@ -843,29 +843,6 @@ body {
   color: var(--color-white);
   border-bottom-right-radius: 4px;
 }
-/* Man hinh mo dau cua widget chat - nut "Xin chao" de bat dau (xem js/chat.js). */
-.chat__start {
-  align-self: flex-start;
-  border: 1px solid var(--color-rust);
-  background: transparent;
-  color: var(--color-rust);
-  border-radius: 999px;
-  padding: 9px 20px;
-  font-size: 13.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease;
-}
-.chat__start:hover:not(:disabled) {
-  background: var(--color-rust);
-  color: var(--color-white);
-}
-.chat__start:disabled {
-  opacity: 0.55;
-  cursor: default;
-}
 .chat__notice-lead {
   margin: 0 0 6px;
 }

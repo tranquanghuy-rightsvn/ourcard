@@ -34,7 +34,6 @@
     }
   }
   var history = []; // [{role:"user"|"model", text:"..."}] - gui kem moi luot de bot nho ngu canh
-  var started = false;
   var busy = false;
 
   function el(tag, className, html) {
@@ -195,37 +194,25 @@
       return typing;
     }
 
-    /** Man hinh mo dau: noi ro day la tro ly tu dong, va chi bat dau khi khach bam nut. */
-    function renderStartScreen() {
+    /** Khung chat mo ra la go duoc ngay: khong nut bat dau, khong loi nhac bat buoc.
+     * startHint de trong thi khong hien gi - phan tiet lo "day la tro ly tu dong" nam o
+     * dong trang thai tren header (CFG.statusText). */
+    function renderIntro() {
       ui.body.innerHTML = "";
       if (CFG.startHint) {
         var hint = el("div", "chat__notice");
         hint.textContent = CFG.startHint;
         ui.body.appendChild(hint);
       }
-      var startBtn = el("button", "chat__start");
-      startBtn.type = "button";
-      startBtn.textContent = CFG.startButton || "Xin chào";
-      startBtn.addEventListener("click", function () {
-        startBtn.disabled = true;
-        start(startBtn.textContent);
-      });
-      ui.body.appendChild(startBtn);
-      setInputEnabled(false);
+      setInputEnabled(true);
       scrollDown();
     }
 
+    /** Chi khoa o nhap TRONG LUC cho tra loi, de khach khong gui chong len nhau. */
     function setInputEnabled(on) {
       ui.input.disabled = !on;
       ui.form.querySelector("button[type=submit]").disabled = !on;
       ui.form.classList.toggle("chat__form--disabled", !on);
-    }
-
-    function start(text) {
-      started = true;
-      var startBtn = ui.body.querySelector(".chat__start");
-      if (startBtn) startBtn.remove();
-      send(text);
     }
 
     function send(text) {
@@ -284,13 +271,10 @@
       ui.panel.hidden = !open;
       ui.wrap.classList.toggle("chat--open", open);
       ui.launcher.setAttribute("aria-expanded", String(open));
-      if (open) {
-        if (!started) renderStartScreen();
-        else if (!busy) ui.input.focus();
-      }
+      if (open && !busy) ui.input.focus();
     }
 
-    renderStartScreen();
+    renderIntro();
 
     ui.launcher.addEventListener("click", function () {
       toggle(ui.panel.hidden);
@@ -303,7 +287,7 @@
     });
     ui.form.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (started) send(ui.input.value);
+      send(ui.input.value);
     });
   });
 })();
