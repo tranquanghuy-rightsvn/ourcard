@@ -326,6 +326,10 @@ past 40 KB, since the whole thing is sent on every turn.
 Every exchange is appended to a **`ChatLogs`** sheet (`conversation_id, submitted_at, role,
 message, page`) and read back grouped per conversation in the CMS tab **"Hội thoại AI"**.
 
+Conversations are ordered by their **most recent message**, not by when they started — a
+thread opened this morning that just got a new question belongs at the top. Messages inside a
+thread stay oldest-first, the way a chat reads.
+
 `conversationId` is a random id `chat.js` keeps in `sessionStorage` — it survives navigation
 between the site's static pages but does not follow a visitor across sessions. The Worker
 truncates it (64 chars) and the page path (300) before passing them on; neither is trusted
