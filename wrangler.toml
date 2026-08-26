@@ -26,6 +26,19 @@ html_handling = "none"
 # to index.html. Serves html/404.html with an actual HTTP 404 status.
 not_found_handling = "404-page"
 
+# Smart Placement: Gemini CHAN theo vi tri dia ly, ma Worker mac dinh chay o colo gan
+# khach nhat - khach Viet Nam -> colo Hong Kong -> Google tra 400 "User location is not
+# supported". Bat smart placement de Cloudflare tu doi cho chay Worker ve gan backend
+# (thuong la US), noi Gemini cho phep.
+#
+# LUU Y: chi anh huong fetch handler (tuc /api/chat). File tinh VAN luon duoc phuc vu tu
+# colo gan khach nhat, nen toc do trang web khong bi cham di.
+#
+# Khong dam bao an: Cloudflare can "luu luong on dinh tu nhieu vi tri" moi ra duoc quyet
+# dinh; site it khach se ket o trang thai INSUFFICIENT_INVOCATIONS va khong bao gio doi cho.
+[placement]
+mode = "smart"
+
 # Model Gemini dung cho widget chat. Doi o day (rot roi `wrangler deploy`) neu muon dung
 # ban khac - khong phai sua code.
 [vars]
