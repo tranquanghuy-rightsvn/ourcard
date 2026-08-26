@@ -341,14 +341,22 @@ reply has already gone out (`ctx.waitUntil`), so it adds nothing to the wait and
 logging anything the moment the assistant moved to Workers AI. GAS no longer logs from the
 relay path either, or a relayed turn would be written twice.
 
-Writes never happen on the visitor's path. Opening a Spreadsheet costs several hundred ms to
-over a second, and that would land squarely in the window where someone is watching the
-typing dots. `logChatTurn_()` pushes the turn into `CacheService` (a few ms) and the
-one-minute trigger drains the queue into the sheet in one `setValues` call. The trade: if the
-cache is evicted before the flush, those turns are lost — acceptable, since this is a log the
-owner reads for reference, not an accounting record. The enqueue is still wrapped in
-try/catch after the reply is computed: **a logging failure must never cost the visitor their
-answer.**
+The write goes straight into the sheet, and there is **no trigger at all**. An earlier
+version queued turns in `CacheService` and drained them on a ten-minute trigger, because
+opening a Spreadsheet costs several hundred ms to over a second and that used to land inside
+the visitor's wait. Once logging moved to its own `ctx.waitUntil` call the reason evaporated:
+the visitor already has their answer, so nobody is waiting on the Sheet. Dropping the queue
+removed a trigger (and its share of the account-wide Apps Script quota), removed the risk of
+the cache being evicted before a flush, and made turns show up immediately instead of up to
+ten minutes later.
+
+`writeChatTurn_()` takes a `LockService` script lock: two visitors typing at once would
+otherwise both compute `getLastRow() + 1` and overwrite each other. Waiting a few seconds
+costs nothing here. The call is still wrapped in try/catch after the reply is computed: **a
+logging failure must never cost the visitor their answer.**
+
+If a previous deploy installed the old trigger, `removeChatTrigger()` in the editor clears
+it.
 
 Visitors are anonymous, so the log carries no identity — but people do type names, emails and
 phone numbers into chat boxes, and that lands in this sheet. Treat it as customer data.
