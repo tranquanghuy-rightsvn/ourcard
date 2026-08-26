@@ -267,11 +267,31 @@
         });
     }
 
+    var warmed = false;
+    /** Danh thuc Apps Script ngay khi khach mo khung chat. Ho con phai go cau hoi (vai
+     * giay), nen cold start chay chong len khoang thoi gian do thay vi bat ho cho. Goi
+     * dung MOT lan moi lan tai trang; loi thi im lang bo qua - day chi la toi uu. */
+    function warmUp() {
+      if (warmed) return;
+      warmed = true;
+      try {
+        fetch(CFG.endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ warm: true }),
+          keepalive: true,
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
     function toggle(open) {
       ui.panel.hidden = !open;
       ui.wrap.classList.toggle("chat--open", open);
       ui.launcher.setAttribute("aria-expanded", String(open));
-      if (open && !busy) ui.input.focus();
+      if (open) {
+        warmUp();
+        if (!busy) ui.input.focus();
+      }
     }
 
     renderIntro();

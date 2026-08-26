@@ -221,12 +221,21 @@ twice, wrote the turn to `ChatLogs` twice and burned double the quota. Retries a
 for side-effect-free work, and this has side effects. There is now one attempt with a 25s
 budget, and the fix for cold starts is warmth, not repetition:
 
-- `chatKeepWarm_()` runs on a **one-minute trigger** and POSTs `{action:"ping"}` to the web
-  app so Apps Script keeps an instance alive. Install it once by running `setupChatTrigger()`
-  in the editor; it needs the Script Property `WEB_APP_URL`. Quota: 1,440 UrlFetch calls/day
-  against a 20,000 limit, and roughly 24–48 of the 90 daily trigger minutes. Dial it to five
-  minutes in `setupChatTrigger()` if that budget gets tight.
-- The same trigger flushes the chat log queue (below), so logging costs the visitor nothing.
+- **Warm from the browser, not from a trigger.** `chat.js` POSTs `{warm:true}` the moment a
+  visitor opens the chat panel; the Worker forwards `{action:"ping"}` to GAS and returns
+  immediately (`ctx.waitUntil`). The visitor still has to type their question — several
+  seconds — so the cold start overlaps that instead of making them wait for it.
+
+  This deliberately replaces an earlier one-minute keep-warm trigger. **Apps Script's 90
+  minutes/day of trigger runtime is an account-wide pool shared by every script that account
+  owns**, so a per-minute trigger would have spent 24–48 of those minutes on this site's
+  other projects' behalf — every day, visitors or not. Web-app executions do not count
+  against that pool, and a browser ping only happens when someone actually intends to chat.
+
+  The ping uses its own rate-limit key (`warm:<ip>`) so opening and closing the panel does
+  not eat into the visitor's message allowance.
+- The trigger that remains does **only** log flushing, every ten minutes (~2–3 minutes of
+  quota per day). Install it once with `setupChatTrigger()` in the editor.
 
 Free-tier Gemini rate limits are per-key and still apply — firing several requests within a
 minute during testing produced `upstream_error`. GAS's 30-simultaneous-executions ceiling

@@ -31,10 +31,10 @@ const MAX_OUTPUT_TOKENS = 400;
 const DEFAULT_MODEL = "gemini-3.5-flash-lite";
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/chat") {
-      return handleChat(request, env, url);
+      return handleChat(request, env, url, ctx);
     }
     // Moi thu con lai: tra file tinh trong html/ (binding khai o wrangler.toml).
     return env.ASSETS.fetch(request);
@@ -82,7 +82,7 @@ function isAllowedOrigin_(request, url, env) {
   return false;
 }
 
-async function handleChat(request, env, url) {
+async function handleChat(request, env, url, ctx) {
   if (request.method !== "POST") {
     return json_({ ok: false, error: "method_not_allowed" }, 405);
   }
@@ -97,21 +97,48 @@ async function handleChat(request, env, url) {
     return json_({ ok: false, error: "not_configured" }, 503);
   }
 
-  // Rate limit theo IP. Binding nay la per-colo va "eventually consistent" (theo tai lieu
-  // Cloudflare) - du de chan spam, khong dung de tinh tien.
-  if (env.CHAT_RATE_LIMITER) {
-    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
-    const { success } = await env.CHAT_RATE_LIMITER.limit({ key: ip });
-    if (!success) {
-      return json_({ ok: false, error: "rate_limited" }, 429);
-    }
-  }
-
+  // Parse body TRUOC rate limit: can biet day la ping ham nong hay tin nhan that de dem
+  // vao dung khoa.
   let body;
   try {
     body = await request.json();
   } catch (e) {
     return json_({ ok: false, error: "bad_request" }, 400);
+  }
+
+  // Rate limit theo IP. Binding nay la per-colo va "eventually consistent" (theo tai lieu
+  // Cloudflare) - du de chan spam, khong dung de tinh tien.
+  if (env.CHAT_RATE_LIMITER) {
+    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+    // Khoa rieng cho ping ham nong: mo/dong khung chat vai lan khong duoc an vao han muc
+    // nhan tin that cua khach, nhung van phai co tran de khong bi spam.
+    const isWarm = !!(body && body.warm === true);
+    const { success } = await env.CHAT_RATE_LIMITER.limit({ key: isWarm ? "warm:" + ip : ip });
+    if (!success) {
+      return json_({ ok: false, error: "rate_limited" }, 429);
+    }
+  }
+
+  // Ham nong: chat.js goi cai nay NGAY khi khach mo khung chat, truoc khi ho kip go xong
+  // cau hoi. Cold start cua Apps Script (12-28s) nho vay chay CHONG LEN thoi gian khach dang
+  // go, thay vi bat ho ngoi cho.
+  //
+  // Vi sao khong dung trigger moi phut: quota 90 phut/ngay cua Apps Script tinh cho CA TAI
+  // KHOAN, dung chung voi moi script khac chu site dang chay. Ping tu trinh duyet la
+  // execution web app - KHONG tinh vao quota trigger do. Va no chi ton khi that su co nguoi
+  // dinh chat, thay vi 1.440 lan/ngay du co khach hay khong.
+  if (body && body.warm === true) {
+    if (useRelay_(env)) {
+      const ping = fetchWithTimeout_(env.GEMINI_RELAY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "ping" }),
+        redirect: "manual",
+      }, RELAY_TIMEOUT_MS).catch(() => {});
+      // Khong bat khach cho: tra loi ngay, de ping chay tiep o nen.
+      if (ctx && ctx.waitUntil) ctx.waitUntil(ping);
+    }
+    return json_({ ok: true, warmed: true });
   }
 
   const contents = normalizeMessages_(body && body.messages);
