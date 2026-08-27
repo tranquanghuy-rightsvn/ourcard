@@ -5,5 +5,12 @@
     "answer": "Có 2 kích thước chuẩn, đó là 5x7inch (mở ra 10x7inch) và 15x20cm (mở ra 30x20cm)",
     "status": "published",
     "updated_at": "2026-08-27"
+  },
+  {
+    "id": 2,
+    "question": "What is the card size?",
+    "answer": "There are 2 standard sizes, which are 5x7 inches (10x7 inches when opened) and 15x20 cm (30x20 cm when opened).",
+    "status": "published",
+    "updated_at": "2026-08-27"
   }
 ]
