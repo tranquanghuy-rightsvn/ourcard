@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "id": 1,
+    "question": "kích thước thiệp bao nhiêu?",
+    "answer": "Có 2 kích thước chuẩn, đó là 5x7inch (mở ra 10x7inch) và 15x20cm (mở ra 30x20cm)",
+    "status": "published",
+    "updated_at": "2026-08-27"
+  }
+]
