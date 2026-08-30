@@ -55,31 +55,29 @@ document.querySelectorAll('.product-accordion .faq-item__btn').forEach(function 
   var dotsWrap = document.getElementById('productsDots');
   if (!track || !prevBtn || !nextBtn) return;
 
+  var GAP = 20;
+  // Captured before any clones are inserted, so this always holds only the real
+  // cards even after setup() runs again on resize.
   var realCards = Array.prototype.slice.call(track.children);
   var realCount = realCards.length;
   if (realCount === 0) return;
 
-  // Clone the full set on both sides ([clones][real][clones]) so there's always
-  // enough buffer to slide past either end, at any responsive item-count.
-  var headClones = document.createDocumentFragment();
-  var tailClones = document.createDocumentFragment();
-  realCards.forEach(function (card) {
-    var head = card.cloneNode(true);
-    head.setAttribute('aria-hidden', 'true');
-    headClones.appendChild(head);
-    var tail = card.cloneNode(true);
-    tail.setAttribute('aria-hidden', 'true');
-    tailClones.appendChild(tail);
-  });
-  track.insertBefore(headClones, track.firstChild);
-  track.appendChild(tailClones);
+  var currentIndex = 0;
+  var looping = false;
 
-  var currentIndex = realCount; // start on the first real card
+  function cardWidth() {
+    var card = realCards[0];
+    return card ? card.getBoundingClientRect().width + GAP : 0;
+  }
 
-  function getCardWidth() {
-    var card = track.children[0];
-    if (!card) return 0;
-    return card.getBoundingClientRect().width + 20;
+  // How many cards the viewport shows at once. Cloning only makes sense when
+  // there are MORE real cards than this - otherwise the head/tail clones sit
+  // in view next to the originals and the same product renders twice.
+  function perView() {
+    var w = cardWidth();
+    if (!w) return realCount;
+    var vw = track.parentNode.getBoundingClientRect().width;
+    return Math.max(1, Math.round(vw / w));
   }
 
   function realIndex() {
@@ -104,21 +102,68 @@ document.querySelectorAll('.product-accordion .faq-item__btn').forEach(function 
     Array.prototype.forEach.call(dotsWrap.children, function (dot, i) {
       dot.classList.toggle('products__dot--active', i === ri);
     });
-    dotsWrap.style.display = realCount <= 1 ? 'none' : '';
   }
 
   function goTo(index, animate) {
+    if (!looping) return;
     currentIndex = index;
     track.style.transition = animate ? '' : 'none';
     if (!animate) void track.offsetHeight; // commit "no transition" before jumping
-    track.style.transform = 'translateX(-' + (currentIndex * getCardWidth()) + 'px)';
+    track.style.transform = 'translateX(-' + (currentIndex * cardWidth()) + 'px)';
     renderDots();
+  }
+
+  function removeClones() {
+    Array.prototype.slice.call(track.querySelectorAll('[data-clone]')).forEach(function (n) {
+      track.removeChild(n);
+    });
+  }
+
+  // Rebuilds the carousel for the current viewport. Idempotent: safe to call on
+  // every resize. Leaves the track as a plain left-aligned row (no clones, no
+  // arrows, no dots) whenever everything already fits.
+  function setup() {
+    removeClones();
+    track.style.transition = 'none';
+    track.style.transform = 'none';
+    looping = false;
+
+    if (realCount <= perView()) {
+      prevBtn.hidden = true;
+      nextBtn.hidden = true;
+      if (dotsWrap) dotsWrap.hidden = true;
+      return;
+    }
+
+    // Clone the full set on both sides ([clones][real][clones]) so there's always
+    // enough buffer to slide past either end, at any responsive item-count.
+    var headClones = document.createDocumentFragment();
+    var tailClones = document.createDocumentFragment();
+    realCards.forEach(function (card) {
+      var head = card.cloneNode(true);
+      head.setAttribute('aria-hidden', 'true');
+      head.setAttribute('data-clone', '');
+      headClones.appendChild(head);
+      var tail = card.cloneNode(true);
+      tail.setAttribute('aria-hidden', 'true');
+      tail.setAttribute('data-clone', '');
+      tailClones.appendChild(tail);
+    });
+    track.insertBefore(headClones, track.firstChild);
+    track.appendChild(tailClones);
+
+    prevBtn.hidden = false;
+    nextBtn.hidden = false;
+    if (dotsWrap) dotsWrap.hidden = false;
+
+    looping = true;
+    goTo(realCount, false); // start on the first real card
   }
 
   // Once a click slides into the cloned buffer, snap invisibly back to the
   // matching real position so the next click keeps sliding the same direction.
   track.addEventListener('transitionend', function (e) {
-    if (e.target !== track || e.propertyName !== 'transform') return;
+    if (!looping || e.target !== track || e.propertyName !== 'transform') return;
     if (currentIndex >= realCount * 2) {
       goTo(currentIndex - realCount, false);
     } else if (currentIndex < realCount) {
@@ -129,9 +174,13 @@ document.querySelectorAll('.product-accordion .faq-item__btn').forEach(function 
   prevBtn.addEventListener('click', function () { goTo(currentIndex - 1, true); });
   nextBtn.addEventListener('click', function () { goTo(currentIndex + 1, true); });
 
-  window.addEventListener('resize', function () { goTo(currentIndex, false); });
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(setup, 150);
+  });
 
-  goTo(realCount, false);
+  setup();
 })();
 
 /* ===== WISHLIST TOGGLE ===== */

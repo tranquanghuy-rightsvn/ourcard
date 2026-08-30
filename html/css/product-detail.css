@@ -388,6 +388,9 @@
 .products__arrow--prev { left: 16px; }
 .products__arrow--next { right: 16px; }
 .products__arrow:disabled { opacity: 0.35; cursor: default; }
+/* .products__arrow sets display:flex, which would otherwise beat [hidden]'s UA
+   rule — the carousel script only reveals the arrows when there's more to scroll. */
+.products__arrow[hidden] { display: none; }
 
 .products__track-wrap {
   width: 100%;
@@ -500,6 +503,7 @@
   gap: 8px;
   margin-top: 22px;
 }
+.products__dots[hidden] { display: none; }
 .products__dot {
   width: 7px;
   height: 7px;
