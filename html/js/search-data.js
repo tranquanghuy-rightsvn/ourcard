@@ -1,1 +1,1 @@
-window.KHT_SEARCH_INDEX = [];
+window.KHT_SEARCH_INDEX = [{"id": "kc014-halloween-cake-creepin-s-it-real", "name": "KC014 - Halloween cake - Creepin's it real", "image": "images/kc014-halloween-cake-creepin-s-it-real-2.jpg", "link": "product/kc014-halloween-cake-creepin-s-it-real.html"}];
