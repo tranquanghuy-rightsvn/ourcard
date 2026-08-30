@@ -22,5 +22,31 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-08-30"
+  },
+  {
+    "id": 2,
+    "slug": "kc013-teddy-bear-chrismast",
+    "sku": "KC013",
+    "name": "Teddy Bear Chrismast",
+    "category": "christmas",
+    "tags_text": "Chrismast",
+    "is_bestseller": false,
+    "is_new": true,
+    "cover_image": "kc013-teddy-bear-chrismast-1.jpg",
+    "gallery": [
+      "kc013-teddy-bear-chrismast-1.jpg",
+      "kc013-teddy-bear-chrismast-2.jpg",
+      "kc013-teddy-bear-chrismast-3.jpg",
+      "kc013-teddy-bear-chrismast-5.jpg",
+      "kc013-teddy-bear-chrismast-9.jpg",
+      "kc013-teddy-bear-chrismast-10.jpg",
+      "kc013-teddy-bear-chrismast-11.jpg"
+    ],
+    "videos": [
+      "kc013-teddy-bear-chrismast-1.mp4"
+    ],
+    "description_html": "",
+    "status": "published",
+    "updated_at": "2026-08-30"
   }
 ]
