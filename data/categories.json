@@ -38,5 +38,10 @@
     "key": "animals",
     "label": "Animals",
     "order": 7
+  },
+  {
+    "key": "halloween",
+    "label": "Halloween",
+    "order": 8
   }
 ]
