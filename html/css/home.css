@@ -1087,6 +1087,12 @@
   object-fit: contain;
   background: var(--color-white);
 }
+/* Optional per-partner outbound link (set in the CMS) — must not change the logo's box. */
+.partners__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .partners__arrow {
   flex: 0 0 auto;
   width: 40px;

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "slug": "teabug-cards",
+    "name": "Teabug Cards",
+    "url": "",
+    "logo": "logo-parner-10.png",
+    "order": 0,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  },
+  {
+    "id": 2,
+    "slug": "dt",
+    "name": "DT",
+    "url": "",
+    "logo": "logo-parner-3-150x150.png",
+    "order": 1,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  },
+  {
+    "id": 3,
+    "slug": "diese-klappkarten",
+    "name": "Diese Klappkarten",
+    "url": "",
+    "logo": "logo-parner-6.png",
+    "order": 2,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  },
+  {
+    "id": 4,
+    "slug": "igifts-and-cards",
+    "name": "iGifts And Cards",
+    "url": "",
+    "logo": "logo-parner-7.png",
+    "order": 3,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  },
+  {
+    "id": 5,
+    "slug": "limah-store",
+    "name": "Limah Store",
+    "url": "",
+    "logo": "logo-parner-8.png",
+    "order": 4,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  },
+  {
+    "id": 6,
+    "slug": "flawio",
+    "name": "Flawio",
+    "url": "",
+    "logo": "logo-parner-9-150x150.png",
+    "order": 5,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  },
+  {
+    "id": 7,
+    "slug": "mokio",
+    "name": "Mokio",
+    "url": "",
+    "logo": "mokio.png",
+    "order": 6,
+    "status": "published",
+    "updated_at": "2026-08-30"
+  }
+]

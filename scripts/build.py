@@ -48,17 +48,23 @@ def load_json(name, default=None):
     return json.loads(path.read_text())
 
 
-def sorted_categories(categories):
-    """The CMS owns the display order of the category list (Shop All sidebar +
-    Wholesale sidebar) through an explicit `order` field, so the owner can move a
-    category up or down without renaming or recreating it. Falls back to the file's
-    own array order for records written before `order` existed."""
+def sorted_by_order(items):
+    """Order a CMS list by its explicit `order` field so the owner can move a row up
+    or down in the admin without renaming or recreating it. Falls back to the file's
+    own array order for records written before `order` existed. Used for both
+    data/categories.json and data/partners.json (same ↑ ↓ + "Lưu thứ tự" UI)."""
     return [
-        c for _, c in sorted(
-            enumerate(categories),
+        item for _, item in sorted(
+            enumerate(items),
             key=lambda pair: (pair[1].get("order", pair[0]), pair[0]),
         )
     ]
+
+
+def sorted_categories(categories):
+    """The CMS owns the display order of the category list (Shop All sidebar +
+    Wholesale sidebar) through an explicit `order` field."""
+    return sorted_by_order(categories)
 
 
 def badge_of(product):
@@ -360,7 +366,39 @@ def patch_band(text, marker, products, prefix, wrapper_class, with_data_categori
     return new_text
 
 
-def patch_homepage(products, settings):
+def render_partners(partners):
+    """The "Our Partners" logo strip on the homepage (index.html only). Rendered from
+    data/partners.json in the CMS-owned `order`, published rows only. Logos live in
+    html/images/partner/ (kept out of the flat html/images/ pool). An optional `url`
+    turns the logo into an outbound link."""
+    published = [p for p in sorted_by_order(partners) if p.get("status") == "published"]
+    if not published:
+        return "<!-- no partners yet — add logos in the CMS's \"Đối tác\" tab -->"
+    items = []
+    for p in published:
+        logo = html.escape(p.get("logo") or "", quote=True)
+        alt = html.escape(p.get("name") or "", quote=True)
+        img = f'<img src="images/partner/{logo}" alt="{alt}" loading="lazy" />'
+        url = (p.get("url") or "").strip()
+        if url:
+            lines = [
+                '<div class="partners__item">',
+                f'  <a class="partners__link" href="{html.escape(url, quote=True)}" target="_blank" rel="noopener">',
+                f'    {img}',
+                "  </a>",
+                "</div>",
+            ]
+        else:
+            lines = [
+                '<div class="partners__item">',
+                f'  {img}',
+                "</div>",
+            ]
+        items.append("\n".join(lines))
+    return "\n".join(items)
+
+
+def patch_homepage(products, settings, partners):
     index_path = OUT / "index.html"
     text = index_path.read_text()
     published = [p for p in products if p.get("status") == "published"]
@@ -370,6 +408,7 @@ def patch_homepage(products, settings):
     text = patch_band(text, "NEW_PRODUCTS", new_products, "", "product-card", with_data_categories=False)
     text, _ = replace_band(text, "CMS_HOME_META", render_home_meta(settings), required=True)
     text, _ = replace_band(text, "CMS_HERO", render_hero(settings), required=True)
+    text, _ = replace_band(text, "CMS_PARTNERS", render_partners(partners), required=True)
     index_path.write_text(text)
 
 
@@ -1043,6 +1082,7 @@ def main():
     free_templates = load_json("free-templates.json", default=[])
     custom_designs = load_json("custom-designs.json", default=[])
     chat_qa = load_json("chat-qa.json", default=[])
+    partners = sorted_by_order(load_json("partners.json", default=[]))
     settings = merge_settings(load_json("site-settings.json", default={}))
 
     # Templates carry the same <!-- CMS_* --> bands as the hand-authored pages, so the
@@ -1058,7 +1098,7 @@ def main():
     build_free_template(free_templates, free_template_template)
     build_custom_design(custom_designs, custom_design_template)
     patch_chrome_pages(settings)
-    patch_homepage(products, settings)
+    patch_homepage(products, settings, partners)
     patch_wholesale(products, categories)
     build_search_data(products)
     build_chat_data(settings)

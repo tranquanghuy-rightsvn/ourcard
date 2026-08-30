@@ -21,11 +21,11 @@ the homepage itself** (which has to be `index.html`/`/` per static-hosting conve
 
 ```
 CMS (Google Apps Script, gas/)
-   │  edit products/categories/free templates/custom designs/site settings,
+   │  edit products/categories/free templates/custom designs/partners/site settings,
    │  read contact submissions; commits straight to GitHub via Contents API
    ▼
 data/products.json, data/categories.json, data/free-templates.json,
-data/custom-designs.json, data/site-settings.json                   ← source of truth
+data/custom-designs.json, data/partners.json, data/site-settings.json   ← source of truth
 html/images/*, html/videos/*, html/downloads/*                      ← assets, written straight to the site
    │  push to the relevant *.json (the commit-closing file per entity)
    ▼
@@ -35,7 +35,7 @@ GitHub Actions (.github/workflows/build.yml)
 html/product/<slug>.html, html/shop-all.html, html/free-template.html,
 html/custom-design.html, html/js/search-data.js, sitemap.xml, html/ads.txt,
 every hand-authored page's <!-- CMS_* --> bands (hero, head/analytics, logo, socials),
-html/index.html (2 product bands), html/wholesale-pop-up-cards.html (sidebar bands)
+html/index.html (2 product bands + the Our Partners band), html/wholesale-pop-up-cards.html (sidebar bands)
 worker/knowledge.generated.js                       ← the chat assistant's system prompt
    │  commit "CI: build html from data", push
    ▼
@@ -51,14 +51,18 @@ follows (architecture, gotchas, hosting quotas).
 ## Repo layout
 
 - `data/products.json`, `data/categories.json`, `data/free-templates.json`,
-  `data/custom-designs.json`, `data/site-settings.json` — CMS-owned. **Never hand-edit** —
-  the CMS overwrites these on every save, and `scripts/build.py` reads them as input. All
-  start empty/seeded-categories-only on purpose (see "Scope decisions").
+  `data/custom-designs.json`, `data/partners.json`, `data/site-settings.json` — CMS-owned.
+  **Never hand-edit** — the CMS overwrites these on every save, and `scripts/build.py` reads
+  them as input. All start empty/seeded on purpose (see "Scope decisions").
   - `data/categories.json` carries an explicit `order` field per category. That order is the
     display order of the "Category" filter list on Shop All *and* the Categories list in the
     Wholesale sidebar; the owner changes it with the ↑ ↓ buttons in the CMS's "Danh mục" tab
     ("Lưu thứ tự" writes the whole list back in one commit). `build.py` sorts by `order` and
     falls back to the file's array order for records written before the field existed.
+  - `data/partners.json` uses the same `order` field and the same ↑ ↓ / "Lưu thứ tự" UI (CMS
+    tab "Đối tác"). It drives the "Our Partners" logo strip on `index.html` only, via the
+    `<!-- CMS_PARTNERS -->` band. Logos live in `html/images/partner/` (kept out of the flat
+    `html/images/` pool) and are stored raw — no canvas resize — so transparent PNGs survive.
   - `data/site-settings.json` is the "website admin" file — see "Site settings" below.
 - `templates/product.html`, `templates/category.html`, `templates/free-template.html`,
   `templates/custom-design.html` — the design source for generated pages (`{{PLACEHOLDER}}`
@@ -432,9 +436,9 @@ rate limits are no longer published in the docs; check your own at
 
 ## Scope decisions (read before extending)
 
-- **Products, categories, free templates, custom design gallery, contacts and the site-wide
-  settings (hero banner, title/description, logo, favicon, analytics, social links) are
-  CMS-managed.** The *body copy* of the marketing pages stays hand-authored: those pages change
+- **Products, categories, free templates, custom design gallery, partner logos, contacts and
+  the site-wide settings (hero banner, title/description, logo, favicon, analytics, social
+  links) are CMS-managed.** The *body copy* of the marketing pages stays hand-authored: those pages change
   rarely and have bespoke layouts — forcing them through a generic rich-text CMS field would
   flatten the design for content that's edited by hand a few times a year at most. Only their
   shared chrome (head, logo, socials) is CMS-driven, through the `<!-- CMS_* -->` bands.
@@ -448,6 +452,13 @@ rate limits are no longer published in the docs; check your own at
   status}` — its own CMS tab, deliberately unrelated to Products or Free Template (own data
   file, own template, own GAS functions) even though the card markup looks similar. Replaces
   what used to be a copy-pasted, broken Shop All layout on `custom-design.html`.
+- **Our Partners** (`data/partners.json`): each entry is `{slug, name, url, logo, order,
+  status}` — its own CMS tab ("Đối tác"), drives the logo strip on `index.html` only through
+  the `<!-- CMS_PARTNERS -->` band. Reorderable with the same ↑ ↓ / "Lưu thứ tự" mechanism as
+  Categories. `url` is optional (blank = plain logo, set = the logo becomes an outbound
+  link). Logos are pushed **raw** (no `<canvas>` resize, unlike product images) to
+  `html/images/partner/<slug>-<n>.<ext>` so transparent PNGs and SVGs are preserved — same
+  reasoning as the logo/favicon slots in Site settings.
 - **No prices are shown anywhere** (wholesale catalog — every product has a "Contact" CTA
   instead) — this matches the original design, so `data/products.json` doesn't have a price
   field.

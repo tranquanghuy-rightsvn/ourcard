@@ -4,3 +4,6 @@
 # structure — see docs/research playbook gotcha #10).
 gas/
 .key
+# Python bytecode cache
+__pycache__/
+*.pyc

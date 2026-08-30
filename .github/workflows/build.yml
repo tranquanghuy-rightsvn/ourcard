@@ -10,6 +10,7 @@ on:
       - "data/categories.json"
       - "data/free-templates.json"
       - "data/custom-designs.json"
+      - "data/partners.json"
       - "data/site-settings.json"
       - "data/chat-qa.json"
       # Sua thiet ke trang (templates/) hoac logic build cung phai build lai - khong thi
