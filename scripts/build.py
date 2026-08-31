@@ -265,6 +265,11 @@ def render_product_page(product, all_products, template):
     page = page.replace("{{GALLERY_MAIN_VIDEO_HTML}}", video_html)
     page = page.replace("{{PRODUCT_TITLE}}", f'{html.escape(product["sku"])} &mdash; {html.escape(product["name"])}')
     page = page.replace("{{SKU}}", html.escape(product["sku"]))
+    # Free-text "Size" from the CMS. Drop the whole spec row when it's blank rather
+    # than showing an empty "Size" line.
+    size = (product.get("size") or "").strip()
+    size_li = f"<li><span>Size</span>{html.escape(size)}</li>" if size else ""
+    page = page.replace("{{SIZE_LI}}", size_li)
     page = page.replace("{{TAGS_TEXT}}", html.escape(product.get("tags_text", "")))
     page = page.replace("{{PRODUCT_INFO_HTML}}", product["description_html"])
     page = page.replace("{{RELATED_PRODUCTS_CARDS}}", related_html)
@@ -505,9 +510,10 @@ def product_facts(products, categories):
         if p.get("is_new"):
             flags.append("new")
         flag_text = f' ({", ".join(flags)})' if flags else ""
+        size = f' | size: {p["size"]}' if p.get("size") else ""
         lines.append(
             f'- {p["sku"]} — {p["name"]} | category: {labels.get(p.get("category"), p.get("category"))}'
-            f'{tags}{flag_text} | page: {BASE_URL}/product/{p["slug"]}.html'
+            f'{tags}{flag_text}{size} | page: {BASE_URL}/product/{p["slug"]}.html'
         )
     return "\n".join(lines)
 
