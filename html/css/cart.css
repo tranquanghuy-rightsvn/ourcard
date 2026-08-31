@@ -147,6 +147,7 @@
   .site-header,
   .site-footer,
   .social-fixed,
+  .contact-rail,
   .chat,
   .cart-summary__actions {
     display: none !important;

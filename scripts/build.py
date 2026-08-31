@@ -857,11 +857,17 @@ def render_social_footer(settings, prefix):
 
 
 def render_social_fixed(settings):
-    return "\n".join(
+    links = "\n".join(
         f'<a href="{html.escape(url, quote=True)}" aria-label="{net["label"]}"\n'
-        f'  >{net["svg"]}</a>'
+        f'    >{net["svg"]}</a>'
         for net, url in active_social(settings)
     )
+    if not links:
+        return ""
+    # The <aside class="social-fixed"> around this band is a full-height fixed column
+    # (no transform) that flex-centres this inner pill — so `position: fixed` stays
+    # glued to the viewport on mobile instead of scrolling with the page.
+    return f'<div class="social-fixed__inner">\n  {links}\n</div>'
 
 
 # The floating contact rail pinned to the bottom-right corner: Zalo, WhatsApp, then

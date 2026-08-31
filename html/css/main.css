@@ -666,22 +666,31 @@ body {
 /* ==========================================================================
    Floating contact bar (right edge)
    ========================================================================== */
+/* Full-height fixed column with NO transform of its own — that's what keeps it
+   pinned to the viewport on mobile (a `transform` on a position:fixed element
+   makes iOS Safari scroll it with the page). It just flex-centres the pill. */
 .social-fixed {
   position: fixed;
+  top: 0;
+  bottom: 0;
   right: 14px;
-  /* Just above centre — far enough down that it doesn't look stranded at the top,
-     but the 40px lift keeps a comfortable gap to the bottom-right contact rail on
-     laptop-height screens (they only meet below ~500px tall). */
-  top: calc(50% - 40px);
-  transform: translateY(-50%);
   z-index: 80;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.social-fixed__inner {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 8px 6px;
+  padding: 8px 5px;
   background: var(--color-white);
   border-radius: 999px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  /* Nudge above dead-centre so it clears the bottom-right contact rail even on
+     short laptop windows. */
+  transform: translateY(-24px);
 }
 .social-fixed a {
   display: flex;
@@ -690,10 +699,8 @@ body {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  transition: transform 0.18s ease;
-}
-.social-fixed a {
   color: var(--color-text);
+  transition: transform 0.18s ease;
 }
 .social-fixed a:hover {
   transform: scale(1.12);
@@ -710,7 +717,9 @@ body {
    ========================================================================== */
 .contact-rail {
   position: fixed;
-  right: 16px;
+  /* Same right offset as .social-fixed, and the buttons are the same 44px width as
+     that pill, so the two rails line up on the right edge. */
+  right: 14px;
   bottom: 16px;
   z-index: 110;
   display: flex;
@@ -759,13 +768,17 @@ body:has(.chat.chat--open) .contact-rail {
 /* Lift clear of the product page's sticky mobile buy bar, like .chat--above-bar. */
 @media (max-width: 560px) {
   .contact-rail {
-    right: 12px;
+    right: 8px;
     bottom: 12px;
     gap: 7px;
   }
   .contact-rail__btn {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+  }
+  .contact-rail__btn svg {
+    width: 23px;
+    height: 23px;
   }
   body:has(#stickyBuyBar) .contact-rail {
     bottom: 72px;
@@ -1361,7 +1374,9 @@ body:has(.chat.chat--open) .contact-rail {
   /* Smaller and tucked closer in so it doesn't sit over the content */
   .social-fixed {
     right: 8px;
-    gap: 6px;
+  }
+  .social-fixed__inner {
+    gap: 5px;
     padding: 7px 5px;
   }
   .chat {
