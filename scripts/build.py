@@ -2,9 +2,10 @@
 """Build html/product/*.html + html/shop-all.html + html/free-template.html from
 data/*.json + templates/*.html, and patch the dynamic bands on the hand-authored
 pages in place (<!-- BESTSELLERS -->/<!-- NEW_PRODUCTS --> product strips, plus the
-<!-- CMS_* --> site-settings bands: hero banner, head/analytics, logo, socials).
-Stdlib only. Safe to run repeatedly (idempotent) and safe to run in CI (GitHub
-Actions) right after the CMS commits any data/*.json.
+<!-- CMS_* --> site-settings bands: hero banner, head/analytics, logo, socials,
+the Zalo/WhatsApp/AI contact rail). Stdlib only. Safe to run repeatedly
+(idempotent) and safe to run in CI (GitHub Actions) right after the CMS commits
+any data/*.json.
 
     python3 scripts/build.py
 """
