@@ -189,11 +189,12 @@ def render_gallery_main_extras(product):
     if not videos:
         return "", ""
     cover = product["gallery"][0]
-    # The first video is the default gallery view, so it plays on load — looped and
-    # muted (browsers block autoplay with sound; `controls` lets the visitor unmute).
+    # `loop` so it repeats once the visitor plays it. Deliberately NOT `autoplay`:
+    # autoplay makes the browser download the whole clip on page load (ignoring
+    # preload="metadata"), and these files are 10-13 MB.
     video_html = (
-        '<video id="productMainVideo" controls playsinline loop autoplay muted '
-        f'preload="metadata" poster="../images/{cover}">\n'
+        '<video id="productMainVideo" controls playsinline loop preload="metadata" '
+        f'poster="../images/{cover}">\n'
         f'            <source src="../videos/{videos[0]}" type="video/mp4" />\n'
         "          </video>"
     )

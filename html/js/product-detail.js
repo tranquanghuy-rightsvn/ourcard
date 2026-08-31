@@ -25,10 +25,6 @@ document.querySelectorAll('.product-gallery__thumb').forEach(function (thumb) {
           video.load();
         }
         video.hidden = false;
-        // Videos run on their own (muted + looping), so resume playback whether we
-        // just swapped the source or are coming back from a still-photo thumb.
-        var playing = video.play();
-        if (playing && playing.catch) playing.catch(function () {});
       }
       return;
     }
