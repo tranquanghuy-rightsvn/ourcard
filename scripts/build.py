@@ -457,6 +457,7 @@ def build_chat_data(settings):
         "privacyNote": chat.get("privacy_note", ""),
         "contact": {
             "zaloPhone": contact.get("zalo_phone", ""),
+            "whatsappPhone": contact.get("whatsapp_phone", ""),
             "email": contact.get("email", ""),
             # Root-relative so the one file works from the flat pages AND html/product/<slug>.html.
             "formUrl": contact.get("form_url") or "/contact-us.html",
@@ -550,6 +551,8 @@ def build_worker_knowledge(settings, products, categories, qa_items):
     contact_lines = []
     if contact.get("zalo_phone"):
         contact_lines.append(f'- Zalo / phone: {contact["zalo_phone"]}')
+    if contact.get("whatsapp_phone"):
+        contact_lines.append(f'- WhatsApp: {contact["whatsapp_phone"]}')
     if contact.get("email"):
         contact_lines.append(f'- Email: {contact["email"]}')
     contact_lines.append(f'- {contact.get("form_label") or "Contact form"}: {BASE_URL}/contact-us.html')
@@ -737,8 +740,8 @@ DEFAULT_SETTINGS = {
         "error_message": "",
         "out_of_scope_message": "Xin lỗi, câu này nằm ngoài phạm vi hiểu biết của tôi.",
         "privacy_note": "",
-        "contact": {"zalo_phone": "", "email": "", "form_url": "/contact-us.html",
-                    "form_label": "Form liên hệ"},
+        "contact": {"zalo_phone": "", "whatsapp_phone": "", "email": "",
+                    "form_url": "/contact-us.html", "form_label": "Form liên hệ"},
         "extra_notes": "",
         "language_note": "Trả lời bằng tiếng Việt.",
     },
@@ -858,6 +861,70 @@ def render_social_fixed(settings):
         f'  >{net["svg"]}</a>'
         for net, url in active_social(settings)
     )
+
+
+# The floating contact rail pinned to the bottom-right corner: Zalo, WhatsApp, then
+# the AI chat button, top to bottom. Zalo/WhatsApp only appear when a phone number is
+# set in the CMS ("Cài đặt website" → Chat AI); the AI button only when chat is on.
+# The AI button carries `data-chat-launch` so html/js/chat.js opens its panel from
+# here instead of drawing its own separate floating launcher.
+CONTACT_RAIL_ZALO_SVG = (
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+    '<path d="M12 3C6.9 3 3 6.6 3 11c0 2.5 1.2 4.7 3.2 6.2-.1 1-.6 2.4-1.2 3.2-.2.3.1.7.5.6 1.9-.5 3.3-1.2 4-1.6 1.1.3 2.3.4 3.5.4 5.1 0 9-3.6 9-8S17.1 3 12 3z"/>'
+    "</svg>"
+)
+CONTACT_RAIL_WHATSAPP_SVG = (
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+    '<path d="M12 2a10 10 0 00-8.5 15.2L2 22l4.9-1.5A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.9.9-2.8-.2-.3A8 8 0 1112 20zm4.5-5.9c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1-.7-.3-1.5-.7-2.1-1.5-.5-.6-.8-1.2-.9-1.4-.1-.2 0-.4.1-.5l.4-.4c.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5l-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.7 2.6 4.1 3.6.6.2 1 .4 1.4.5.6.2 1.1.1 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1z"/>'
+    "</svg>"
+)
+CONTACT_RAIL_AI_SVG = (
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+    '<path d="M12 3C6.9 3 3 6.5 3 10.8c0 2.3 1.1 4.3 3 5.7V21l3.3-1.9c.9.2 1.8.3 2.7.3 5.1 0 9-3.5 9-7.8S17.1 3 12 3z"/>'
+    '<circle cx="8.5" cy="11" r="1.1" fill="#fff"/><circle cx="12" cy="11" r="1.1" fill="#fff"/>'
+    '<circle cx="15.5" cy="11" r="1.1" fill="#fff"/></svg>'
+)
+
+
+def _contact_digits(phone):
+    return re.sub(r"\D", "", phone or "")
+
+
+def render_contact_rail(settings):
+    chat = settings["chat"]
+    contact = chat.get("contact") or {}
+    # Zalo wants the local number (zalo.me/0xxxxxxxxx); WhatsApp wants the international
+    # form without "+" (wa.me/84xxxxxxxxx). Normalise the one number the owner typed.
+    zalo = _contact_digits(contact.get("zalo_phone"))
+    if zalo.startswith("84"):
+        zalo = "0" + zalo[2:]
+    whatsapp = _contact_digits(contact.get("whatsapp_phone"))
+    if whatsapp.startswith("0"):
+        whatsapp = "84" + whatsapp[1:]
+
+    items = []
+    if zalo:
+        items.append(
+            f'<a class="contact-rail__btn contact-rail__btn--zalo" '
+            f'href="https://zalo.me/{zalo}" target="_blank" rel="noopener" aria-label="Zalo">'
+            f"{CONTACT_RAIL_ZALO_SVG}</a>"
+        )
+    if whatsapp:
+        items.append(
+            f'<a class="contact-rail__btn contact-rail__btn--whatsapp" '
+            f'href="https://wa.me/{whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp">'
+            f"{CONTACT_RAIL_WHATSAPP_SVG}</a>"
+        )
+    if chat.get("enabled"):
+        items.append(
+            '<button type="button" class="contact-rail__btn contact-rail__btn--ai" '
+            'data-chat-launch aria-label="Chat AI">'
+            f"{CONTACT_RAIL_AI_SVG}</button>"
+        )
+    if not items:
+        return ""
+    inner = "\n  ".join(items)
+    return f'<aside class="contact-rail" aria-label="Liên hệ nhanh">\n  {inner}\n</aside>'
 
 
 def render_home_meta(settings):
@@ -1052,6 +1119,7 @@ def patch_chrome(text, prefix, settings):
         ("CMS_FOOTER_LOGO", render_footer_logo(settings, prefix)),
         ("CMS_SOCIAL_FOOTER", render_social_footer(settings, prefix)),
         ("CMS_SOCIAL_FIXED", render_social_fixed(settings)),
+        ("CMS_CONTACT_RAIL", render_contact_rail(settings)),
     ):
         text, _found = replace_band(text, marker, body)
     return text

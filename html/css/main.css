@@ -702,6 +702,70 @@ body {
 }
 
 /* ==========================================================================
+   Floating contact rail (bottom-right): Zalo, WhatsApp, AI top-to-bottom.
+   Sits under the chat panel (z-index 120) so the panel covers it when open.
+   ========================================================================== */
+.contact-rail {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.contact-rail__btn {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  transition: transform 0.18s ease;
+}
+.contact-rail__btn:hover {
+  transform: scale(1.06);
+}
+.contact-rail__btn svg {
+  width: 30px;
+  height: 30px;
+}
+.contact-rail__btn--zalo {
+  background: #0068ff;
+}
+.contact-rail__btn--whatsapp {
+  background: #25d366;
+}
+.contact-rail__btn--ai {
+  background: var(--color-rust);
+}
+/* The chat panel opens from the same corner — hide the rail while it's up so
+   the two don't stack. chat.js toggles .chat--open on the .chat wrapper. */
+body:has(.chat.chat--open) .contact-rail {
+  display: none;
+}
+/* Lift clear of the product page's sticky mobile buy bar, like .chat--above-bar. */
+@media (max-width: 560px) {
+  .contact-rail {
+    right: 14px;
+    bottom: 14px;
+    gap: 10px;
+  }
+  .contact-rail__btn {
+    width: 50px;
+    height: 50px;
+  }
+  body:has(#stickyBuyBar) .contact-rail {
+    bottom: 76px;
+  }
+}
+
+/* ==========================================================================
    Live chat widget (bottom-right)
    ========================================================================== */
 .chat {

@@ -126,6 +126,17 @@
   document.addEventListener("DOMContentLoaded", function () {
     var ui = build();
 
+    // The bottom-right contact rail (built by scripts/build.py) already shows an "AI"
+    // button - use it and drop our own floating launcher so Zalo/WhatsApp/AI stay one
+    // stack. Falls back to the built-in launcher when the rail isn't on the page.
+    var railBtn = document.querySelector("[data-chat-launch]");
+    if (railBtn) {
+      ui.launcher.remove();
+      railBtn.addEventListener("click", function () {
+        toggle(ui.panel.hidden);
+      });
+    }
+
     // Trang san pham ghim thanh mua hang duoi day tren dien thoai - day widget len tranh de.
     if (document.getElementById("stickyBuyBar")) ui.wrap.classList.add("chat--above-bar");
 
@@ -160,6 +171,17 @@
         liPhone.appendChild(document.createTextNode("Zalo/SĐT: "));
         liPhone.appendChild(aPhone);
         list.appendChild(liPhone);
+      }
+      if (c.whatsappPhone) {
+        var liWa = el("li");
+        var aWa = el("a");
+        aWa.href = "https://wa.me/" + c.whatsappPhone.replace(/\D/g, "");
+        aWa.target = "_blank";
+        aWa.rel = "noopener";
+        aWa.textContent = c.whatsappPhone;
+        liWa.appendChild(document.createTextNode("WhatsApp: "));
+        liWa.appendChild(aWa);
+        list.appendChild(liWa);
       }
       if (c.email) {
         var liMail = el("li");
