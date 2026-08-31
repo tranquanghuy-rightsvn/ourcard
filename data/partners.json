@@ -1,11 +1,21 @@
 [
   {
+    "id": 8,
+    "slug": "the-beatles",
+    "name": "The Beatles Story",
+    "url": "https://www.beatlesstory.com/",
+    "logo": "the-beatles-1.png",
+    "order": 0,
+    "status": "published",
+    "updated_at": "2026-08-31"
+  },
+  {
     "id": 1,
     "slug": "teabug-cards",
     "name": "Teabug Cards",
     "url": "",
     "logo": "logo-parner-10.png",
-    "order": 0,
+    "order": 1,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -15,7 +25,7 @@
     "name": "DT",
     "url": "",
     "logo": "logo-parner-3-150x150.png",
-    "order": 1,
+    "order": 2,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -25,7 +35,7 @@
     "name": "Diese Klappkarten",
     "url": "",
     "logo": "logo-parner-6.png",
-    "order": 2,
+    "order": 3,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -35,7 +45,7 @@
     "name": "iGifts And Cards",
     "url": "",
     "logo": "logo-parner-7.png",
-    "order": 3,
+    "order": 4,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -45,7 +55,7 @@
     "name": "Limah Store",
     "url": "",
     "logo": "logo-parner-8.png",
-    "order": 4,
+    "order": 5,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -55,7 +65,7 @@
     "name": "Flawio",
     "url": "",
     "logo": "logo-parner-9-150x150.png",
-    "order": 5,
+    "order": 6,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -65,18 +75,8 @@
     "name": "Mokio",
     "url": "",
     "logo": "mokio.png",
-    "order": 6,
-    "status": "published",
-    "updated_at": "2026-08-30"
-  },
-  {
-    "id": 8,
-    "slug": "the-beatles",
-    "name": "The Beatles Story",
-    "url": "https://www.beatlesstory.com/",
-    "logo": "the-beatles-1.png",
     "order": 7,
     "status": "published",
-    "updated_at": "2026-08-31"
+    "updated_at": "2026-08-30"
   }
 ]
