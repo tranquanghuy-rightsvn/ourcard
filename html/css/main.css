@@ -669,9 +669,11 @@ body {
 .social-fixed {
   position: fixed;
   right: 14px;
-  /* Anchored near the top (just below the header) instead of vertically centred, so
-     it never runs into the bottom-right contact rail on shorter screens. */
-  top: 96px;
+  /* Just above centre — far enough down that it doesn't look stranded at the top,
+     but the 40px lift keeps a comfortable gap to the bottom-right contact rail on
+     laptop-height screens (they only meet below ~500px tall). */
+  top: calc(50% - 40px);
+  transform: translateY(-50%);
   z-index: 80;
   display: flex;
   flex-direction: column;
@@ -1359,7 +1361,6 @@ body:has(.chat.chat--open) .contact-rail {
   /* Smaller and tucked closer in so it doesn't sit over the content */
   .social-fixed {
     right: 8px;
-    top: 72px;
     gap: 6px;
     padding: 7px 5px;
   }
