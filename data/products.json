@@ -27,26 +27,23 @@
     "id": 2,
     "slug": "kc013-teddy-bear-chrismast",
     "sku": "KC013",
-    "name": "Teddy Bear Chrismast",
+    "name": "Teddy Bear Chrismast - 3D Pop Up Card",
     "category": "christmas",
     "tags_text": "Chrismast",
     "is_bestseller": false,
     "is_new": true,
-    "cover_image": "kc013-teddy-bear-chrismast-1.jpg",
+    "cover_image": "kc013-teddy-bear-chrismast-12.png",
     "gallery": [
-      "kc013-teddy-bear-chrismast-1.jpg",
-      "kc013-teddy-bear-chrismast-2.jpg",
-      "kc013-teddy-bear-chrismast-3.jpg",
-      "kc013-teddy-bear-chrismast-5.jpg",
-      "kc013-teddy-bear-chrismast-9.jpg",
-      "kc013-teddy-bear-chrismast-10.jpg",
-      "kc013-teddy-bear-chrismast-11.jpg"
+      "kc013-teddy-bear-chrismast-12.png",
+      "kc013-teddy-bear-chrismast-13.png",
+      "kc013-teddy-bear-chrismast-14.png",
+      "kc013-teddy-bear-chrismast-14.png"
     ],
     "videos": [
-      "kc013-teddy-bear-chrismast-1.mp4"
+      "kc013-teddy-bear-chrismast-2.mp4"
     ],
     "description_html": "",
     "status": "published",
-    "updated_at": "2026-08-30"
+    "updated_at": "2026-08-31"
   }
 ]
