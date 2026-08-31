@@ -735,6 +735,18 @@ body {
   width: 30px;
   height: 30px;
 }
+.contact-rail__btn--whatsapp svg {
+  width: 28px;
+  height: 28px;
+}
+/* Zalo's brand mark is its wordmark, not an icon. */
+.contact-rail__word {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  color: var(--color-white);
+}
 .contact-rail__btn--zalo {
   background: #0068ff;
 }
