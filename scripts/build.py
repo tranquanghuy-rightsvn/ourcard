@@ -869,9 +869,15 @@ def render_social_fixed(settings):
 # The AI button carries `data-chat-launch` so html/js/chat.js opens its panel from
 # here instead of drawing its own separate floating launcher.
 #
-# Zalo has no real icon glyph — its brand mark is the wordmark, so the button just
-# shows the text "Zalo". WhatsApp uses its official logo path.
-CONTACT_RAIL_ZALO_MARK = '<span class="contact-rail__word">Zalo</span>'
+# Zalo's mark is a white speech bubble with the "Zalo" wordmark inside it, on blue.
+CONTACT_RAIL_ZALO_MARK = (
+    '<svg viewBox="0 0 24 24" aria-hidden="true">'
+    '<path fill="#fff" d="M4.4 3h15.2c1.3 0 2.4 1.1 2.4 2.4v9.2c0 1.3-1.1 2.4-2.4 2.4H10l-5.2 3.8'
+    'c-.5.4-1.2 0-1.2-.6V17H4.4C3.1 17 2 15.9 2 14.6V5.4C2 4.1 3.1 3 4.4 3z"/>'
+    '<text x="12" y="12.6" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" '
+    'font-weight="700" font-size="7.3" fill="#0068ff">Zalo</text>'
+    "</svg>"
+)
 CONTACT_RAIL_WHATSAPP_SVG = (
     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
     '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15'

@@ -669,13 +669,14 @@ body {
 .social-fixed {
   position: fixed;
   right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+  /* Anchored near the top (just below the header) instead of vertically centred, so
+     it never runs into the bottom-right contact rail on shorter screens. */
+  top: 96px;
   z-index: 80;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 10px 8px;
+  gap: 6px;
+  padding: 8px 6px;
   background: var(--color-white);
   border-radius: 999px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
@@ -684,8 +685,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   transition: transform 0.18s ease;
 }
@@ -697,8 +698,8 @@ body {
   color: var(--color-rust);
 }
 .social-fixed svg {
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
 }
 
 /* ==========================================================================
@@ -707,16 +708,16 @@ body {
    ========================================================================== */
 .contact-rail {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: 16px;
+  bottom: 16px;
   z-index: 110;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 .contact-rail__btn {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   border: none;
   padding: 0;
@@ -725,27 +726,19 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--color-white);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   transition: transform 0.18s ease;
 }
 .contact-rail__btn:hover {
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 .contact-rail__btn svg {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 }
 .contact-rail__btn--whatsapp svg {
-  width: 28px;
-  height: 28px;
-}
-/* Zalo's brand mark is its wordmark, not an icon. */
-.contact-rail__word {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.3px;
-  color: var(--color-white);
+  width: 24px;
+  height: 24px;
 }
 .contact-rail__btn--zalo {
   background: #0068ff;
@@ -764,16 +757,16 @@ body:has(.chat.chat--open) .contact-rail {
 /* Lift clear of the product page's sticky mobile buy bar, like .chat--above-bar. */
 @media (max-width: 560px) {
   .contact-rail {
-    right: 14px;
-    bottom: 14px;
-    gap: 10px;
+    right: 12px;
+    bottom: 12px;
+    gap: 7px;
   }
   .contact-rail__btn {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
   }
   body:has(#stickyBuyBar) .contact-rail {
-    bottom: 76px;
+    bottom: 72px;
   }
 }
 
@@ -1366,6 +1359,7 @@ body:has(.chat.chat--open) .contact-rail {
   /* Smaller and tucked closer in so it doesn't sit over the content */
   .social-fixed {
     right: 8px;
+    top: 72px;
     gap: 6px;
     padding: 7px 5px;
   }
