@@ -68,5 +68,15 @@
     "order": 6,
     "status": "published",
     "updated_at": "2026-08-30"
+  },
+  {
+    "id": 8,
+    "slug": "the-beatles",
+    "name": "The Beatles Story",
+    "url": "https://www.beatlesstory.com/",
+    "logo": "the-beatles-1.png",
+    "order": 7,
+    "status": "published",
+    "updated_at": "2026-08-31"
   }
 ]
