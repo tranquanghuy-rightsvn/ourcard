@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": 1,
+    "slug": "test",
+    "title": "test",
+    "cover_image": "test-1.png",
+    "file": "test.png",
+    "status": "published",
+    "updated_at": "2026-08-31"
+  }
+]
