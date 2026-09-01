@@ -10,11 +10,11 @@
     "updated_at": "2026-08-31"
   },
   {
-    "id": 2,
-    "slug": "dt",
-    "name": "DT",
+    "id": 1,
+    "slug": "teabug-cards",
+    "name": "Teabug Cards",
     "url": "",
-    "logo": "logo-parner-3-150x150.png",
+    "logo": "logo-parner-10.png",
     "order": 1,
     "status": "published",
     "updated_at": "2026-08-30"
