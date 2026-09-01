@@ -12,7 +12,7 @@
     "description": "Kyu Craft designs and hand-assembles 3D pop-up greeting cards in Vietnam for wholesale, retail and custom design.",
     "telephone": "+84-708-976-136",
     "email": "admin@kyucraft.com",
-    "address_locality": "Ha Noi",
+    "address_locality": "Ho Chi Minh",
     "address_country": "VN"
   },
   "analytics": {
@@ -93,7 +93,7 @@
   "chat": {
     "enabled": true,
     "title": "Kyu Craft | Popup Card",
-    "status_text": "Trợ lý AI · trả lời tự động",
+    "status_text": "Chat box AI",
     "start_hint": "",
     "input_placeholder": "Nhập tin nhắn…",
     "error_message": "Xin lỗi, trợ lý đang bận. Bạn vui lòng liên hệ trực tiếp để được hỗ trợ ngay:",
