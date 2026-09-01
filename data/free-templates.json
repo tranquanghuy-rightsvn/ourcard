@@ -3,9 +3,10 @@
     "id": 1,
     "slug": "test",
     "title": "test",
+    "category": "birthday",
     "cover_image": "test-1.png",
     "file": "test.png",
     "status": "published",
-    "updated_at": "2026-08-31"
+    "updated_at": "2026-09-01"
   }
 ]
