@@ -131,8 +131,21 @@
 
     <main class="shop">
       <h1 class="shop__title">Free Templates</h1>
-      <div class="shop__grid">
-        {{TEMPLATE_CARDS}}
+      <div class="shop__layout">
+        <aside class="shop__sidebar">
+          <h3>Category <span>&minus;</span></h3>
+          <nav class="shop__categories">
+            <label class="shop__category shop__category--all">
+              <input type="checkbox" checked data-category="all" />
+              <span>All</span>
+            </label>
+            {{TEMPLATE_CATEGORY_CHECKBOXES}}
+          </nav>
+        </aside>
+
+        <div class="shop__grid">
+          {{TEMPLATE_CARDS}}
+        </div>
       </div>
     </main>
 
@@ -283,6 +296,7 @@
     <script src="js/wishlist.js"></script>
     <script src="js/search-data.js"></script>
     <script src="js/search.js"></script>
+    <script src="js/shop-filter.js"></script>
     <script src="js/chat-data.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/lead-form.js"></script>

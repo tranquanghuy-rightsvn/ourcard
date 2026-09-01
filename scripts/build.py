@@ -299,11 +299,10 @@ def build_product_pages(products, template):
     return valid_files, removed
 
 
-def build_shop_all(products, categories, template):
-    published = [p for p in products if p.get("status") == "published"]
-    cards_html = "\n          ".join(render_card(p, "", with_data_categories=True) for p in published)
-
-    checkboxes = "\n            ".join(
+def render_category_checkboxes(categories):
+    """The child-category checkbox list shared by the Shop All sidebar and the Free
+    Template sidebar (js/shop-filter.js drives both)."""
+    return "\n            ".join(
         f'<label class="shop__category shop__category--child">\n'
         f'              <input type="checkbox" checked data-category="{c["key"]}" />\n'
         f'              <span>{html.escape(c["label"])}</span>\n'
@@ -311,14 +310,19 @@ def build_shop_all(products, categories, template):
         for c in categories
     )
 
+
+def build_shop_all(products, categories, template):
+    published = [p for p in products if p.get("status") == "published"]
+    cards_html = "\n          ".join(render_card(p, "", with_data_categories=True) for p in published)
     page = template.replace("{{PRODUCT_CARDS}}", cards_html)
-    page = page.replace("{{CATEGORY_CHECKBOXES}}", checkboxes)
+    page = page.replace("{{CATEGORY_CHECKBOXES}}", render_category_checkboxes(categories))
     (OUT / "shop-all.html").write_text(page)
 
 
 def render_template_card(item):
     title = html.escape(item["title"])
-    return f"""<div class="product-card">
+    cats = html.escape(item.get("category") or "", quote=True)
+    return f"""<div class="product-card" data-categories="{cats}">
           <div class="product-tile__media">
             <a class="product-tile__link" href="images/{item['cover_image']}"><img
                 src="images/{item['cover_image']}"
@@ -336,10 +340,12 @@ def render_template_card(item):
         </div>"""
 
 
-def build_free_template(templates_data, page_template):
+def build_free_template(templates_data, categories, page_template):
     published = [t for t in templates_data if t.get("status") == "published"]
     cards_html = "\n        ".join(render_template_card(t) for t in published)
     page = page_template.replace("{{TEMPLATE_CARDS}}", cards_html)
+    # Same category sidebar as Shop All, minus the Best Seller / New Product rows.
+    page = page.replace("{{TEMPLATE_CATEGORY_CHECKBOXES}}", render_category_checkboxes(categories))
     (OUT / "free-template.html").write_text(page)
 
 
@@ -1195,7 +1201,7 @@ def main():
 
     valid_files, removed = build_product_pages(products, product_template)
     build_shop_all(products, categories, category_template)
-    build_free_template(free_templates, free_template_template)
+    build_free_template(free_templates, categories, free_template_template)
     build_custom_design(custom_designs, custom_design_template)
     patch_chrome_pages(settings)
     patch_homepage(products, settings, partners)
