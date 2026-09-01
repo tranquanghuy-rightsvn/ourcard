@@ -20,6 +20,9 @@ on:
       # Sua CSS/JS tinh (khong qua build.py) van phai deploy - `wrangler deploy` day ca html/.
       - "html/css/**"
       - "html/js/**"
+      # Thay/resize anh tay (khong qua CMS) cung vay - anh CMS upload di kem 1 thay doi
+      # data/*.json nen da tu trigger, nhung sua anh THU CONG thi khong co file data nao doi.
+      - "html/images/**"
       # Ha tang cung phai trigger deploy: doi ten Worker, doi model Gemini, sua rate limit
       # hay sua logic /api/chat deu KHONG nam trong data/ hay templates/, nen truoc day
       # chung khong bao gio duoc deploy tu dong.
