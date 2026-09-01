@@ -10,22 +10,12 @@
     "updated_at": "2026-08-31"
   },
   {
-    "id": 2,
-    "slug": "dt",
-    "name": "DT",
-    "url": "",
-    "logo": "logo-parner-3-150x150.png",
-    "order": 1,
-    "status": "published",
-    "updated_at": "2026-08-30"
-  },
-  {
     "id": 5,
     "slug": "limah-store",
     "name": "Limah Store",
     "url": "",
     "logo": "logo-parner-8.png",
-    "order": 2,
+    "order": 1,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -35,7 +25,7 @@
     "name": "Flawio",
     "url": "",
     "logo": "logo-parner-9-150x150.png",
-    "order": 3,
+    "order": 2,
     "status": "published",
     "updated_at": "2026-08-30"
   },
@@ -45,7 +35,7 @@
     "name": "Mokio",
     "url": "",
     "logo": "mokio.png",
-    "order": 4,
+    "order": 3,
     "status": "published",
     "updated_at": "2026-08-30"
   }
