@@ -20,22 +20,12 @@
     "updated_at": "2026-08-30"
   },
   {
-    "id": 6,
-    "slug": "flawio",
-    "name": "Flawio",
-    "url": "",
-    "logo": "logo-parner-9-150x150.png",
-    "order": 2,
-    "status": "published",
-    "updated_at": "2026-08-30"
-  },
-  {
     "id": 7,
     "slug": "mokio",
     "name": "Mokio",
     "url": "",
     "logo": "mokio.png",
-    "order": 3,
+    "order": 2,
     "status": "published",
     "updated_at": "2026-08-30"
   }
