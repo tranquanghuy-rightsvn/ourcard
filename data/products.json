@@ -47,5 +47,27 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-08-31"
+  },
+  {
+    "id": 3,
+    "slug": "kc017-hanukkah-festival-of-lights-3d-pop-up-card",
+    "sku": "KC017",
+    "name": "Hanukkah Festival of Lights 3D Pop-Up Card",
+    "category": "hanukkah",
+    "tags_text": "Hanukkah,Festival",
+    "size": "closed: 127x178mm (5x7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png",
+    "gallery": [
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png",
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-3.png",
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-4.png",
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-5.png"
+    ],
+    "videos": [],
+    "description_html": "<Celebrate the magic of the season with this exquisitely crafted Hanukkah 3D pop-up card. Featuring a striking royal blue and shimmering gold color palette, this design is a true masterpiece of structural paper engineering.>\n<-Intricate 3D Diorama: Opens smoothly to reveal a flat 180-degree base, allowing the magnificent central elements to stand proudly at a perfect 90-degree angle for an optimal, stable display on any mantle or desk.>\n<-Traditional Details: Showcases a radiant nine-branch Menorah, white doves of peace, glowing candles, and festive holiday treats including sufganiyot (jelly donuts) and latkes.>\n<-Elegant Typography: Features dual beautifully rendered banners reading \"Happy Hanukkah\" and \"Eight Nights of Light.\">\n<-Premium Construction: Precision-cut layers and intricate interlocking mechanisms ensure the card folds completely flat for mailing and pops up flawlessly upon opening.>",
+    "status": "published",
+    "updated_at": "2026-09-04"
   }
 ]
