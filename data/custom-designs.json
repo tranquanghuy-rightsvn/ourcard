@@ -6,5 +6,13 @@
     "cover_image": "bb-1.jpg",
     "status": "published",
     "updated_at": "2026-09-04"
+  },
+  {
+    "id": 2,
+    "slug": "mama",
+    "title": "mama",
+    "cover_image": "mama-1.jpg",
+    "status": "published",
+    "updated_at": "2026-09-04"
   }
 ]
