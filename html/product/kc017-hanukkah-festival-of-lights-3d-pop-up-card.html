@@ -138,7 +138,15 @@
     <div class="product-detail" id="main-content">
       <div class="product-gallery">
         <div class="product-gallery__thumbs">
-          <button class="product-gallery__thumb product-gallery__thumb--active">
+          <button class="product-gallery__thumb product-gallery__thumb--active product-gallery__thumb--video" data-video="../videos/kc017-hanukkah-festival-of-lights-3d-pop-up-card-1.mp4">
+            <img src="../images/kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png" alt="Watch the video" />
+            <span class="product-gallery__play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </button>
+          <button class="product-gallery__thumb">
             <img src="../images/kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png" data-large="../images/kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png" alt="KC017 - Hanukkah Festival of Lights 3D Pop-Up Card, photo 1" />
           </button>
           <button class="product-gallery__thumb">
@@ -157,9 +165,11 @@
             src="../images/kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png"
             alt="KC017 - Hanukkah Festival of Lights 3D Pop-Up Card"
             id="productMainImg"
-            
+            hidden
           />
-          
+          <video id="productMainVideo" controls playsinline loop preload="metadata" poster="../images/kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png">
+            <source src="../videos/kc017-hanukkah-festival-of-lights-3d-pop-up-card-1.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
 
