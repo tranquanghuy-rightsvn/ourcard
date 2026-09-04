@@ -43,5 +43,10 @@
     "key": "halloween",
     "label": "Halloween",
     "order": 8
+  },
+  {
+    "key": "hanukkah",
+    "label": "Hanukkah",
+    "order": 9
   }
 ]
