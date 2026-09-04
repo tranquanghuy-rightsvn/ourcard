@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": 1,
+    "slug": "number",
+    "title": "Number",
+    "category": "birthday",
+    "cover_image": "number-3.jpg",
+    "file": "number.jpg",
+    "status": "published",
+    "updated_at": "2026-09-04"
+  }
+]
