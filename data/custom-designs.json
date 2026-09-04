@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": 1,
+    "slug": "bb",
+    "title": "Super Mom",
+    "cover_image": "bb-1.jpg",
+    "status": "published",
+    "updated_at": "2026-09-04"
+  }
+]
