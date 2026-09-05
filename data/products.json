@@ -109,5 +109,24 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-09-05"
+  },
+  {
+    "id": 6,
+    "slug": "h-t",
+    "sku": "h",
+    "name": "t",
+    "category": "christmas",
+    "tags_text": "t",
+    "size": "",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "h-t-1.jpg",
+    "gallery": [
+      "h-t-1.jpg"
+    ],
+    "videos": [],
+    "description_html": "",
+    "status": "published",
+    "updated_at": "2026-09-05"
   }
 ]
