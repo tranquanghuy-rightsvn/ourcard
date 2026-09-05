@@ -3,7 +3,13 @@
     "id": 1,
     "slug": "bb",
     "title": "Super Mom",
+    "category": "",
+    "size": "",
     "cover_image": "bb-1.jpg",
+    "gallery": ["bb-1.jpg"],
+    "videos": [],
+    "description_html": "",
+    "order": 0,
     "status": "published",
     "updated_at": "2026-09-04"
   },
@@ -11,7 +17,13 @@
     "id": 2,
     "slug": "mama",
     "title": "mama",
+    "category": "",
+    "size": "",
     "cover_image": "mama-1.jpg",
+    "gallery": ["mama-1.jpg"],
+    "videos": [],
+    "description_html": "",
+    "order": 1,
     "status": "published",
     "updated_at": "2026-09-04"
   }

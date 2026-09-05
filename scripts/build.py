@@ -159,9 +159,11 @@ PLAY_SVG = """<svg viewBox="0 0 24 24" fill="currentColor">
               </svg>"""
 
 
-def render_gallery_thumbs(product):
-    videos = product.get("videos") or []
-    cover = product["gallery"][0]
+def render_gallery_thumbs(item, alt_text):
+    """Shared by Product and Custom Design detail pages - both use the same {gallery,
+    videos} shape and the same .product-gallery__* markup/CSS (product-detail.css)."""
+    videos = item.get("videos") or []
+    cover = item["gallery"][0]
     thumbs = []
     # Video thumbs first (matches the original hand-built demo page), poster = cover image.
     for i, vid in enumerate(videos):
@@ -175,25 +177,26 @@ def render_gallery_thumbs(product):
             f"            </span>\n"
             f"          </button>"
         )
-    for i, img in enumerate(product["gallery"]):
+    for i, img in enumerate(item["gallery"]):
         active = " product-gallery__thumb--active" if (not videos and i == 0) else ""
         lazy = ' loading="lazy"' if i > 0 else ""
         thumbs.append(
             f'<button class="product-gallery__thumb{active}">\n'
             f'            <img{lazy} src="../images/{img}" data-large="../images/{img}" '
-            f'alt="{title_line(product)}, photo {i + 1}" />\n'
+            f'alt="{alt_text}, photo {i + 1}" />\n'
             f"          </button>"
         )
     return "\n          ".join(thumbs)
 
 
-def render_gallery_main_extras(product):
+def render_gallery_main_extras(item):
     """Returns (img_hidden_attr, video_html). A video (if any) is the default
-    active view, matching render_gallery_thumbs' first-thumb-active choice."""
-    videos = product.get("videos") or []
+    active view, matching render_gallery_thumbs' first-thumb-active choice.
+    Shared by Product and Custom Design detail pages (same {gallery, videos} shape)."""
+    videos = item.get("videos") or []
     if not videos:
         return "", ""
-    cover = product["gallery"][0]
+    cover = item["gallery"][0]
     # `loop` so it repeats once the visitor plays it. Deliberately NOT `autoplay`:
     # autoplay makes the browser download the whole clip on page load (ignoring
     # preload="metadata"), and these files are 10-13 MB.
@@ -261,7 +264,7 @@ def render_product_page(product, all_products, template):
     page = page.replace("{{JSONLD}}", product_jsonld(product, canonical_url, description))
     page = page.replace("{{BREADCRUMB_NAME}}", f'{html.escape(product["sku"])} &mdash; {html.escape(product["name"])}')
     img_hidden, video_html = render_gallery_main_extras(product)
-    page = page.replace("{{GALLERY_THUMBS}}", render_gallery_thumbs(product))
+    page = page.replace("{{GALLERY_THUMBS}}", render_gallery_thumbs(product, title_line(product)))
     page = page.replace("{{GALLERY_BADGE_HTML}}", badge_html)
     page = page.replace("{{GALLERY_MAIN_SRC}}", f"../images/{product['gallery'][0]}")
     page = page.replace("{{GALLERY_MAIN_ALT}}", title_line(product))
@@ -355,19 +358,101 @@ def build_free_template(templates_data, categories, page_template):
 
 def render_custom_design_card(item):
     title = html.escape(item["title"])
-    return f"""<div class="product-card">
+    cats = html.escape(item.get("category") or "", quote=True)
+    href = f'custom-design/{item["slug"]}.html'
+    return f"""<div class="product-card" data-categories="{cats}">
           <div class="product-tile__media">
-            <img src="images/{item['cover_image']}" alt="{title}" loading="lazy" />
+            <a class="product-tile__link" href="{href}"><img
+                src="images/{item['cover_image']}"
+                alt="{title}"
+                loading="lazy"
+            /></a>
           </div>
-          <p>{title}</p>
+          <a class="product-tile__link" href="{href}"><p>{title}</p></a>
         </div>"""
 
 
-def build_custom_design(items, page_template):
-    published = [i for i in items if i.get("status") == "published"]
+def build_custom_design(items, categories, page_template):
+    """The gallery/listing page (custom-design.html) - order = Admin's own `order` field
+    (sorted_by_order), category sidebar filter same widget as Free Template (js/shop-filter.js
+    drives both, generic on .shop__categories/.shop__grid)."""
+    published = [i for i in sorted_by_order(items) if i.get("status") == "published"]
     cards_html = "\n        ".join(render_custom_design_card(i) for i in published)
     page = page_template.replace("{{CUSTOM_DESIGN_CARDS}}", cards_html)
+    page = page.replace("{{CUSTOM_DESIGN_CATEGORY_CHECKBOXES}}", render_category_checkboxes(categories))
     (OUT / "custom-design.html").write_text(page)
+
+
+def custom_design_jsonld(item, canonical_url, description):
+    obj = {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "name": item["title"],
+        "description": description,
+        "image": [f"{BASE_URL}/images/{img}" for img in item["gallery"]],
+        "url": canonical_url,
+    }
+    breadcrumb_obj = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{BASE_URL}/"},
+            {"@type": "ListItem", "position": 2, "name": "Custom Design", "item": f"{BASE_URL}/custom-design.html"},
+            {"@type": "ListItem", "position": 3, "name": item["title"]},
+        ],
+    }
+    return (
+        '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>\n"
+        '    <script type="application/ld+json">' + json.dumps(breadcrumb_obj, ensure_ascii=False) + "</script>"
+    )
+
+
+def render_custom_design_page(item, template):
+    title_line_ = html.escape(item["title"])
+    canonical_url = f'{BASE_URL}/custom-design/{item["slug"]}.html'
+    description = plain_text_from_html(item.get("description_html") or "") or item["title"]
+
+    page = template
+    page = page.replace("{{PAGE_TITLE}}", f'{title_line_} | Custom Design | Kyu Craft | Popup Card')
+    page = page.replace("{{META_DESCRIPTION}}", html.escape(description))
+    page = page.replace("{{CANONICAL_URL}}", canonical_url)
+    page = page.replace("{{OG_TITLE}}", f'{title_line_} | Kyu Craft Custom Design')
+    page = page.replace("{{OG_IMAGE}}", f'{BASE_URL}/images/{item["gallery"][0]}')
+    page = page.replace("{{JSONLD}}", custom_design_jsonld(item, canonical_url, description))
+    page = page.replace("{{BREADCRUMB_NAME}}", title_line_)
+    img_hidden, video_html = render_gallery_main_extras(item)
+    page = page.replace("{{GALLERY_THUMBS}}", render_gallery_thumbs(item, title_line_))
+    page = page.replace("{{GALLERY_MAIN_SRC}}", f"../images/{item['gallery'][0]}")
+    page = page.replace("{{GALLERY_MAIN_ALT}}", title_line_)
+    page = page.replace("{{GALLERY_MAIN_IMG_HIDDEN}}", img_hidden)
+    page = page.replace("{{GALLERY_MAIN_VIDEO_HTML}}", video_html)
+    page = page.replace("{{CUSTOM_DESIGN_TITLE}}", title_line_)
+    # Free-text "Size" from the CMS - drop the whole spec row when blank, same as Product.
+    size = (item.get("size") or "").strip()
+    size_li = f"<li><span>Size</span>{html.escape(size)}</li>" if size else ""
+    page = page.replace("{{SIZE_LI}}", size_li)
+    page = page.replace("{{CUSTOM_DESIGN_INFO_HTML}}", item.get("description_html") or "")
+    return page
+
+
+def build_custom_design_pages(items, template):
+    out_dir = OUT / "custom-design"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    valid_files = set()
+    for item in items:
+        if item.get("status") != "published":
+            continue
+        filename = f'{item["slug"]}.html'
+        valid_files.add(filename)
+        (out_dir / filename).write_text(render_custom_design_page(item, template))
+
+    # Orphan cleanup, same approach as build_product_pages.
+    removed = []
+    for f in out_dir.glob("*.html"):
+        if f.name not in valid_files:
+            f.unlink()
+            removed.append(f.name)
+    return valid_files, removed
 
 
 def patch_band(text, marker, products, prefix, wrapper_class, with_data_categories, limit=8, forced_badge=None):
@@ -670,14 +755,16 @@ def title_line_plain(product):
     return f'{product["sku"]} - {product["name"]}'
 
 
-def build_sitemap(products, free_templates):
+def build_sitemap(products, free_templates, custom_designs):
     published = [p for p in products if p.get("status") == "published"]
+    published_designs = [d for d in custom_designs if d.get("status") == "published"]
     static_pages = [
         "", "shop-all.html", "custom-design.html", "our-story.html", "our-craft.html",
         "wholesale-pop-up-cards.html", "contact-us.html", "free-template.html",
     ]
     urls = [f"{BASE_URL}/{p}" for p in static_pages]
     urls += [f'{BASE_URL}/product/{p["slug"]}.html' for p in published]
+    urls += [f'{BASE_URL}/custom-design/{d["slug"]}.html' for d in published_designs]
     body = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
     xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{body}\n</urlset>\n'
     (OUT / "sitemap.xml").write_text(xml)
@@ -1214,39 +1301,46 @@ def main():
     categories = sorted_categories(load_json("categories.json", default=[]))
     free_templates = load_json("free-templates.json", default=[])
     custom_designs = load_json("custom-designs.json", default=[])
+    # Danh muc RIENG cua Custom Design - KHONG dung chung voi `categories` (Product).
+    custom_design_categories = sorted_categories(load_json("custom-design-categories.json", default=[]))
     chat_qa = load_json("chat-qa.json", default=[])
     partners = sorted_by_order(load_json("partners.json", default=[]))
     homepage_picks = load_json("homepage-picks.json", default={"bestsellers": [], "new_products": []})
     settings = merge_settings(load_json("site-settings.json", default={}))
 
     # Templates carry the same <!-- CMS_* --> bands as the hand-authored pages, so the
-    # site settings are applied once here, before the {{PLACEHOLDER}} pass. Product
-    # pages live one level down (html/product/), hence the "../" prefix.
+    # site settings are applied once here, before the {{PLACEHOLDER}} pass. Product/Custom
+    # Design detail pages live one level down (html/product/, html/custom-design/), hence
+    # the "../" prefix.
     product_template = patch_chrome((TEMPLATES / "product.html").read_text(), "../", settings)
     category_template = patch_chrome((TEMPLATES / "category.html").read_text(), "", settings)
     free_template_template = patch_chrome((TEMPLATES / "free-template.html").read_text(), "", settings)
     custom_design_template = patch_chrome((TEMPLATES / "custom-design.html").read_text(), "", settings)
+    custom_design_detail_template = patch_chrome((TEMPLATES / "custom-design-detail.html").read_text(), "../", settings)
 
     valid_files, removed = build_product_pages(products, product_template)
     build_shop_all(products, categories, category_template)
     build_free_template(free_templates, categories, free_template_template)
-    build_custom_design(custom_designs, custom_design_template)
+    build_custom_design(custom_designs, custom_design_categories, custom_design_template)
+    cd_valid_files, cd_removed = build_custom_design_pages(custom_designs, custom_design_detail_template)
     patch_chrome_pages(settings)
     patch_homepage(products, settings, partners, homepage_picks)
     patch_wholesale(products, categories)
     build_search_data(products)
     build_chat_data(settings)
     build_worker_knowledge(settings, products, categories, chat_qa)
-    build_sitemap(products, free_templates)
+    build_sitemap(products, free_templates, custom_designs)
     build_ads_txt(settings)
 
     print(
-        f"Built {len(valid_files)} product pages, shop-all.html, free-template.html, "
-        f"custom-design.html, search-data.js, sitemap.xml, patched index.html + "
-        f"{len(CHROME_PAGES)} hand-authored pages from site-settings.json"
+        f"Built {len(valid_files)} product pages, {len(cd_valid_files)} custom design pages, "
+        f"shop-all.html, free-template.html, custom-design.html, search-data.js, sitemap.xml, "
+        f"patched index.html + {len(CHROME_PAGES)} hand-authored pages from site-settings.json"
     )
     if removed:
         print(f"Removed {len(removed)} orphaned product page(s): {', '.join(removed)}")
+    if cd_removed:
+        print(f"Removed {len(cd_removed)} orphaned custom design page(s): {', '.join(cd_removed)}")
 
 
 if __name__ == "__main__":
