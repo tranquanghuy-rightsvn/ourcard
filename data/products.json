@@ -90,5 +90,24 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-09-05"
+  },
+  {
+    "id": 5,
+    "slug": "e-e",
+    "sku": "e",
+    "name": "e",
+    "category": "christmas",
+    "tags_text": "e",
+    "size": "",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "e-e-1.jpg",
+    "gallery": [
+      "e-e-1.jpg"
+    ],
+    "videos": [],
+    "description_html": "",
+    "status": "published",
+    "updated_at": "2026-09-05"
   }
 ]
