@@ -89,8 +89,12 @@ def title_line(product):
     return f'{html.escape(product["sku"])} - {html.escape(product["name"])}'
 
 
-def render_card(product, prefix, with_data_categories, wrapper_class="product-card"):
-    badge = badge_of(product)
+def render_card(product, prefix, with_data_categories, wrapper_class="product-card", forced_badge=None):
+    # forced_badge: dung cho cac dai Best Seller/New Product tren trang chu, noi nhan hien
+    # thi phai theo DUNG muc dang chua san pham (data/homepage-picks.json), khong theo co
+    # is_bestseller/is_new rieng cua san pham - mot san pham co the vua la Bestseller vua la
+    # New Product va nam o ca hai muc cung luc, moi muc phai hien dung nhan cua no.
+    badge = forced_badge if forced_badge is not None else badge_of(product)
     badge_html = f'<span class="product-tile__badge">{badge}</span>' if badge else ""
     cats_attr = f' data-categories="{data_categories(product)}"' if with_data_categories else ""
     href = f'{prefix}product/{product["slug"]}.html'
@@ -366,12 +370,15 @@ def build_custom_design(items, page_template):
     (OUT / "custom-design.html").write_text(page)
 
 
-def patch_band(text, marker, products, prefix, wrapper_class, with_data_categories, limit=8):
+def patch_band(text, marker, products, prefix, wrapper_class, with_data_categories, limit=8, forced_badge=None):
     start = f"<!-- {marker}:START -->"
     end = f"<!-- {marker}:END -->"
     pattern = re.compile(re.escape(start) + r".*?" + re.escape(end), re.DOTALL)
     cards = "\n            ".join(
-        render_card(p, prefix, with_data_categories=with_data_categories, wrapper_class=wrapper_class)
+        render_card(
+            p, prefix, with_data_categories=with_data_categories, wrapper_class=wrapper_class,
+            forced_badge=forced_badge,
+        )
         for p in products[:limit]
     )
     replacement = f"{start}\n            {cards}\n            {end}"
@@ -413,14 +420,34 @@ def render_partners(partners):
     return "\n".join(items)
 
 
-def patch_homepage(products, settings, partners):
+def resolve_homepage_picks(products, homepage_picks, flag_key, limit=4):
+    """CMS tab "Trang chủ" chọn tay tối đa `limit` sản phẩm cho mỗi mục (Best Seller /
+    New Product), thứ tự = thứ tự trong data/homepage-picks.json. Bỏ qua slug không còn
+    tồn tại / chưa published / không còn mang đúng flag (sản phẩm bị xoá, chuyển draft,
+    hoặc bị bỏ tick Bestseller/New Product sau khi đã chọn - phòng hờ, Code.js đã tự dọn
+    lúc lưu/xoá sản phẩm nhưng build.py không nên tin tưởng mù quáng vào dữ liệu ngoài)."""
+    by_slug = {p["slug"]: p for p in products if p.get("status") == "published"}
+    picks = []
+    for slug in (homepage_picks or [])[:limit]:
+        p = by_slug.get(slug)
+        if p and p.get(flag_key):
+            picks.append(p)
+    return picks
+
+
+def patch_homepage(products, settings, partners, homepage_picks):
     index_path = OUT / "index.html"
     text = index_path.read_text()
-    published = [p for p in products if p.get("status") == "published"]
-    bestsellers = [p for p in published if p.get("is_bestseller")]
-    new_products = [p for p in published if p.get("is_new")]
-    text = patch_band(text, "BESTSELLERS", bestsellers, "", "bestsellers__item", with_data_categories=False)
-    text = patch_band(text, "NEW_PRODUCTS", new_products, "", "product-card", with_data_categories=False)
+    bestsellers = resolve_homepage_picks(products, homepage_picks.get("bestsellers"), "is_bestseller")
+    new_products = resolve_homepage_picks(products, homepage_picks.get("new_products"), "is_new")
+    text = patch_band(
+        text, "BESTSELLERS", bestsellers, "", "bestsellers__item", with_data_categories=False,
+        limit=4, forced_badge="Bestseller",
+    )
+    text = patch_band(
+        text, "NEW_PRODUCTS", new_products, "", "product-card", with_data_categories=False,
+        limit=4, forced_badge="New Product",
+    )
     text, _ = replace_band(text, "CMS_HOME_META", render_home_meta(settings), required=True)
     text, _ = replace_band(text, "CMS_HERO", render_hero(settings), required=True)
     text, _ = replace_band(text, "CMS_PARTNERS", render_partners(partners), required=True)
@@ -1189,6 +1216,7 @@ def main():
     custom_designs = load_json("custom-designs.json", default=[])
     chat_qa = load_json("chat-qa.json", default=[])
     partners = sorted_by_order(load_json("partners.json", default=[]))
+    homepage_picks = load_json("homepage-picks.json", default={"bestsellers": [], "new_products": []})
     settings = merge_settings(load_json("site-settings.json", default={}))
 
     # Templates carry the same <!-- CMS_* --> bands as the hand-authored pages, so the
@@ -1204,7 +1232,7 @@ def main():
     build_free_template(free_templates, categories, free_template_template)
     build_custom_design(custom_designs, custom_design_template)
     patch_chrome_pages(settings)
-    patch_homepage(products, settings, partners)
+    patch_homepage(products, settings, partners, homepage_picks)
     patch_wholesale(products, categories)
     build_search_data(products)
     build_chat_data(settings)
