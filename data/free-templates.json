@@ -8,6 +8,7 @@
     "gallery": ["number-3.jpg"],
     "videos": [],
     "file": "number.jpg",
+    "order": 0,
     "status": "published",
     "updated_at": "2026-09-04"
   }

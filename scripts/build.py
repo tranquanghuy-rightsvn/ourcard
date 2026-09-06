@@ -391,7 +391,7 @@ def render_template_card(item):
 
 
 def build_free_template(templates_data, categories, page_template):
-    published = [t for t in templates_data if t.get("status") == "published"]
+    published = [t for t in sorted_by_order(templates_data) if t.get("status") == "published"]
     cards_html = "\n        ".join(render_template_card(t) for t in published)
     page = page_template.replace("{{TEMPLATE_CARDS}}", cards_html)
     # Same category sidebar as Shop All, minus the Best Seller / New Product rows.
