@@ -23,6 +23,9 @@
     <!-- CMS_HEAD:END -->
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/shop-all.css" />
+    <!-- .product-gallery__* (thumbs/main image/video) styling for the click-to-open
+         gallery modal, reused verbatim from Product/Custom Design detail pages. -->
+    <link rel="stylesheet" href="css/product-detail.css" />
   </head>
   <body>
     <div class="topbar">
@@ -185,13 +188,13 @@
         <div class="shop__grid">
           <div class="product-card" data-categories="birthday">
           <div class="product-tile__media">
-            <a class="product-tile__link" href="images/number-3.jpg"><img
+            <button type="button" class="product-tile__link js-template-gallery-open"><img
                 src="images/number-3.jpg"
                 alt="Number"
                 loading="lazy"
-            /></a>
+            /></button>
           </div>
-          <a class="product-tile__link"><p>Number</p></a>
+          <p class="product-tile__link js-template-gallery-open">Number</p>
           <div class="product-actions product-actions-download">
             <a class="btn-download" href="downloads/number.jpg" download>
               <svg class="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -201,6 +204,17 @@
               Download
             </a>
           </div>
+          <template class="js-template-gallery-data" data-title="Number" data-download="downloads/number.jpg">
+            <div class="product-gallery__thumbs">
+              <button class="product-gallery__thumb product-gallery__thumb--active">
+            <img src="images/number-3.jpg" data-large="images/number-3.jpg" alt="Number, photo 1" />
+          </button>
+            </div>
+            <div class="product-gallery__main">
+              <img src="images/number-3.jpg" alt="Number" class="js-template-gallery-main-img"  />
+              
+            </div>
+          </template>
         </div>
         </div>
       </div>
@@ -325,6 +339,7 @@
     <script src="js/search-data.js"></script>
     <script src="js/search.js"></script>
     <script src="js/shop-filter.js"></script>
+    <script src="js/free-template-gallery.js"></script>
     <script src="js/chat-data.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/lead-form.js"></script>

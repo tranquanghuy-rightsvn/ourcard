@@ -175,9 +175,12 @@ PLAY_SVG = """<svg viewBox="0 0 24 24" fill="currentColor">
               </svg>"""
 
 
-def render_gallery_thumbs(item, alt_text):
-    """Shared by Product and Custom Design detail pages - both use the same {gallery,
-    videos} shape and the same .product-gallery__* markup/CSS (product-detail.css)."""
+def render_gallery_thumbs(item, alt_text, prefix="../"):
+    """Shared by Product, Custom Design and Free Template (gallery modal) - all use the
+    same {gallery, videos} shape and the same .product-gallery__* markup/CSS
+    (product-detail.css). `prefix` is the relative path back to html/ - "../" from a
+    one-level-deep detail page (product/, custom-design/), "" from a top-level page
+    (free-template.html)."""
     videos = item.get("videos") or []
     cover = item["gallery"][0]
     thumbs = []
@@ -186,8 +189,8 @@ def render_gallery_thumbs(item, alt_text):
         active = " product-gallery__thumb--active" if i == 0 else ""
         thumbs.append(
             f'<button class="product-gallery__thumb{active} product-gallery__thumb--video" '
-            f'data-video="../videos/{vid}">\n'
-            f'            <img src="../images/{cover}" alt="Watch the video" />\n'
+            f'data-video="{prefix}videos/{vid}">\n'
+            f'            <img src="{prefix}images/{cover}" alt="Watch the video" />\n'
             f'            <span class="product-gallery__play" aria-hidden="true">\n'
             f"              {PLAY_SVG}\n"
             f"            </span>\n"
@@ -198,17 +201,17 @@ def render_gallery_thumbs(item, alt_text):
         lazy = ' loading="lazy"' if i > 0 else ""
         thumbs.append(
             f'<button class="product-gallery__thumb{active}">\n'
-            f'            <img{lazy} src="../images/{img}" data-large="../images/{img}" '
+            f'            <img{lazy} src="{prefix}images/{img}" data-large="{prefix}images/{img}" '
             f'alt="{alt_text}, photo {i + 1}" />\n'
             f"          </button>"
         )
     return "\n          ".join(thumbs)
 
 
-def render_gallery_main_extras(item):
+def render_gallery_main_extras(item, prefix="../"):
     """Returns (img_hidden_attr, video_html). A video (if any) is the default
     active view, matching render_gallery_thumbs' first-thumb-active choice.
-    Shared by Product and Custom Design detail pages (same {gallery, videos} shape)."""
+    Shared by Product, Custom Design and Free Template (same {gallery, videos} shape)."""
     videos = item.get("videos") or []
     if not videos:
         return "", ""
@@ -218,8 +221,8 @@ def render_gallery_main_extras(item):
     # preload="metadata"), and these files are 10-13 MB.
     video_html = (
         '<video id="productMainVideo" controls playsinline loop preload="metadata" '
-        f'poster="../images/{cover}">\n'
-        f'            <source src="../videos/{videos[0]}" type="video/mp4" />\n'
+        f'poster="{prefix}images/{cover}">\n'
+        f'            <source src="{prefix}videos/{videos[0]}" type="video/mp4" />\n'
         "          </video>"
     )
     return "hidden", video_html
@@ -349,21 +352,41 @@ def build_shop_all(products, categories, template):
 def render_template_card(item):
     title = html.escape(item["title"])
     cats = html.escape(item.get("category") or "", quote=True)
+    download_href = f"downloads/{item['file']}"
+    # Older records may only have cover_image (no gallery/videos yet) - fall back to a
+    # single-image gallery so the modal still works.
+    gallery_item = {"gallery": item.get("gallery") or [item["cover_image"]], "videos": item.get("videos") or []}
+    img_hidden, video_html = render_gallery_main_extras(gallery_item, prefix="")
+    thumbs_html = render_gallery_thumbs(gallery_item, title, prefix="")
+    main_src = f"images/{gallery_item['gallery'][0]}"
+    # Clicking the tile opens a .product-gallery-style modal (js/free-template-gallery.js)
+    # showing every image/video for this template, instead of navigating to a raw image -
+    # the pre-rendered gallery markup for that modal travels with the card in this inert
+    # <template>, cloned into the shared overlay on click.
     return f"""<div class="product-card" data-categories="{cats}">
           <div class="product-tile__media">
-            <a class="product-tile__link" href="images/{item['cover_image']}"><img
+            <button type="button" class="product-tile__link js-template-gallery-open"><img
                 src="images/{item['cover_image']}"
                 alt="{title}"
                 loading="lazy"
-            /></a>
+            /></button>
           </div>
-          <a class="product-tile__link"><p>{title}</p></a>
+          <p class="product-tile__link js-template-gallery-open">{title}</p>
           <div class="product-actions product-actions-download">
-            <a class="btn-download" href="downloads/{item['file']}" download>
+            <a class="btn-download" href="{download_href}" download>
               {DOWNLOAD_SVG}
               Download
             </a>
           </div>
+          <template class="js-template-gallery-data" data-title="{title}" data-download="{download_href}">
+            <div class="product-gallery__thumbs">
+              {thumbs_html}
+            </div>
+            <div class="product-gallery__main">
+              <img src="{main_src}" alt="{title}" class="js-template-gallery-main-img" {img_hidden} />
+              {video_html}
+            </div>
+          </template>
         </div>"""
 
 
