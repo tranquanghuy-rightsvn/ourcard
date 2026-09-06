@@ -342,7 +342,7 @@ def render_category_checkboxes(categories):
 
 
 def build_shop_all(products, categories, template):
-    published = [p for p in products if p.get("status") == "published"]
+    published = [p for p in sorted_by_order(products) if p.get("status") == "published"]
     cards_html = "\n          ".join(render_card(p, "", with_data_categories=True) for p in published)
     page = template.replace("{{PRODUCT_CARDS}}", cards_html)
     page = page.replace("{{CATEGORY_CHECKBOXES}}", render_category_checkboxes(categories))

@@ -22,7 +22,8 @@
     ],
     "description_html": "",
     "status": "published",
-    "updated_at": "2026-08-31"
+    "updated_at": "2026-08-31",
+    "order": 0
   },
   {
     "id": 2,
@@ -46,7 +47,8 @@
     ],
     "description_html": "",
     "status": "published",
-    "updated_at": "2026-08-31"
+    "updated_at": "2026-08-31",
+    "order": 1
   },
   {
     "id": 3,
@@ -70,7 +72,8 @@
     ],
     "description_html": "<p><strong>Demo text:</strong></p>\n<ul>\n<li><strong>Intricate 3D Diorama:</strong> Opens smoothly to reveal a flat 180-degree base, allowing the magnificent central elements to stand proudly at a perfect 90-degree angle for an optimal, stable display on any mantle or desk.</li>\n<li><strong>Traditional Details:</strong> Showcases a radiant nine-branch Menorah, white doves of peace, glowing candles, and festive holiday treats including sufganiyot (jelly donuts) and latkes.</li>\n<li><strong>Elegant Typography:</strong> Features dual beautifully rendered banners reading \"Happy Hanukkah\" and \"Eight Nights of Light.\"</li>\n<li><strong>Premium Construction:</strong> Precision-cut layers and intricate interlocking mechanisms ensure the card folds completely flat for mailing and pops up flawlessly upon opening.</li>\n</ul>",
     "status": "published",
-    "updated_at": "2026-09-05"
+    "updated_at": "2026-09-05",
+    "order": 2
   },
   {
     "id": 4,
@@ -89,7 +92,8 @@
     "videos": [],
     "description_html": "",
     "status": "published",
-    "updated_at": "2026-09-05"
+    "updated_at": "2026-09-05",
+    "order": 3
   },
   {
     "id": 5,
@@ -108,7 +112,8 @@
     "videos": [],
     "description_html": "",
     "status": "published",
-    "updated_at": "2026-09-05"
+    "updated_at": "2026-09-05",
+    "order": 4
   },
   {
     "id": 6,
@@ -127,6 +132,7 @@
     "videos": [],
     "description_html": "",
     "status": "published",
-    "updated_at": "2026-09-05"
+    "updated_at": "2026-09-05",
+    "order": 5
   }
 ]
