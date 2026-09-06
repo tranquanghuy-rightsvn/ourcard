@@ -28,16 +28,29 @@
       });
   }
 
+  // When Best Seller or New Product is checked ON ITS OWN (not both together, not
+  // alongside a child category), a card that carries both badges should only show
+  // the one the visitor asked to see - the other stays hidden until "All" (or the
+  // other special filter) is checked again.
+  function updateBadges(card, exclusiveSpecial) {
+    var badges = card.querySelectorAll('.product-tile__badge[data-badge]');
+    badges.forEach(function (badge) {
+      badge.hidden = !!(exclusiveSpecial && badge.getAttribute('data-badge') !== exclusiveSpecial);
+    });
+  }
+
   function applyFilter() {
     if (allCheckbox.checked) {
       cards.forEach(function (card) {
         card.style.display = '';
+        updateBadges(card, null);
       });
       return;
     }
 
     var activeSpecials = checkedCategoriesOf(specialCheckboxes);
     var activeChildren = checkedCategoriesOf(childCheckboxes);
+    var exclusiveSpecial = activeSpecials.length === 1 ? activeSpecials[0] : null;
 
     cards.forEach(function (card) {
       var cardCategories = (card.getAttribute('data-categories') || '').split(/\s+/);
@@ -64,6 +77,7 @@
       }
 
       card.style.display = matches ? '' : 'none';
+      updateBadges(card, exclusiveSpecial);
     });
   }
 

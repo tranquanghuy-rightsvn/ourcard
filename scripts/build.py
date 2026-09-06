@@ -68,12 +68,17 @@ def sorted_categories(categories):
     return sorted_by_order(categories)
 
 
-def badge_of(product):
+def badge_labels(product):
+    """All labels this product currently carries, in display order (Bestseller
+    above New Product) - a product can be both at once and both must show
+    (see render_card/render_pcard's data-badge wiring for the Shop All sidebar's
+    Best Seller/New Product exclusive-filter behaviour, js/shop-filter.js)."""
+    labels = []
     if product.get("is_bestseller"):
-        return "Bestseller"
+        labels.append("Bestseller")
     if product.get("is_new"):
-        return "New Product"
-    return None
+        labels.append("New Product")
+    return labels
 
 
 def data_categories(product):
@@ -89,13 +94,24 @@ def title_line(product):
     return f'{html.escape(product["sku"])} - {html.escape(product["name"])}'
 
 
+def render_tile_badge_span(label):
+    """One .product-tile__badge chip. data-badge matches the data-categories key
+    (best-sellers/new-product) so js/shop-filter.js can hide the badge that
+    doesn't match an exclusively-checked Best Seller/New Product sidebar filter."""
+    modifier = " product-tile__badge--new" if label == "New Product" else ""
+    key = "new-product" if label == "New Product" else "best-sellers"
+    return f'<span class="product-tile__badge{modifier}" data-badge="{key}">{label}</span>'
+
+
 def render_card(product, prefix, with_data_categories, wrapper_class="product-card", forced_badge=None):
     # forced_badge: dung cho cac dai Best Seller/New Product tren trang chu, noi nhan hien
     # thi phai theo DUNG muc dang chua san pham (data/homepage-picks.json), khong theo co
     # is_bestseller/is_new rieng cua san pham - mot san pham co the vua la Bestseller vua la
     # New Product va nam o ca hai muc cung luc, moi muc phai hien dung nhan cua no.
-    badge = forced_badge if forced_badge is not None else badge_of(product)
-    badge_html = f'<span class="product-tile__badge">{badge}</span>' if badge else ""
+    labels = [forced_badge] if forced_badge is not None else badge_labels(product)
+    badge_html = "".join(render_tile_badge_span(label) for label in labels)
+    if badge_html:
+        badge_html = f'<div class="product-tile__badges">{badge_html}</div>'
     cats_attr = f' data-categories="{data_categories(product)}"' if with_data_categories else ""
     href = f'{prefix}product/{product["slug"]}.html'
     return f"""<div class="{wrapper_class}"{cats_attr}>
@@ -122,12 +138,12 @@ def render_card(product, prefix, with_data_categories, wrapper_class="product-ca
 
 
 def render_pcard(product, prefix):
-    badge = badge_of(product)
-    badge_html = ""
-    if badge == "Bestseller":
-        badge_html = '<span class="pcard__badge">Bestseller</span>'
-    elif badge == "New Product":
-        badge_html = '<span class="pcard__badge p">New Product</span>'
+    badge_html = "".join(
+        f'<span class="pcard__badge{" pcard__badge--new" if label == "New Product" else ""}">{label}</span>'
+        for label in badge_labels(product)
+    )
+    if badge_html:
+        badge_html = f'<div class="pcard__badges">{badge_html}</div>'
     href = f'{prefix}product/{product["slug"]}.html'
     return f"""<div class="pcard">
                 <div class="pcard__media">
@@ -245,8 +261,12 @@ def plain_text_from_html(text, limit=160):
 def render_product_page(product, all_products, template):
     others = [p for p in all_products if p["id"] != product["id"]][:8]
     related_html = "\n              ".join(render_pcard(p, "../") for p in others)
-    badge = badge_of(product)
-    badge_html = f'<span class="product-gallery__badge">{badge}</span>' if badge else ""
+    badge_html = "".join(
+        f'<span class="product-gallery__badge{" product-gallery__badge--new" if label == "New Product" else ""}">{label}</span>'
+        for label in badge_labels(product)
+    )
+    if badge_html:
+        badge_html = f'<div class="product-gallery__badges">{badge_html}</div>'
 
     canonical_url = f'{BASE_URL}/product/{product["slug"]}.html'
     description = plain_text_from_html(product["description_html"]) or title_line(product)

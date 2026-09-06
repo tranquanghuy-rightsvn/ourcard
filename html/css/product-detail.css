@@ -55,12 +55,20 @@
   overflow: hidden;
   aspect-ratio: 1 / 1;
 }
-/* Same pill design as the product tile badge, top-right over the main image. */
-.product-gallery__badge {
+/* Same pill design as the product tile badge, top-right over the main image.
+   A product can be both Bestseller and New Product at once, so both chips can
+   show stacked inside this wrapper. */
+.product-gallery__badges {
   position: absolute;
   top: 14px;
   right: 14px;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.product-gallery__badge {
   display: inline-block;
   background: var(--color-rust);
   color: var(--color-white);
@@ -70,6 +78,7 @@
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
+.product-gallery__badge--new { background: var(--color-green); }
 .product-gallery__main img,
 .product-gallery__main video { width: 100%; height: 100%; object-fit: contain; }
 .product-gallery__main video { background: #000; }
@@ -127,7 +136,8 @@
 .product-info__add-to-cart:hover { background: var(--color-text); }
 .product-info__add-to-cart:active { transform: scale(0.96); }
 .product-info__note {
-  font-size: 12.5px;
+  font-size: 14px;
+  font-weight: 700;
   font-style: italic;
   color: var(--color-muted);
   line-height: 1.5;
@@ -136,11 +146,11 @@
 /* Custom Design detail page has no Add to cart/wishlist (portfolio piece, not a sellable
    SKU) - this callout takes the .product-info__actions button's place. */
 .product-info__cta {
-  font-size: 14.5px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--color-text);
   background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-rust);
   border-radius: 6px;
   padding: 14px 16px;
   margin-bottom: 20px;
@@ -350,7 +360,7 @@
   margin-bottom: 18px;
 }
 .product-information p {
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.8;
   color: var(--color-text-light);
@@ -367,7 +377,7 @@
   position: relative;
   padding-left: 26px;
   margin-bottom: 14px;
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.8;
   color: var(--color-text-light);
@@ -493,11 +503,17 @@
 .pcard__wish:hover { color: #c00; }
 .pcard__wish--active { color: #c00; }
 .pcard__wish--active svg { fill: currentColor; }
-.pcard__badge {
+.pcard__badges {
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.pcard__badge {
   display: inline-block;
   background: var(--color-rust);
   color: var(--color-white);
@@ -507,6 +523,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
 }
+.pcard__badge--new { background: var(--color-green); }
 .pcard__info { text-align: center; }
 .pcard__name {
   font-family: var(--font-product-title);

@@ -372,13 +372,22 @@ body {
   position: relative;
 }
 
-/* Product tile label — top-left over the image. Rust for bestsellers, green
-   for new arrivals, so the two read as distinct at a glance. */
-.product-tile__badge {
+/* Product tile label(s) — top-left over the image. A product can be both a
+   Bestseller and a New Product at once, so both chips can show stacked inside
+   this wrapper (js/shop-filter.js hides one of the two when the Shop All
+   sidebar's Best Seller/New Product filter is checked exclusively). */
+.product-tile__badges {
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+/* Rust for bestsellers, green for new arrivals, so the two read as distinct at a glance. */
+.product-tile__badge {
   display: inline-block;
   background: var(--color-rust);
   color: var(--color-white);
@@ -388,6 +397,11 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
 }
+.product-tile__badge--new { background: var(--color-green); }
+/* `display: inline-block` above beats the browser's default [hidden] rule (equal
+   specificity, author wins) - without this, js/shop-filter.js setting .hidden on an
+   exclusive Best Seller/New Product filter would have no visible effect. */
+.product-tile__badge[hidden] { display: none; }
 /* Wishlist heart, floating over the top corner of the product image */
 .btn-wish {
   position: absolute;

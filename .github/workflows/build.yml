@@ -10,6 +10,7 @@ on:
       - "data/categories.json"
       - "data/free-templates.json"
       - "data/custom-designs.json"
+      - "data/homepage-picks.json"
       - "data/partners.json"
       - "data/site-settings.json"
       - "data/chat-qa.json"
