@@ -402,7 +402,6 @@ p.product-tile__link {
   align-items: flex-start;
   gap: 6px;
 }
-/* Rust for bestsellers, green for new arrivals, so the two read as distinct at a glance. */
 .product-tile__badge {
   display: inline-block;
   background: var(--color-rust);
@@ -413,7 +412,6 @@ p.product-tile__link {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
 }
-.product-tile__badge--new { background: var(--color-green); }
 /* `display: inline-block` above beats the browser's default [hidden] rule (equal
    specificity, author wins) - without this, js/shop-filter.js setting .hidden on an
    exclusive Best Seller/New Product filter would have no visible effect. */
