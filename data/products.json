@@ -76,26 +76,6 @@
     "order": 2
   },
   {
-    "id": 4,
-    "slug": "u-u",
-    "sku": "ư",
-    "name": "ư",
-    "category": "christmas",
-    "tags_text": "ư",
-    "size": "",
-    "is_bestseller": true,
-    "is_new": true,
-    "cover_image": "u-u-1.jpg",
-    "gallery": [
-      "u-u-1.jpg"
-    ],
-    "videos": [],
-    "description_html": "",
-    "status": "published",
-    "updated_at": "2026-09-05",
-    "order": 3
-  },
-  {
     "id": 5,
     "slug": "e-e",
     "sku": "e",
@@ -113,7 +93,7 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-09-05",
-    "order": 4
+    "order": 3
   },
   {
     "id": 6,
@@ -133,6 +113,6 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-09-05",
-    "order": 5
+    "order": 4
   }
 ]
