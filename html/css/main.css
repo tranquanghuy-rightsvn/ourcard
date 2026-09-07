@@ -78,9 +78,9 @@ button {
 }
 
 :root {
-  --color-bg: #faf3ee;
-  --color-topbar: #f6e6dd;
-  --color-rust: #bc4c2a;
+  --color-bg: #f2e6b1;
+  --color-topbar: #fbd3d9;
+  --color-rust: #9c9a40;
   --color-green: #3d5c34;
   --color-text: #2f2f2e;
   --color-text-light: #5a5a58;
