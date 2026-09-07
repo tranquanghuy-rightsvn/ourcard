@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Build html/product/*.html + html/shop-all.html + html/free-template.html from
-data/*.json + templates/*.html, and patch the dynamic bands on the hand-authored
+"""Build html/product/*.html + html/free-template/*.html + html/custom-design/*.html +
+html/shop-all.html + html/free-template.html from data/*.json + templates/*.html, and
+patch the dynamic bands on the hand-authored
 pages in place (<!-- BESTSELLERS -->/<!-- NEW_PRODUCTS --> product strips, plus the
 <!-- CMS_* --> site-settings bands: hero banner, head/analytics, logo, socials,
 the Zalo/WhatsApp/AI contact rail). Stdlib only. Safe to run repeatedly
@@ -352,41 +353,23 @@ def build_shop_all(products, categories, template):
 def render_template_card(item):
     title = html.escape(item["title"])
     cats = html.escape(item.get("category") or "", quote=True)
+    href = f'free-template/{item["slug"]}.html'
     download_href = f"downloads/{item['file']}"
-    # Older records may only have cover_image (no gallery/videos yet) - fall back to a
-    # single-image gallery so the modal still works.
-    gallery_item = {"gallery": item.get("gallery") or [item["cover_image"]], "videos": item.get("videos") or []}
-    img_hidden, video_html = render_gallery_main_extras(gallery_item, prefix="")
-    thumbs_html = render_gallery_thumbs(gallery_item, title, prefix="")
-    main_src = f"images/{gallery_item['gallery'][0]}"
-    # Clicking the tile opens a .product-gallery-style modal (js/free-template-gallery.js)
-    # showing every image/video for this template, instead of navigating to a raw image -
-    # the pre-rendered gallery markup for that modal travels with the card in this inert
-    # <template>, cloned into the shared overlay on click.
     return f"""<div class="product-card" data-categories="{cats}">
           <div class="product-tile__media">
-            <button type="button" class="product-tile__link js-template-gallery-open"><img
+            <a class="product-tile__link" href="{href}"><img
                 src="images/{item['cover_image']}"
                 alt="{title}"
                 loading="lazy"
-            /></button>
+            /></a>
           </div>
-          <p class="product-tile__link js-template-gallery-open">{title}</p>
+          <a class="product-tile__link" href="{href}"><p>{title}</p></a>
           <div class="product-actions product-actions-download">
             <a class="btn-download" href="{download_href}" download>
               {DOWNLOAD_SVG}
               Download
             </a>
           </div>
-          <template class="js-template-gallery-data" data-title="{title}" data-download="{download_href}">
-            <div class="product-gallery__thumbs">
-              {thumbs_html}
-            </div>
-            <div class="product-gallery__main">
-              <img src="{main_src}" alt="{title}" class="js-template-gallery-main-img" {img_hidden} />
-              {video_html}
-            </div>
-          </template>
         </div>"""
 
 
@@ -397,6 +380,78 @@ def build_free_template(templates_data, categories, page_template):
     # Same category sidebar as Shop All, minus the Best Seller / New Product rows.
     page = page.replace("{{TEMPLATE_CATEGORY_CHECKBOXES}}", render_category_checkboxes(categories))
     (OUT / "free-template.html").write_text(page)
+
+
+def free_template_jsonld(item, canonical_url, description):
+    obj = {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "name": item["title"],
+        "description": description,
+        "image": [f"{BASE_URL}/images/{img}" for img in item["gallery"]],
+        "url": canonical_url,
+        "isAccessibleForFree": True,
+    }
+    breadcrumb_obj = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{BASE_URL}/"},
+            {"@type": "ListItem", "position": 2, "name": "Free Template", "item": f"{BASE_URL}/free-template.html"},
+            {"@type": "ListItem", "position": 3, "name": item["title"]},
+        ],
+    }
+    return (
+        '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>\n"
+        '    <script type="application/ld+json">' + json.dumps(breadcrumb_obj, ensure_ascii=False) + "</script>"
+    )
+
+
+def render_free_template_page(item, template):
+    title_line_ = html.escape(item["title"])
+    canonical_url = f'{BASE_URL}/free-template/{item["slug"]}.html'
+    description = f'Free downloadable {item["title"]} pop-up card template from Kyu Craft.'
+    # Older records may only have cover_image (no gallery/videos yet) - fall back to a
+    # single-image gallery, same as the listing card used to do for the modal.
+    gallery_item = {"gallery": item.get("gallery") or [item["cover_image"]], "videos": item.get("videos") or []}
+
+    page = template
+    page = page.replace("{{PAGE_TITLE}}", f'{title_line_} | Free Template | Kyu Craft | Popup Card')
+    page = page.replace("{{META_DESCRIPTION}}", html.escape(description))
+    page = page.replace("{{CANONICAL_URL}}", canonical_url)
+    page = page.replace("{{OG_TITLE}}", f'{title_line_} | Kyu Craft Free Template')
+    page = page.replace("{{OG_IMAGE}}", f'{BASE_URL}/images/{gallery_item["gallery"][0]}')
+    page = page.replace("{{JSONLD}}", free_template_jsonld({**item, "gallery": gallery_item["gallery"]}, canonical_url, description))
+    page = page.replace("{{BREADCRUMB_NAME}}", title_line_)
+    img_hidden, video_html = render_gallery_main_extras(gallery_item)
+    page = page.replace("{{GALLERY_THUMBS}}", render_gallery_thumbs(gallery_item, title_line_))
+    page = page.replace("{{GALLERY_MAIN_SRC}}", f"../images/{gallery_item['gallery'][0]}")
+    page = page.replace("{{GALLERY_MAIN_ALT}}", title_line_)
+    page = page.replace("{{GALLERY_MAIN_IMG_HIDDEN}}", img_hidden)
+    page = page.replace("{{GALLERY_MAIN_VIDEO_HTML}}", video_html)
+    page = page.replace("{{FREE_TEMPLATE_TITLE}}", title_line_)
+    page = page.replace("{{DOWNLOAD_HREF}}", f'../downloads/{item["file"]}')
+    return page
+
+
+def build_free_template_pages(items, template):
+    out_dir = OUT / "free-template"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    valid_files = set()
+    for item in items:
+        if item.get("status") != "published":
+            continue
+        filename = f'{item["slug"]}.html'
+        valid_files.add(filename)
+        (out_dir / filename).write_text(render_free_template_page(item, template))
+
+    # Orphan cleanup, same approach as build_product_pages/build_custom_design_pages.
+    removed = []
+    for f in out_dir.glob("*.html"):
+        if f.name not in valid_files:
+            f.unlink()
+            removed.append(f.name)
+    return valid_files, removed
 
 
 def render_custom_design_card(item):
@@ -800,6 +855,7 @@ def title_line_plain(product):
 
 def build_sitemap(products, free_templates, custom_designs):
     published = [p for p in products if p.get("status") == "published"]
+    published_templates = [t for t in free_templates if t.get("status") == "published"]
     published_designs = [d for d in custom_designs if d.get("status") == "published"]
     static_pages = [
         "", "shop-all.html", "custom-design.html", "our-story.html", "our-craft.html",
@@ -807,6 +863,7 @@ def build_sitemap(products, free_templates, custom_designs):
     ]
     urls = [f"{BASE_URL}/{p}" for p in static_pages]
     urls += [f'{BASE_URL}/product/{p["slug"]}.html' for p in published]
+    urls += [f'{BASE_URL}/free-template/{t["slug"]}.html' for t in published_templates]
     urls += [f'{BASE_URL}/custom-design/{d["slug"]}.html' for d in published_designs]
     body = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
     xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{body}\n</urlset>\n'
@@ -1352,18 +1409,20 @@ def main():
     settings = merge_settings(load_json("site-settings.json", default={}))
 
     # Templates carry the same <!-- CMS_* --> bands as the hand-authored pages, so the
-    # site settings are applied once here, before the {{PLACEHOLDER}} pass. Product/Custom
-    # Design detail pages live one level down (html/product/, html/custom-design/), hence
-    # the "../" prefix.
+    # site settings are applied once here, before the {{PLACEHOLDER}} pass. Product/Free
+    # Template/Custom Design detail pages live one level down (html/product/,
+    # html/free-template/, html/custom-design/), hence the "../" prefix.
     product_template = patch_chrome((TEMPLATES / "product.html").read_text(), "../", settings)
     category_template = patch_chrome((TEMPLATES / "category.html").read_text(), "", settings)
     free_template_template = patch_chrome((TEMPLATES / "free-template.html").read_text(), "", settings)
+    free_template_detail_template = patch_chrome((TEMPLATES / "free-template-detail.html").read_text(), "../", settings)
     custom_design_template = patch_chrome((TEMPLATES / "custom-design.html").read_text(), "", settings)
     custom_design_detail_template = patch_chrome((TEMPLATES / "custom-design-detail.html").read_text(), "../", settings)
 
     valid_files, removed = build_product_pages(products, product_template)
     build_shop_all(products, categories, category_template)
     build_free_template(free_templates, categories, free_template_template)
+    ft_valid_files, ft_removed = build_free_template_pages(free_templates, free_template_detail_template)
     build_custom_design(custom_designs, custom_design_categories, custom_design_template)
     cd_valid_files, cd_removed = build_custom_design_pages(custom_designs, custom_design_detail_template)
     patch_chrome_pages(settings)
@@ -1376,12 +1435,15 @@ def main():
     build_ads_txt(settings)
 
     print(
-        f"Built {len(valid_files)} product pages, {len(cd_valid_files)} custom design pages, "
+        f"Built {len(valid_files)} product pages, {len(ft_valid_files)} free template pages, "
+        f"{len(cd_valid_files)} custom design pages, "
         f"shop-all.html, free-template.html, custom-design.html, search-data.js, sitemap.xml, "
         f"patched index.html + {len(CHROME_PAGES)} hand-authored pages from site-settings.json"
     )
     if removed:
         print(f"Removed {len(removed)} orphaned product page(s): {', '.join(removed)}")
+    if ft_removed:
+        print(f"Removed {len(ft_removed)} orphaned free template page(s): {', '.join(ft_removed)}")
     if cd_removed:
         print(f"Removed {len(cd_removed)} orphaned custom design page(s): {', '.join(cd_removed)}")
 

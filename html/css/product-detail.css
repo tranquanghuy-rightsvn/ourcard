@@ -134,6 +134,7 @@
 }
 .product-info__add-to-cart:hover { background: var(--color-text); }
 .product-info__add-to-cart:active { transform: scale(0.96); }
+.product-info__add-to-cart svg { width: 18px; height: 18px; flex-shrink: 0; }
 .product-info__note {
   font-size: 14px;
   font-weight: 700;
