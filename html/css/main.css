@@ -110,7 +110,7 @@ body {
    Top announcement bar + header
    ========================================================================== */
 .topbar {
-  background: #bf552f;
+  background: var(--color-rust);
   padding: 10px 20px;
 }
 
