@@ -78,10 +78,15 @@ button {
 }
 
 :root {
-  --color-bg: #f2e6b1;
-  --color-topbar: #fbd3d9;
-  --color-rust: #9c9a40;
-  --color-green: #3d5c34;
+  --color-bg: #fff9f6;
+  --color-topbar: #ffe4ec;
+  /* Brand / primary — used for accents, buttons, links and headings site-wide */
+  --color-rust: #0f2d5b;
+  --color-rust-deep: #071c3c;
+  /* Headings share the primary so no lighter accent tone is left in the type */
+  --color-green: #0f2d5b;
+  /* Reserved for success confirmations (form sent, order placed) */
+  --color-success: #3d5c34;
   --color-text: #2f2f2e;
   --color-text-light: #5a5a58;
   --color-white: #ffffff;
@@ -471,7 +476,7 @@ p.product-tile__link {
   align-items: center;
   justify-content: center;
   padding: 8px 4px;
-  border: 1px solid #3b82c4;
+  border: 1px solid var(--color-rust);
   border-radius: 5px;
   background: transparent;
   color: var(--color-text);
@@ -485,8 +490,8 @@ p.product-tile__link {
     border-color 0.2s;
 }
 .btn-contact:hover {
-  background: #3b82c4;
-  border-color: #3b82c4;
+  background: var(--color-rust);
+  border-color: var(--color-rust);
   color: var(--color-white);
 }
 

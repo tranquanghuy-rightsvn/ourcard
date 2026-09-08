@@ -155,7 +155,7 @@
   text-align: center;
   padding: 20px 0;
 }
-.contact-form__done svg { width: 48px; height: 48px; color: var(--color-green); margin: 0 auto 14px; }
+.contact-form__done svg { width: 48px; height: 48px; color: var(--color-success); margin: 0 auto 14px; }
 .contact-form__done h2 {
   font-family: var(--font-heading);
   font-size: 20px;

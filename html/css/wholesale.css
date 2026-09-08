@@ -5,7 +5,7 @@
   padding: 90px 20px 70px;
   text-align: center;
   color: var(--color-white);
-  background: linear-gradient(135deg, var(--color-rust) 0%, var(--color-green) 100%);
+  background: linear-gradient(135deg, var(--color-rust) 0%, var(--color-rust-deep) 100%);
 }
 .wholesale-banner__title {
   font-family: var(--font-heading);

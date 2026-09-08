@@ -116,7 +116,10 @@
   gap: 8px;
   margin-bottom: 12px;
 }
-.product-info__add-to-cart {
+/* Free Template detail uses .product-info__download: same button, but it's a real
+   file download link so cart.js must not bind an add-to-cart handler to it. */
+.product-info__add-to-cart,
+.product-info__download {
   flex: 1;
   display: flex;
   align-items: center;
@@ -132,9 +135,12 @@
   border-radius: 5px;
   transition: transform 0.15s ease, background 0.2s;
 }
-.product-info__add-to-cart:hover { background: var(--color-text); }
-.product-info__add-to-cart:active { transform: scale(0.96); }
-.product-info__add-to-cart svg { width: 18px; height: 18px; flex-shrink: 0; }
+.product-info__add-to-cart:hover,
+.product-info__download:hover { background: var(--color-text); }
+.product-info__add-to-cart:active,
+.product-info__download:active { transform: scale(0.96); }
+.product-info__add-to-cart svg,
+.product-info__download svg { width: 18px; height: 18px; flex-shrink: 0; }
 .product-info__note {
   font-size: 14px;
   font-weight: 700;
@@ -335,7 +341,7 @@
 .product-contact__cta {
   margin-top: 4px;
   padding: 11px 26px;
-  border: 1px solid #3b82c4;
+  border: 1px solid var(--color-rust);
   border-radius: 5px;
   color: var(--color-text);
   font-size: 13px;
@@ -343,7 +349,7 @@
   text-transform: uppercase;
   transition: background 0.2s, color 0.2s;
 }
-.product-contact__cta:hover { background: #3b82c4; color: var(--color-white); }
+.product-contact__cta:hover { background: var(--color-rust); color: var(--color-white); }
 
 /* ===== INFORMATION SECTION ===== */
 .product-information {

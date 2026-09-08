@@ -382,7 +382,7 @@
 .checkout__submit:hover { background: var(--color-text); }
 
 .checkout__done { text-align: center; padding: 12px 0 4px; }
-.checkout__done svg { width: 52px; height: 52px; color: var(--color-green); margin-bottom: 14px; }
+.checkout__done svg { width: 52px; height: 52px; color: var(--color-success); margin-bottom: 14px; }
 .checkout__done h2 {
   font-family: var(--font-heading);
   font-weight: 600;

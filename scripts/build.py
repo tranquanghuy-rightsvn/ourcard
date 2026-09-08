@@ -37,12 +37,6 @@ PCARD_WISH_SVG = """<svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                   </svg>"""
 
-DOWNLOAD_SVG = """<svg class="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" />
-                <path d="M4 19h16" />
-              </svg>"""
-
-
 def load_json(name, default=None):
     path = DATA / name
     if not path.exists():
@@ -351,10 +345,11 @@ def build_shop_all(products, categories, template):
 
 
 def render_template_card(item):
+    """Listing tile. No download button here on purpose — the file is offered on
+    the template's own detail page, so the tile only links through to it."""
     title = html.escape(item["title"])
     cats = html.escape(item.get("category") or "", quote=True)
     href = f'free-template/{item["slug"]}.html'
-    download_href = f"downloads/{item['file']}"
     return f"""<div class="product-card" data-categories="{cats}">
           <div class="product-tile__media">
             <a class="product-tile__link" href="{href}"><img
@@ -364,12 +359,6 @@ def render_template_card(item):
             /></a>
           </div>
           <a class="product-tile__link" href="{href}"><p>{title}</p></a>
-          <div class="product-actions product-actions-download">
-            <a class="btn-download" href="{download_href}" download>
-              {DOWNLOAD_SVG}
-              Download
-            </a>
-          </div>
         </div>"""
 
 

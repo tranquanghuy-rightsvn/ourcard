@@ -61,14 +61,14 @@
 
 .btn-contact {
   display: inline-block;
-  background: #3b82c4;
+  background: var(--color-rust);
   color: var(--color-white);
   padding: 14px 40px;
   font-size: 15px;
   border: none;
   border-radius: 2px;
 }
-.btn-contact:hover { background: #2f6ba0; }
+.btn-contact:hover { background: var(--color-rust-deep); }
 
 .related {
   max-width: var(--max-width);

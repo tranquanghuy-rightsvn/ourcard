@@ -202,6 +202,9 @@
   function initAddButtons() {
     var selector = '.add-to-cart, .pcard__cta, .product-info__add-to-cart, .sticky-buy-bar__cta';
     document.querySelectorAll(selector).forEach(function (btn) {
+      // A link carrying `download` (free template files) must keep the browser's
+      // own behaviour — never swallow the click and drop it in the cart instead.
+      if (btn.hasAttribute('download')) return;
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation(); // the tiles are wrapped in a link to the product page
