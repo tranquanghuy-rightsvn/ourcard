@@ -19,6 +19,11 @@
     "ga_measurement_id": "",
     "head_html": ""
   },
+  "theme": {
+    "header": "#0f2d5b",
+    "menu": "#ffe4ec",
+    "body": "#fff9f6"
+  },
   "ads_txt": "",
   "social": [
     {
@@ -65,7 +70,7 @@
         "cta_href": "shop-all.html"
       },
       {
-        "image": "card-banner-3.webp",
+        "image": "site-hero-slide-3-1.png",
         "eyebrow": "Handmade 3D Pop-Up Cards",
         "title": "BUTTERFLY & FLORAL",
         "text": "A whole garden folded flat into an envelope — ready for your handwritten note.",
