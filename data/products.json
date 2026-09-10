@@ -1,5 +1,56 @@
 [
   {
+    "id": 3,
+    "slug": "kc017-hanukkah-festival-of-lights-3d-pop-up-card",
+    "sku": "KC017",
+    "name": "Hanukkah Festival of Lights 3D Pop-Up Card",
+    "category": "hanukkah",
+    "tags_text": "Hanukkah,Festival",
+    "size": "closed: 127x178mm (5x7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png",
+    "gallery": [
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png",
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-3.png",
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-4.png",
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-5.png"
+    ],
+    "videos": [
+      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "<p><strong>Demo text:</strong></p>\n<ul>\n<li><strong>Intricate 3D Diorama:</strong> Opens smoothly to reveal a flat 180-degree base, allowing the magnificent central elements to stand proudly at a perfect 90-degree angle for an optimal, stable display on any mantle or desk.</li>\n<li><strong>Traditional Details:</strong> Showcases a radiant nine-branch Menorah, white doves of peace, glowing candles, and festive holiday treats including sufganiyot (jelly donuts) and latkes.</li>\n<li><strong>Elegant Typography:</strong> Features dual beautifully rendered banners reading \"Happy Hanukkah\" and \"Eight Nights of Light.\"</li>\n<li><strong>Premium Construction:</strong> Precision-cut layers and intricate interlocking mechanisms ensure the card folds completely flat for mailing and pops up flawlessly upon opening.</li>\n</ul>",
+    "status": "published",
+    "updated_at": "2026-09-05",
+    "order": 0
+  },
+  {
+    "id": 4,
+    "slug": "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card",
+    "sku": "KC015",
+    "name": "Halloween cake eat,drink and be scary - 3D Pop Up Card",
+    "category": "halloween",
+    "tags_text": "",
+    "size": "Closed: 127 x 178 mm (5x7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.png",
+    "gallery": [
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-2.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-3.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-4.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-5.png"
+    ],
+    "videos": [
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "",
+    "order": 1,
+    "status": "published",
+    "updated_at": "2026-09-10"
+  },
+  {
     "id": 1,
     "slug": "kc014-halloween-cake-creepin-s-it-real",
     "sku": "KC014",
@@ -23,7 +74,7 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-08-31",
-    "order": 0
+    "order": 2
   },
   {
     "id": 2,
@@ -48,57 +99,6 @@
     "description_html": "",
     "status": "published",
     "updated_at": "2026-08-31",
-    "order": 1
-  },
-  {
-    "id": 3,
-    "slug": "kc017-hanukkah-festival-of-lights-3d-pop-up-card",
-    "sku": "KC017",
-    "name": "Hanukkah Festival of Lights 3D Pop-Up Card",
-    "category": "hanukkah",
-    "tags_text": "Hanukkah,Festival",
-    "size": "closed: 127x178mm (5x7 inch)",
-    "is_bestseller": true,
-    "is_new": true,
-    "cover_image": "kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png",
-    "gallery": [
-      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-2.png",
-      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-3.png",
-      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-4.png",
-      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-5.png"
-    ],
-    "videos": [
-      "kc017-hanukkah-festival-of-lights-3d-pop-up-card-1.mp4"
-    ],
-    "description_html": "<p><strong>Demo text:</strong></p>\n<ul>\n<li><strong>Intricate 3D Diorama:</strong> Opens smoothly to reveal a flat 180-degree base, allowing the magnificent central elements to stand proudly at a perfect 90-degree angle for an optimal, stable display on any mantle or desk.</li>\n<li><strong>Traditional Details:</strong> Showcases a radiant nine-branch Menorah, white doves of peace, glowing candles, and festive holiday treats including sufganiyot (jelly donuts) and latkes.</li>\n<li><strong>Elegant Typography:</strong> Features dual beautifully rendered banners reading \"Happy Hanukkah\" and \"Eight Nights of Light.\"</li>\n<li><strong>Premium Construction:</strong> Precision-cut layers and intricate interlocking mechanisms ensure the card folds completely flat for mailing and pops up flawlessly upon opening.</li>\n</ul>",
-    "status": "published",
-    "updated_at": "2026-09-05",
-    "order": 2
-  },
-  {
-    "id": 4,
-    "slug": "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card",
-    "sku": "KC015",
-    "name": "Halloween cake eat,drink and be scary - 3D Pop Up Card",
-    "category": "halloween",
-    "tags_text": "",
-    "size": "Closed: 127 x 178 mm (5x7 inch)",
-    "is_bestseller": true,
-    "is_new": true,
-    "cover_image": "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.png",
-    "gallery": [
-      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.png",
-      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-2.png",
-      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-3.png",
-      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-4.png",
-      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-5.png"
-    ],
-    "videos": [
-      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.mp4"
-    ],
-    "description_html": "",
-    "order": 3,
-    "status": "published",
-    "updated_at": "2026-09-10"
+    "order": 3
   }
 ]
