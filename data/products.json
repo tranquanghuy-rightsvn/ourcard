@@ -83,8 +83,8 @@
     "name": "Teddy Bear Chrismast - 3D Pop Up Card",
     "category": "christmas",
     "tags_text": "Chrismast",
-    "size": "127 x 178 mm (5 x 7 inch)",
-    "is_bestseller": false,
+    "size": "Closed: 127 x 178 mm (5 x 7 inch)",
+    "is_bestseller": true,
     "is_new": true,
     "cover_image": "kc013-teddy-bear-chrismast-12.png",
     "gallery": [
@@ -97,8 +97,8 @@
       "kc013-teddy-bear-chrismast-2.mp4"
     ],
     "description_html": "",
+    "order": 3,
     "status": "published",
-    "updated_at": "2026-08-31",
-    "order": 3
+    "updated_at": "2026-09-10"
   }
 ]
