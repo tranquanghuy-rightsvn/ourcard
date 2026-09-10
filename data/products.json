@@ -74,5 +74,31 @@
     "status": "published",
     "updated_at": "2026-09-05",
     "order": 2
+  },
+  {
+    "id": 4,
+    "slug": "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card",
+    "sku": "KC015",
+    "name": "Halloween cake eat,drink and be scary - 3D Pop Up Card",
+    "category": "halloween",
+    "tags_text": "",
+    "size": "Closed: 127 x 178 mm (5x7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.png",
+    "gallery": [
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-2.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-3.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-4.png",
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-5.png"
+    ],
+    "videos": [
+      "kc015-halloween-cake-eat-drink-and-be-scary-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "",
+    "order": 3,
+    "status": "published",
+    "updated_at": "2026-09-10"
   }
 ]
