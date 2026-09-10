@@ -100,5 +100,31 @@
     "order": 3,
     "status": "published",
     "updated_at": "2026-09-10"
+  },
+  {
+    "id": 5,
+    "slug": "kc009-halloween-moon-3d-pop-up-card",
+    "sku": "KC009",
+    "name": "Halloween Moon - 3D Pop Up Card",
+    "category": "halloween",
+    "tags_text": "",
+    "size": "Closed: 127 x 178 mm (5 x 7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc009-halloween-moon-3d-pop-up-card-1.png",
+    "gallery": [
+      "kc009-halloween-moon-3d-pop-up-card-1.png",
+      "kc009-halloween-moon-3d-pop-up-card-2.png",
+      "kc009-halloween-moon-3d-pop-up-card-3.png",
+      "kc009-halloween-moon-3d-pop-up-card-4.png",
+      "kc009-halloween-moon-3d-pop-up-card-5.png"
+    ],
+    "videos": [
+      "kc009-halloween-moon-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "",
+    "order": 4,
+    "status": "published",
+    "updated_at": "2026-09-10"
   }
 ]
