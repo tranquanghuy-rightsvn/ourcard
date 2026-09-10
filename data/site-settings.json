@@ -84,14 +84,14 @@
         "title": "Custom design",
         "text": "Send us your artwork or idea — we turn it into a working pop-up.",
         "cta_label": "Send your idea",
-        "href": "#"
+        "href": "custom-design.html"
       },
       {
         "image": "hero-side-wholesale.jpg",
         "title": "Wholesale & OEM",
         "text": "Factory-direct pricing for retailers, from small batches upwards.",
         "cta_label": "Get a quote",
-        "href": "shop-all.html"
+        "href": "wholesale-pop-up-cards.html"
       }
     ]
   },
