@@ -54,12 +54,12 @@
   "hero": {
     "slides": [
       {
-        "image": "card-banner-1.webp",
+        "image": "site-hero-slide-1-1.png",
         "eyebrow": "Handmade 3D Pop-Up Cards",
-        "title": "BIRDS & BLOOMS",
-        "text": "Laser-cut feathers and hand-assembled flowers that spring to life the moment the card opens.",
+        "title": "HALLOWEEN",
+        "text": "Prominent Halloween designs are laser-cut and carefully put together, creating a mysterious scene when the card is opened.",
         "cta_label": "Shop the collection",
-        "cta_href": "shop-all.html"
+        "cta_href": "product/kc009-halloween-moon-3d-pop-up-card.html"
       },
       {
         "image": "card-banner-2.webp",
