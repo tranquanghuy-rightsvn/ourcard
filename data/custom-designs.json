@@ -19,5 +19,28 @@
     "order": 0,
     "status": "published",
     "updated_at": "2026-09-10"
+  },
+  {
+    "id": 2,
+    "slug": "cd002-under-the-sea-3d-pop-up-card",
+    "title": "CD002-Under the sea - 3D Pop Up Card",
+    "category": "the-beatles",
+    "size": "Closed: 127x178 mm (5x7 inch)",
+    "cover_image": "cd002-under-the-sea-3d-pop-up-card-6.png",
+    "gallery": [
+      "cd002-under-the-sea-3d-pop-up-card-6.png",
+      "cd002-under-the-sea-3d-pop-up-card-8.png",
+      "cd002-under-the-sea-3d-pop-up-card-9.png",
+      "cd002-under-the-sea-3d-pop-up-card-10.png",
+      "cd002-under-the-sea-3d-pop-up-card-11.png",
+      "cd002-under-the-sea-3d-pop-up-card-12.png"
+    ],
+    "videos": [
+      "cd002-under-the-sea-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "",
+    "order": 1,
+    "status": "published",
+    "updated_at": "2026-09-12"
   }
 ]
