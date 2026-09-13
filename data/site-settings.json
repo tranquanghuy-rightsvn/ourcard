@@ -6,7 +6,7 @@
     "description": "Kyu Craft designs and hand-assembles 3D pop-up greeting cards in Vietnam — wholesale, custom design and retail, laser-cut and shipped worldwide from 50 pcs per design.",
     "logo": "logo-ngang.png",
     "favicon": "favicon.png",
-    "og_image": "card-banner-1.webp"
+    "og_image": "site-og-image-1.png"
   },
   "organization": {
     "description": "Kyu Craft designs and hand-assembles 3D pop-up greeting cards in Vietnam for wholesale, retail and custom design.",
@@ -62,9 +62,9 @@
         "cta_href": "product/kc009-halloween-moon-3d-pop-up-card.html"
       },
       {
-        "image": "card-banner-2.webp",
+        "image": "site-hero-slide-2-1.png",
         "eyebrow": "Handmade 3D Pop-Up Cards",
-        "title": "PEACOCK & BLOSSOM",
+        "title": "HAPPY BIRTHDAY",
         "text": "Every layer cut and folded by hand, from the tail feathers to the last cherry blossom.",
         "cta_label": "Shop the collection",
         "cta_href": "shop-all.html"
