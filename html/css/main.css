@@ -78,15 +78,26 @@ button {
 }
 
 :root {
+  /* CMS_THEME:START — written by scripts/build.py from data/site-settings.json
+     ("Cài đặt website" → "Màu sắc website" in the admin). Editing these by hand
+     works, but the next CMS save overwrites them. The three colours the owner
+     picks are --color-bg (body), --color-topbar (menu bar) and --color-rust
+     (brand / header); the rest are derived from them so contrast holds. */
   --color-bg: #fff9f6;
   --color-topbar: #ffe4ec;
-  /* Brand / primary — used for accents, buttons, links and headings site-wide */
   --color-rust: #0f2d5b;
-  --color-rust-deep: #071c3c;
-  /* Headings share the primary so no lighter accent tone is left in the type */
+  --color-rust-deep: #0a1d3b;
   --color-green: #0f2d5b;
+  --color-topbar-text: #ffffff;
+  --color-header-text: #2f2f2e;
+  --color-header-accent: #0f2d5b;
+  /* CMS_THEME:END */
   /* Reserved for success confirmations (form sent, order placed) */
   --color-success: #3d5c34;
+  /* Fixed accent for call-to-action buttons (Send, AI chat) - deliberately
+     outside the CMS_THEME band so it survives a palette change */
+  --color-coral: #fb6a6a;
+  --color-coral-deep: #e85656;
   --color-text: #2f2f2e;
   --color-text-light: #5a5a58;
   --color-white: #ffffff;
@@ -134,7 +145,7 @@ body {
 .topbar__desc {
   margin: 0;
   letter-spacing: 1px;
-  color: var(--color-white);
+  color: var(--color-topbar-text);
   text-align: center;
 }
 
@@ -144,7 +155,7 @@ body {
   gap: 28px;
   margin: 0;
   letter-spacing: 1px;
-  color: var(--color-white);
+  color: var(--color-topbar-text);
   flex-shrink: 0;
 }
 
@@ -152,7 +163,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-white);
+  color: var(--color-topbar-text);
 }
 
 .topbar__contact svg {
@@ -162,17 +173,51 @@ body {
 }
 
 .site-header {
+  position: relative;
   background: var(--color-topbar);
   padding: 10px 20px 15px;
+  overflow: hidden;
 }
 
 .site-header__inner {
+  position: relative;
+  z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 0 40px;
+}
+
+/* Corner decoration behind the logo - a soft blob, top-left only (opt-in per
+   page via .site-header__deco; not part of the shared header markup, so
+   pages that don't include it are unaffected). */
+.site-header__deco {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Matches the fixed logo row height (10px + 80px logo + 15px padding) so the
+     deco never stretches into the mobile burger menu's wrapped nav row. */
+  height: 105px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.site-header__deco-blob {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 120px;
+  height: 105px;
+  color: #fbc9d6;
+}
+@media (max-width: 1040px) {
+  .site-header__deco-blob { width: 95px; }
+}
+@media (max-width: 480px) {
+  .site-header__deco-blob { width: 68px; }
 }
 
 .logo {
@@ -194,7 +239,7 @@ body {
   display: block;
   width: 26px;
   height: 2px;
-  background: var(--color-text);
+  background: var(--color-header-text);
   margin: 5px 0;
 }
 
@@ -208,13 +253,13 @@ body {
 
 .main-nav a {
   font-size: 15px;
-  color: var(--color-text);
+  color: var(--color-header-text);
   letter-spacing: 0.3px;
   transition: color 0.2s ease;
 }
 .main-nav a:hover,
 .main-nav a[aria-current="page"] {
-  color: var(--color-rust);
+  color: var(--color-header-accent);
 }
 
 .main-nav a {
@@ -236,7 +281,7 @@ body {
   height: 40px;
   margin-left: 10px;
   border-radius: 50%;
-  color: var(--color-text);
+  color: var(--color-header-text);
   transition:
     background 0.15s ease,
     color 0.15s ease;
@@ -292,6 +337,52 @@ body {
 .wishlist-link__badge[hidden],
 .cart-link__badge[hidden] {
   display: none;
+}
+
+/* ==========================================================================
+   Page corner decoration (opt-in: wrap <main> in .page-deco-wrap)
+   ========================================================================== */
+.page-deco-wrap {
+  position: relative;
+}
+/* z-index:-1 keeps the blobs behind the page content without having to lift
+   every content block above them */
+.page-deco {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.page-deco__left,
+.page-deco__right,
+.page-deco__accent {
+  position: absolute;
+  bottom: 0;
+}
+.page-deco__left {
+  left: 0;
+  width: 222px;
+  height: 198px;
+  color: #fddf8c;
+}
+.page-deco__right {
+  right: 0;
+  width: 345px;
+  height: 558px;
+  color: #c9eee3;
+}
+/* Heart + accent strokes + the dashed flight path, over the mint blob */
+.page-deco__accent {
+  right: 0;
+  bottom: 48px;
+  width: 427px;
+  height: 330px;
+}
+@media (max-width: 768px) {
+  .page-deco__left { width: 150px; height: 134px; }
+  .page-deco__right { width: 200px; height: 323px; }
+  .page-deco__accent { display: none; }
 }
 
 /* ==========================================================================
@@ -551,10 +642,25 @@ p.product-tile__link {
 
 /* Newsletter strip across the top of the footer */
 .footer-cta {
+  position: relative;
   background: var(--color-rust);
   color: var(--color-white);
+  overflow: hidden;
+}
+/* Wave hugging the start of the band - a lighter wash of the band itself, so it
+   follows whatever brand colour the CMS sets */
+.footer-cta__wave {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 190px;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.11);
+  pointer-events: none;
 }
 .footer-cta__inner {
+  position: relative;
+  z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 18px 40px;
@@ -606,7 +712,7 @@ p.product-tile__link {
   flex-shrink: 0;
   border: none;
   border-radius: 999px;
-  background: var(--color-rust);
+  background: var(--color-coral);
   color: var(--color-white);
   font-family: var(--font-body);
   font-size: 14px;
@@ -615,7 +721,44 @@ p.product-tile__link {
   transition: background 0.2s;
 }
 .footer-cta__form button:hover {
-  background: var(--color-text);
+  background: var(--color-coral-deep);
+}
+
+/* Decoration on the catalog bar - paper plane + hand-drawn accent marks.
+   Opt-in per page: only pages whose markup carries these elements show them. */
+.footer-cta__plane {
+  width: 26px;
+  height: 26px;
+  vertical-align: -7px;
+  margin-right: 12px;
+  color: #ffd3dd;
+}
+/* The fold reads as the band showing through the plane */
+.footer-cta__plane-fold {
+  stroke: var(--color-rust);
+}
+.footer-cta__spark {
+  width: 24px;
+  height: 24px;
+  vertical-align: 4px;
+  margin-left: 12px;
+  color: #ffd3dd;
+}
+/* Wraps the email pill so the burst can sit just outside it, on the band */
+.footer-cta__send {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 0 1 660px;
+}
+.footer-cta__send .footer-cta__form {
+  flex: 1 1 auto;
+}
+.footer-cta__burst {
+  flex-shrink: 0;
+  width: 22px;
+  height: 39px;
+  color: #eec36c;
 }
 
 /* Four-column body */
@@ -791,7 +934,7 @@ p.product-tile__link {
   background: #25d366;
 }
 .contact-rail__btn--ai {
-  background: var(--color-rust);
+  background: var(--color-coral);
 }
 /* The chat panel opens from the same corner — hide the rail while it's up so
    the two don't stack. chat.js toggles .chat--open on the .chat wrapper. */
@@ -1386,6 +1529,13 @@ body:has(.chat.chat--open) .contact-rail {
   }
   .footer-cta__form {
     flex: 1 1 auto;
+  }
+  /* Stacked layout leaves no band to the right of the pill for the burst */
+  .footer-cta__send {
+    flex: 1 1 auto;
+  }
+  .footer-cta__burst {
+    display: none;
   }
   /* Full-screen search on phones instead of a small floating card */
   .search-overlay {

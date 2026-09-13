@@ -142,6 +142,7 @@ per-product:
 | Logo | `<!-- CMS_LOGO -->` (header) + `<!-- CMS_FOOTER_LOGO -->` on every page |
 | Favicon, Google Analytics (GA4), extra `<head>` HTML (Search Console tag, ad pixels…) | `<!-- CMS_HEAD -->` on every page |
 | Social links | `<!-- CMS_SOCIAL_FOOTER -->` (footer row) + `<!-- CMS_SOCIAL_FIXED -->` (the fixed rail on the right edge) on every page — **one URL drives both**, and clearing a URL removes that icon from both |
+| Theme: the 3 colours (brand/header, menu bar, page background) | the `/* CMS_THEME */` band inside `:root` in `html/css/main.css` — see "Theme colours" below |
 | `ads.txt` contents | written to `html/ads.txt` (removed entirely if the field is blank) |
 | Organization phone/email/city/country | the homepage `Organization` JSON-LD only — SEO metadata, **not** the visible footer contact block, which stays hand-authored |
 
@@ -158,6 +159,40 @@ adding a new page just means pasting whichever bands it needs.
 
 **Anything inside a band is build output — editing it by hand is pointless**, it gets
 overwritten on the next build. Change the renderer in `scripts/build.py` instead.
+
+### Theme colours
+
+The owner picks **three** colours in "Cài đặt website" → "Màu sắc website" (a native colour
+picker plus a hex field, kept in sync both ways, with a live preview strip and a "restore
+defaults" button):
+
+| CMS field | CSS variable | Where it shows |
+| --- | --- | --- |
+| Màu gốc (header) | `--color-rust` | top contact bar, buttons, links, headings, badges |
+| Màu menu | `--color-topbar` | the logo + navigation bar, and the mobile menu panel |
+| Màu body | `--color-bg` | the page background |
+
+Everything else is **derived** by `derive_theme()` in `scripts/build.py`, so the owner can
+never pick an unreadable combination: `--color-rust-deep` (hover shade) is the brand 35%
+darker — or lighter, if the brand is already near-black; `--color-topbar-text` and
+`--color-header-text` flip between white and ink by WCAG relative luminance of the bar
+behind them; `--color-header-accent` (nav hover / current page) is the brand colour, unless
+the menu bar is painted that same colour, in which case the resting link colour is muted and
+the hover takes the full-strength one. `gas/js.html` mirrors this maths in `deriveTheme_()`
+for the preview only — `main.css` remains the single source of truth.
+
+This band is CSS, not HTML, so it has its own `/* CMS_THEME:START */` … `/* CMS_THEME:END */`
+markers and its own rewriter (`build_theme_css()`) instead of `replace_band()`. **No `.html`
+file changes when the palette changes** — every page already links `css/main.css`, so one
+rewritten file repaints the whole site. Applying a new palette is still a normal CMS save:
+`data/site-settings.json` → CI → `python3 scripts/build.py` → `wrangler deploy` (~1–2 min).
+There is no way around the deploy — the site is static files on Cloudflare — but nothing is
+"rebuilt" beyond that one CSS file.
+
+Colour values are validated on both sides (`normalizeThemeHex_()` in `gas/js.html`,
+`normalizeHexColor_()` in `gas/Code.js`) because they are copied verbatim into a `.css` file;
+only `#rgb` / `#rrggbb` is accepted, and `parse_hex()` in the build falls back to the default
+palette rather than emitting broken CSS if the JSON is ever hand-edited wrong.
 
 ### Images
 

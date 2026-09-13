@@ -61,6 +61,11 @@
     </div>
 
     <header class="site-header">
+      <div class="site-header__deco" aria-hidden="true">
+        <svg class="site-header__deco-blob" viewBox="10 0 120 105" preserveAspectRatio="none" fill="currentColor">
+          <path d="M0,0 C0,6 14.8,7.7 20.4,14.3 C24,18.5 28.3,21.9 32.9,24.7 C53.9,37.1 83.4,37.9 100.1,55.6 C108.2,64.1 113.3,76.7 117.9,87.7 C120.3,93.3 122.6,98.5 123,105 L0,105 Z" />
+        </svg>
+      </div>
       <div class="site-header__inner">
         <!-- CMS_LOGO:START -->
         <a href="../index.html" class="logo"
@@ -125,7 +130,28 @@
         >
       </div>
     </header>
-
+    <div class="page-deco-wrap">
+      <div class="page-deco" aria-hidden="true">
+        <svg class="page-deco__left" viewBox="0 0 222 198" preserveAspectRatio="none">
+          <path d="M0,0 C36.7,-4.6 61,19.7 72.9,50.1 C80.1,68.4 82.8,88.8 91,105.4 C97.1,117.5 106.3,127.6 118.2,134.3 C140.3,146.7 172.1,147.5 195.1,160.2 C214.9,171.2 228.3,190.9 209,213 L0,213 Z" fill="currentColor" />
+          <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round">
+            <path d="M162,61 L133,98" />
+            <path d="M203,92 L157,113" />
+          </g>
+        </svg>
+        <svg class="page-deco__right" viewBox="0 -2 345 558" preserveAspectRatio="none">
+          <path d="M345,0 C277.8,6.3 259.9,72.7 259.6,135.2 C259.4,183.7 269.7,229.8 258.8,274.5 C252.4,300.2 239.1,325.5 220.2,345.2 C195.2,371.3 160.5,387.7 139.7,415.4 C124.7,435.3 116.9,461.2 106,484.9 C86.9,526.6 58.1,561.4 0,555 L0,563 L345,563 Z" fill="currentColor" />
+        </svg>
+        <svg class="page-deco__accent" viewBox="0 0 427 330" fill="none" stroke-linecap="round">
+          <path d="M10,314 C56.5,196 216.4,241.8 278,141" stroke="#f0df87" stroke-width="5" stroke-dasharray="18 17" />
+          <g stroke="#f27375" stroke-width="7">
+            <path d="M245,10 L266,44" />
+            <path d="M210,46 L247,65" />
+            <path d="M201,102 L243,92" />
+            <path d="M30,67 C21,58 9,44 7,28 C6,15 19,11 27,23 C34,6 50,7 52,20 C54,37 42,56 30,67 Z" transform="translate(272,50) rotate(12 29 38)" />
+          </g>
+        </svg>
+      </div>
     <nav class="breadcrumb">
       <a href="../index.html">Home</a>
       <span class="breadcrumb__sep">/</span>
@@ -343,22 +369,46 @@
       <a href="#" class="sticky-buy-bar__cta">Add to cart</a>
     </div>
 
-    <footer class="site-footer">
+    
+    </div>
+
+<footer class="site-footer">
       <div class="footer-cta">
+        <svg class="footer-cta__wave" viewBox="0 0 190 87" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,0 C8.6,2.9 15.9,9.9 24.3,14.7 C31.6,18.8 39.7,21.3 48,21.9 C63.8,23.1 79.9,17.5 96,17.7 C113.5,17.8 130.9,24.6 144,36 C160.2,50.1 169.8,71.1 184,87 L0,87 Z" fill="currentColor" />
+        </svg>
         <div class="footer-cta__inner">
-          <p class="footer-cta__title">Receive catalogs from us</p>
-          <form class="footer-cta__form" data-lead-form>
-            <label class="sr-only" for="footer-email">Email</label>
-            <input
-              type="email"
-              id="footer-email"
-              name="email"
-              placeholder="Type your email"
-              required
-            />
-            <input type="text" name="_hp" class="sr-only" tabindex="-1" autocomplete="off" />
-            <button type="submit">Send</button>
-          </form>
+          <p class="footer-cta__title">
+            <svg class="footer-cta__plane" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22 2 15 22 11 13 2 9Z" fill="currentColor" />
+              <path class="footer-cta__plane-fold" d="M22 2 11 13" fill="none" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            Receive catalogs from us
+            <svg class="footer-cta__spark" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true">
+              <path d="M4,20 L13,5.5" />
+              <path d="M13,24 L29,13.5" />
+              <path d="M15,30.5 L31,30.5" />
+            </svg>
+          </p>
+          <div class="footer-cta__send">
+            <form class="footer-cta__form" data-lead-form>
+              <label class="sr-only" for="footer-email">Email</label>
+              <input
+                type="email"
+                id="footer-email"
+                name="email"
+                placeholder="Type your email"
+                required
+              />
+              <input type="text" name="_hp" class="sr-only" tabindex="-1" autocomplete="off" />
+              <button type="submit">Send</button>
+            </form>
+            <svg class="footer-cta__burst" viewBox="0 0 24 43" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" aria-hidden="true">
+              <path d="M2,10 L17,2.7" />
+              <path d="M3.7,21.7 L20.3,19" />
+              <path d="M5.3,36.7 L22,40" />
+            </svg>
+          </div>
         </div>
       </div>
 

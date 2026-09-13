@@ -471,6 +471,8 @@
 }
 
 .pcard {
+  display: flex;
+  flex-direction: column;
   flex: 0 0 calc(25% - 15px);
   min-width: 0;
 }
@@ -529,13 +531,23 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
 }
-.pcard__info { text-align: center; }
+/* Column layout so .product-actions can pin to the bottom via margin-top: auto
+   below - names/categories with different text lengths across a row would
+   otherwise push the actions row to a different height per card. */
+.pcard__info { display: flex; flex-direction: column; flex: 1; text-align: center; }
 .pcard__name {
   font-family: var(--font-product-title);
   font-size: 25px;
   font-weight: 600;
   margin-bottom: 4px;
   line-height: 1.4;
+  /* Reserve exactly 2 lines so pcard__categories starts at the same y in every
+     card regardless of how long an individual product's name is. */
+  min-height: calc(1.4em * 2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .pcard__categories {
   font-family: var(--font-body);
@@ -544,6 +556,15 @@
   line-height: 1.4;
   color: var(--color-text-light);
   margin-bottom: 20px;
+  /* Reserve exactly 1 line so product-actions lines up across every card even
+     when one product has more categories listed than another. */
+  min-height: 1.4em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pcard__info .product-actions {
+  margin-top: auto;
 }
 .pcard__price {
   display: none;

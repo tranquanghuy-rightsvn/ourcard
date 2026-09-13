@@ -929,6 +929,16 @@ FAVICON_MIME = {
     "gif": "image/gif", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp": "image/webp",
 }
 
+DEFAULT_THEME = {
+    "header": "#0f2d5b",
+    "menu": "#ffe4ec",
+    "body": "#fff9f6",
+}
+
+# Ink used on light surfaces — same value as --color-text, kept in sync by hand.
+INK = "#2f2f2e"
+
+
 DEFAULT_SETTINGS = {
     "site": {
         "title": "Kyu Craft | Popup Card",
@@ -944,6 +954,7 @@ DEFAULT_SETTINGS = {
         "address_locality": "", "address_country": "",
     },
     "analytics": {"ga_measurement_id": "", "head_html": ""},
+    "theme": dict(DEFAULT_THEME),
     "ads_txt": "",
     "social": [],
     "hero": {"slides": [], "cards": []},
@@ -1375,6 +1386,132 @@ def patch_chrome_pages(settings):
             path.write_text(patched)
 
 
+# ---------------------------------------------------------------------------
+# Theme colours (data/site-settings.json -> "theme") — the owner picks THREE colours
+# in the CMS ("Cài đặt website" → "Màu sắc website"):
+#
+#   header : brand / primary  -> the top contact bar, buttons, links, headings
+#   menu   : the logo+menu bar behind the navigation (and the mobile menu panel)
+#   body   : the page background
+#
+# Everything else (hover shade, heading tone, and the text colour sitting ON the two
+# bars) is DERIVED here, so a dark menu bar automatically gets light nav links and a
+# pale brand colour automatically gets dark text on the contact bar. Nothing about
+# the HTML changes: the build only rewrites the `/* CMS_THEME */` band inside
+# :root in html/css/main.css, so one CSS file carries the whole palette.
+# ---------------------------------------------------------------------------
+
+def parse_hex(value, fallback):
+    """#abc / #aabbcc (with or without the #) -> (r, g, b). Anything else falls back,
+    so a hand-edited data/site-settings.json can never emit broken CSS."""
+    text = str(value or "").strip().lstrip("#")
+    if len(text) == 3 and all(c in "0123456789abcdefABCDEF" for c in text):
+        text = "".join(c * 2 for c in text)
+    if len(text) != 6 or any(c not in "0123456789abcdefABCDEF" for c in text):
+        text = str(fallback).lstrip("#")
+    return tuple(int(text[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def to_hex(rgb):
+    return "#" + "".join(f"{max(0, min(255, round(c))):02x}" for c in rgb)
+
+
+def relative_luminance(rgb):
+    """WCAG relative luminance — used to decide white-vs-ink text on a colour."""
+    channels = []
+    for c in rgb:
+        c = c / 255
+        channels.append(c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4)
+    r, g, b = channels
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def contrast_ratio(a, b):
+    la, lb = relative_luminance(a), relative_luminance(b)
+    lighter, darker = max(la, lb), min(la, lb)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+def mix(a, b, amount):
+    """`amount` of colour b blended into colour a."""
+    return tuple(a[i] + (b[i] - a[i]) * amount for i in range(3))
+
+
+def readable_on(background):
+    """White on a dark surface, ink on a light one — whichever contrasts more."""
+    white = (255, 255, 255)
+    ink = parse_hex(INK, INK)
+    return white if contrast_ratio(background, white) >= contrast_ratio(background, ink) else ink
+
+
+def derive_theme(theme):
+    """The three CMS colours -> the full set of :root variables."""
+    header = parse_hex(theme.get("header"), DEFAULT_THEME["header"])
+    menu = parse_hex(theme.get("menu"), DEFAULT_THEME["menu"])
+    body = parse_hex(theme.get("body"), DEFAULT_THEME["body"])
+
+    # Hover/pressed shade of the brand: 35% darker. If the brand is already so close
+    # to black that darkening changes nothing visible, lighten it instead.
+    deep = mix(header, (0, 0, 0), 0.35)
+    if contrast_ratio(deep, header) < 1.2:
+        deep = mix(header, (255, 255, 255), 0.22)
+
+    header_text = readable_on(menu)
+    # Nav hover normally uses the brand colour. If the owner paints the menu bar in
+    # (nearly) that same colour, hovering would be invisible — so mute the resting
+    # link colour instead and let the hover use the full-strength text colour.
+    if contrast_ratio(header, menu) >= 2.2:
+        header_accent = header
+    else:
+        header_accent = header_text
+        header_text = mix(header_text, menu, 0.32)
+
+    return {
+        "--color-bg": to_hex(body),
+        "--color-topbar": to_hex(menu),
+        "--color-rust": to_hex(header),
+        "--color-rust-deep": to_hex(deep),
+        "--color-green": to_hex(header),
+        "--color-topbar-text": to_hex(readable_on(header)),
+        "--color-header-text": to_hex(header_text),
+        "--color-header-accent": to_hex(header_accent),
+    }
+
+
+def render_theme_css(settings):
+    """The `:root` body of the CMS_THEME band, markers included, indented for main.css."""
+    values = derive_theme(settings.get("theme") or {})
+    lines = [
+        "  /* CMS_THEME:START — written by scripts/build.py from data/site-settings.json",
+        '     ("Cài đặt website" → "Màu sắc website" in the admin). Editing these by hand',
+        "     works, but the next CMS save overwrites them. The three colours the owner",
+        "     picks are --color-bg (body), --color-topbar (menu bar) and --color-rust",
+        "     (brand / header); the rest are derived from them so contrast holds. */",
+    ]
+    lines += [f"  {name}: {value};" for name, value in values.items()]
+    lines.append("  /* CMS_THEME:END */")
+    return "\n".join(lines)
+
+
+def build_theme_css(settings):
+    """Rewrite the CMS_THEME band inside :root in html/css/main.css.
+
+    Deliberately NOT a separate stylesheet: main.css is already linked by every page
+    (hand-authored, generated and template alike), so the palette reaches the whole
+    site without touching a single .html file."""
+    path = OUT / "css" / "main.css"
+    text = path.read_text()
+    pattern = re.compile(
+        r"^[ \t]*/\* CMS_THEME:START.*?CMS_THEME:END \*/",
+        re.DOTALL | re.MULTILINE,
+    )
+    if not pattern.search(text):
+        raise SystemExit("CSS band CMS_THEME not found in html/css/main.css — did :root move?")
+    patched = pattern.sub(lambda _m: render_theme_css(settings), text, count=1)
+    if patched != text:
+        path.write_text(patched)
+
+
 def build_ads_txt(settings):
     """ads.txt has to sit at the site root to be valid (https://site/ads.txt)."""
     path = OUT / "ads.txt"
@@ -1422,6 +1559,7 @@ def main():
     build_worker_knowledge(settings, products, categories, chat_qa)
     build_sitemap(products, free_templates, custom_designs)
     build_ads_txt(settings)
+    build_theme_css(settings)
 
     print(
         f"Built {len(valid_files)} product pages, {len(ft_valid_files)} free template pages, "
