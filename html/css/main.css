@@ -219,6 +219,20 @@ body {
   height: 100%;
   color: #fbc9d6;
 }
+/* Three yellow accent strokes hugging the blob's curved edge from outside -
+   left:100px leaves ~5px between the nearest stroke and the curve. */
+.site-header__deco-spark {
+  position: absolute;
+  top: 44px;
+  left: 100px;
+  width: 44px;
+  height: 42px;
+  color: #eec36c;
+}
+/* Below 1476px the logo reaches the strokes, so they'd show through the bird */
+@media (max-width: 1475px) {
+  .site-header__deco-spark { display: none; }
+}
 @media (max-width: 1023px) {
   .site-header__deco-blob { width: 80px; }
 }
