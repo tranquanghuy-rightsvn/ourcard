@@ -1044,12 +1044,20 @@ def render_head_cms(settings, prefix):
 
 
 def render_logo(settings, prefix):
+    """Header logo. Below the phone breakpoint the browser swaps in the round
+    bird mark on its own — the full lockup is too wide there and pushes the
+    search/wishlist/cart/burger row onto a second line. The 430px here must
+    stay in step with the matching breakpoint in css/main.css."""
     logo = settings["site"].get("logo") or "logo-ngang.png"
+    mark = settings["site"].get("logo_mark") or "logo-mark.png"
     alt = html.escape(settings["site"].get("title") or "Kyu Craft")
     return (
         f'<a href="{prefix}index.html" class="logo"\n'
-        f'  ><img src="{prefix}images/{logo}" alt="{alt}"\n'
-        f"/></a>"
+        f"  ><picture\n"
+        f'    ><source media="(max-width: 430px)" srcset="{prefix}images/{mark}"\n'
+        f'    /><img src="{prefix}images/{logo}" alt="{alt}"\n'
+        f"  /></picture\n"
+        f"></a>"
     )
 
 

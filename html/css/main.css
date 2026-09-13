@@ -172,16 +172,22 @@ body {
   flex-shrink: 0;
 }
 
+/* No overflow clipping here: the collapsed burger menu drops out of this box,
+   so hiding overflow would swallow it. The deco layer clips its own blob.
+   The z-index lifts the whole header - burger menu included - over page
+   content that also sits at z-index 1 (the hero, for one), while staying under
+   the floating rail (80) / chat (120) / search overlay (220). */
 .site-header {
   position: relative;
+  z-index: 60;
   background: var(--color-topbar);
   padding: 10px 20px 15px;
-  overflow: hidden;
 }
 
+/* Deliberately NOT positioned: the mobile burger menu is absolute, so it must
+   anchor to .site-header (full width, flush under it) and not to this padded,
+   max-width box. The deco sits behind the content via z-index:-1 instead. */
 .site-header__inner {
-  position: relative;
-  z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
   display: flex;
@@ -193,15 +199,15 @@ body {
 /* Corner decoration behind the logo - a soft blob, top-left only (opt-in per
    page via .site-header__deco; not part of the shared header markup, so
    pages that don't include it are unaffected). */
+/* inset:0 + height:100% so the blob always matches the header exactly - the row
+   can't wrap (see flex-wrap: nowrap below), so the header is only ever as tall
+   as the logo, and the shape never gets cropped or leaves a strip behind.
+   z-index:-1 paints it over .site-header's background but under the logo/icons,
+   which only works because .site-header carries a z-index of its own. */
 .site-header__deco {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* Matches the fixed logo row height (10px + 80px logo + 15px padding) so the
-     deco never stretches into the mobile burger menu's wrapped nav row. */
-  height: 105px;
-  z-index: 0;
+  inset: 0;
+  z-index: -1;
   overflow: hidden;
   pointer-events: none;
 }
@@ -210,14 +216,14 @@ body {
   left: 0;
   top: 0;
   width: 120px;
-  height: 105px;
+  height: 100%;
   color: #fbc9d6;
 }
-@media (max-width: 1040px) {
-  .site-header__deco-blob { width: 95px; }
+@media (max-width: 1023px) {
+  .site-header__deco-blob { width: 80px; }
 }
 @media (max-width: 480px) {
-  .site-header__deco-blob { width: 68px; }
+  .site-header__deco-blob { width: 58px; }
 }
 
 .logo {
@@ -1441,8 +1447,17 @@ body:has(.chat.chat--open) .contact-rail {
 /* The full nav (7 links + logo + icons) needs to stay in desktop form down to
    1024px, so this only collapses to the burger menu below that. */
 @media (max-width: 1023px) {
+  /* The collapsed nav is absolutely positioned, so the row only holds the logo
+     and the icon cluster - let it shrink rather than wrap them onto a second
+     line, and pull the logo down to a size that leaves the icons room. */
   .site-header__inner {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+  }
+  .site-header {
+    padding: 8px 14px 10px;
+  }
+  .logo img {
+    height: 52px;
   }
   .nav-toggle {
     display: block;
@@ -1584,5 +1599,45 @@ body:has(.chat.chat--open) .contact-rail {
   }
   .footer-cta__form button {
     padding: 10px 20px;
+  }
+}
+
+/* Phones: tighten the header's icon cluster so the logo + icons stay on one
+   row, then hand the logo over to the round bird mark on the narrowest
+   screens. The 430px below must stay in step with the <source media> that
+   build.py's render_logo() writes into the CMS_LOGO band. */
+@media (max-width: 560px) {
+  .site-header__inner {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .search-toggle,
+  .wishlist-link,
+  .cart-link {
+    width: 36px;
+    height: 36px;
+  }
+  .search-toggle svg,
+  .wishlist-link svg,
+  .cart-link svg {
+    width: 20px;
+    height: 20px;
+  }
+  .wishlist-link,
+  .cart-link {
+    margin-left: 4px;
+  }
+  .cart-link {
+    margin-right: 2px;
+  }
+  .nav-toggle {
+    padding: 8px 0 8px 8px;
+  }
+}
+
+@media (max-width: 430px) {
+  .logo img {
+    height: 46px;
+    width: 46px;
   }
 }
