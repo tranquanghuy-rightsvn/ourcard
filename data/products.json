@@ -126,5 +126,32 @@
     "order": 4,
     "status": "published",
     "updated_at": "2026-09-10"
+  },
+  {
+    "id": 6,
+    "slug": "kc001a-stock-baby-boy-3d-pop-up-card",
+    "sku": "KC001A",
+    "name": "Stock Baby Boy - 3D Pop Up Card",
+    "category": "birthday",
+    "tags_text": "Birthday",
+    "size": "Closed: 127x178 mm (5x7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc001a-stock-baby-boy-3d-pop-up-card-1.png",
+    "gallery": [
+      "kc001a-stock-baby-boy-3d-pop-up-card-1.png",
+      "kc001a-stock-baby-boy-3d-pop-up-card-2.png",
+      "kc001a-stock-baby-boy-3d-pop-up-card-5.png",
+      "kc001a-stock-baby-boy-3d-pop-up-card-6.png",
+      "kc001a-stock-baby-boy-3d-pop-up-card-7.png",
+      "kc001a-stock-baby-boy-3d-pop-up-card-8.png"
+    ],
+    "videos": [
+      "kc001a-stock-baby-boy-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "",
+    "order": 5,
+    "status": "published",
+    "updated_at": "2026-09-13"
   }
 ]
