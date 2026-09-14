@@ -127,5 +127,34 @@
     "order": 4,
     "status": "published",
     "updated_at": "2026-09-13"
+  },
+  {
+    "id": 7,
+    "slug": "kc009-halloween-trick-or-treat-greating-3d-pop-up-card",
+    "sku": "KC009",
+    "name": "Halloween Trick or Treat Greating - 3D Pop Up Card",
+    "category": "halloween",
+    "tags_text": "Halloween, Greating",
+    "size": "Closed: 127 x 178 mm (5x7 inch)",
+    "is_bestseller": true,
+    "is_new": true,
+    "cover_image": "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-1.png",
+    "gallery": [
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-1.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-2.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-3.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-4.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-5.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-6.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-7.png",
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-8.png"
+    ],
+    "videos": [
+      "kc009-halloween-trick-or-treat-greating-3d-pop-up-card-1.mp4"
+    ],
+    "description_html": "<p data-path-to-node=\"3\">🎃 <strong data-path-to-node=\"3\" data-index-in-node=\"3\">Surprise your loved ones this spooky season with our unique \"Trick or Treat\" 3D Pop-up Halloween Card!</strong> 🦇</p>\n<p data-path-to-node=\"4\">Looking for a special gift or a unique greeting card for friends, family, or kids this Halloween? This magical \"Trick or Treat\" 3D card will deliver a delightful \"Wow\" experience the moment it's opened!</p>\n<p data-path-to-node=\"5\"><strong data-path-to-node=\"5\" data-index-in-node=\"0\">✨ What makes this card so special?</strong> Upon opening, a mystical Halloween night scene magically pops to life. At the center is a glowing orange crescent moon, accompanied by a haunted castle hidden among eerie purple clouds. You'll also spot intricate details like a witch flying on her broomstick, a gnome stirring a magic cauldron, and playful Jack-o'-lanterns. The base of the card features a beautiful starry night sky with bats, cute little ghosts, and a bold \"Trick or Treat\" greeting.</p>\n<p data-path-to-node=\"6\"><strong data-path-to-node=\"6\" data-index-in-node=\"0\">📐 Specifications:</strong></p>\n<ul data-path-to-node=\"7\">\n<li>\n<p data-path-to-node=\"7,0,0\"><strong data-path-to-node=\"7,0,0\" data-index-in-node=\"0\">Folded Size:</strong> 5 x 7 inches (Standard size, easy to hold and perfect for displaying on a desk, mantel, or bookshelf).</p>\n</li>\n<li>\n<p data-path-to-node=\"7,1,0\"><strong data-path-to-node=\"7,1,0\" data-index-in-node=\"0\">Open Size:</strong> 10 x 7 inches with a striking 3D pop-up centerpiece.</p>\n</li>\n<li>\n<p data-path-to-node=\"7,2,0\"><strong data-path-to-node=\"7,2,0\" data-index-in-node=\"0\">Material:</strong> Premium Art Paper. Thick, durable, and eco-friendly with vibrant, fade-resistant colors.</p>\n</li>\n<li>\n<p data-path-to-node=\"7,3,0\"><strong data-path-to-node=\"7,3,0\" data-index-in-node=\"0\">Craftsmanship:</strong> Precision laser-cut for the finest details, then 100% hand-assembled with love and care.</p>\n</li>\n</ul>",
+    "order": 5,
+    "status": "published",
+    "updated_at": "2026-09-14"
   }
 ]
