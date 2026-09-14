@@ -1014,14 +1014,20 @@ def replace_band(text, marker, body, required=False):
     return text[: match.start()] + replacement + text[match.end():], True
 
 
-def render_head_cms(settings, prefix):
-    """Favicon + Google Analytics + any extra head HTML the owner pasted in the CMS."""
+def render_head_cms(settings, prefix, include_analytics=True):
+    """Favicon + Google Analytics + any extra head HTML the owner pasted in the CMS.
+
+    include_analytics=False skips GA/head_html — used for admin.html, which is the
+    owner's own CMS panel, not a page visitors browse. Tracking it would mix the
+    owner's own edit-session clicks into the site's visitor analytics."""
     favicon = settings["site"].get("favicon") or "favicon.png"
     ext = favicon.rsplit(".", 1)[-1].lower()
     lines = [
         f'<link rel="icon" type="{FAVICON_MIME.get(ext, "image/png")}" '
         f'href="{prefix}images/{favicon}" />'
     ]
+    if not include_analytics:
+        return "\n".join(lines)
     # The CMS already validates this, but build.py is what actually writes it into a script
     # tag on every page — re-check here so a hand-edited settings file can't inject markup.
     ga_id = (settings["analytics"].get("ga_measurement_id") or "").strip()
@@ -1368,10 +1374,10 @@ def render_wholesale_categories(categories):
     return "\n".join(items)
 
 
-def patch_chrome(text, prefix, settings):
+def patch_chrome(text, prefix, settings, include_analytics=True):
     """Apply the site-wide bands (head/logo/social) present on this page."""
     for marker, body in (
-        ("CMS_HEAD", render_head_cms(settings, prefix)),
+        ("CMS_HEAD", render_head_cms(settings, prefix, include_analytics=include_analytics)),
         ("CMS_LOGO", render_logo(settings, prefix)),
         ("CMS_FOOTER_LOGO", render_footer_logo(settings, prefix)),
         ("CMS_SOCIAL_FOOTER", render_social_footer(settings, prefix)),
@@ -1389,7 +1395,7 @@ def patch_chrome_pages(settings):
         if not path.exists():
             continue
         text = path.read_text()
-        patched = patch_chrome(text, "", settings)
+        patched = patch_chrome(text, "", settings, include_analytics=(name != "admin.html"))
         if patched != text:
             path.write_text(patched)
 
