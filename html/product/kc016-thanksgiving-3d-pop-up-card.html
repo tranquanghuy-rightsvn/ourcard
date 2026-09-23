@@ -179,7 +179,15 @@
     <div class="product-detail" id="main-content">
       <div class="product-gallery">
         <div class="product-gallery__thumbs">
-          <button class="product-gallery__thumb product-gallery__thumb--active">
+          <button class="product-gallery__thumb product-gallery__thumb--active product-gallery__thumb--video" data-video="../videos/kc016-thanksgiving-3d-pop-up-card-1.mp4">
+            <img src="../images/kc016-thanksgiving-3d-pop-up-card-1.png" alt="Watch the video" />
+            <span class="product-gallery__play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </button>
+          <button class="product-gallery__thumb">
             <img src="../images/kc016-thanksgiving-3d-pop-up-card-1.png" data-large="../images/kc016-thanksgiving-3d-pop-up-card-1.png" alt="KC016 - Thanksgiving - 3D Pop Up Card, photo 1" />
           </button>
           <button class="product-gallery__thumb">
@@ -201,9 +209,11 @@
             src="../images/kc016-thanksgiving-3d-pop-up-card-1.png"
             alt="KC016 - Thanksgiving - 3D Pop Up Card"
             id="productMainImg"
-            
+            hidden
           />
-          
+          <video id="productMainVideo" controls playsinline loop preload="metadata" poster="../images/kc016-thanksgiving-3d-pop-up-card-1.png">
+            <source src="../videos/kc016-thanksgiving-3d-pop-up-card-1.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
 
