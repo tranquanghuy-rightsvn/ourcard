@@ -30,28 +30,23 @@
     "order": 5
   },
   {
-    "key": "love-floral",
-    "label": "Love & Floral",
-    "order": 6
-  },
-  {
     "key": "animals",
     "label": "Animals",
-    "order": 7
+    "order": 6
   },
   {
     "key": "halloween",
     "label": "Halloween",
-    "order": 8
+    "order": 7
   },
   {
     "key": "hanukkah",
     "label": "Hanukkah",
-    "order": 9
+    "order": 8
   },
   {
     "key": "thanksgiving",
     "label": "Thanksgiving",
-    "order": 10
+    "order": 9
   }
 ]
