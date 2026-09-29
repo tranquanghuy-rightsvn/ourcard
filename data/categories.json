@@ -48,5 +48,10 @@
     "key": "thanksgiving",
     "label": "Thanksgiving",
     "order": 9
+  },
+  {
+    "key": "love---anniversary",
+    "label": "Love & Anniversary",
+    "order": 10
   }
 ]
