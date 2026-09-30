@@ -386,7 +386,7 @@ def free_template_jsonld(item, canonical_url, description):
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{BASE_URL}/"},
-            {"@type": "ListItem", "position": 2, "name": "Free Template", "item": f"{BASE_URL}/free-template.html"},
+            {"@type": "ListItem", "position": 2, "name": "Template", "item": f"{BASE_URL}/free-template.html"},
             {"@type": "ListItem", "position": 3, "name": item["title"]},
         ],
     }
@@ -405,10 +405,10 @@ def render_free_template_page(item, template):
     gallery_item = {"gallery": item.get("gallery") or [item["cover_image"]], "videos": item.get("videos") or []}
 
     page = template
-    page = page.replace("{{PAGE_TITLE}}", f'{title_line_} | Free Template | Kyu Craft | Popup Card')
+    page = page.replace("{{PAGE_TITLE}}", f'{title_line_} | Template | Kyu Craft | Popup Card')
     page = page.replace("{{META_DESCRIPTION}}", html.escape(description))
     page = page.replace("{{CANONICAL_URL}}", canonical_url)
-    page = page.replace("{{OG_TITLE}}", f'{title_line_} | Kyu Craft Free Template')
+    page = page.replace("{{OG_TITLE}}", f'{title_line_} | Kyu Craft Template')
     page = page.replace("{{OG_IMAGE}}", f'{BASE_URL}/images/{gallery_item["gallery"][0]}')
     page = page.replace("{{JSONLD}}", free_template_jsonld({**item, "gallery": gallery_item["gallery"]}, canonical_url, description))
     page = page.replace("{{BREADCRUMB_NAME}}", title_line_)
