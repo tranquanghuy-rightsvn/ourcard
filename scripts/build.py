@@ -399,7 +399,10 @@ def free_template_jsonld(item, canonical_url, description):
 def render_free_template_page(item, template):
     title_line_ = html.escape(item["title"])
     canonical_url = f'{BASE_URL}/free-template/{item["slug"]}.html'
-    description = f'Free downloadable {item["title"]} pop-up card template from Kyu Craft.'
+    # Meta/JSON-LD description: the CMS description (collapsed to one line) when set.
+    description = plain_text_from_html(item.get("description") or "") or (
+        f'Free downloadable {item["title"]} pop-up card template from Kyu Craft.'
+    )
     # Older records may only have cover_image (no gallery/videos yet) - fall back to a
     # single-image gallery, same as the listing card used to do for the modal.
     gallery_item = {"gallery": item.get("gallery") or [item["cover_image"]], "videos": item.get("videos") or []}
@@ -419,8 +422,39 @@ def render_free_template_page(item, template):
     page = page.replace("{{GALLERY_MAIN_IMG_HIDDEN}}", img_hidden)
     page = page.replace("{{GALLERY_MAIN_VIDEO_HTML}}", video_html)
     page = page.replace("{{FREE_TEMPLATE_TITLE}}", title_line_)
+    desc_html, price_html, info_image_html = render_free_template_info(item, title_line_)
+    page = page.replace("{{FREE_TEMPLATE_DESCRIPTION_HTML}}", desc_html)
+    page = page.replace("{{FREE_TEMPLATE_PRICE_HTML}}", price_html)
     page = page.replace("{{DOWNLOAD_HREF}}", f'../downloads/{item["file"]}')
+    page = page.replace("{{FREE_TEMPLATE_INFO_IMAGE_HTML}}", info_image_html)
     return page
+
+
+FREE_TEMPLATE_DEFAULT_DESCRIPTION = (
+    "Free downloadable pop-up card template — print it at home or send the file to "
+    "your local printer."
+)
+
+
+def render_free_template_info(item, alt_text):
+    """The 3 CMS-filled blocks around the Download button: description box (plain text,
+    line breaks kept via CSS white-space), "Price:" box, and an optional image under the
+    button. Description falls back to the old fixed sentence so records saved before
+    these fields existed render as before; price/image are simply omitted when empty."""
+    description = (item.get("description") or "").strip() or FREE_TEMPLATE_DEFAULT_DESCRIPTION
+    desc_html = f'<p class="product-info__cta product-info__ft-desc">{html.escape(description)}</p>'
+    price = (item.get("price") or "").strip()
+    price_html = (
+        f'<p class="product-info__ft-price"><span>Price:</span> {html.escape(price)}</p>' if price else ""
+    )
+    info_image = (item.get("info_image") or "").strip()
+    info_image_html = (
+        f'<div class="product-info__ft-image"><img src="../images/{html.escape(info_image, quote=True)}" '
+        f'alt="{alt_text}" loading="lazy" /></div>'
+        if info_image
+        else ""
+    )
+    return desc_html, price_html, info_image_html
 
 
 def build_free_template_pages(items, template):

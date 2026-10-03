@@ -161,6 +161,31 @@
   padding: 14px 16px;
   margin-bottom: 20px;
 }
+/* Free Template detail: CMS-filled description (keeps the owner's line breaks), a
+   "Price:" box and an optional image under the Download button. */
+.product-info__ft-desc {
+  white-space: pre-line;
+  min-height: calc(1.6em * 3 + 28px);
+  margin-bottom: 12px;
+}
+.product-info__ft-price {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  border: 1px solid var(--color-rust);
+  border-radius: 6px;
+  padding: 6px 16px;
+  margin-bottom: 12px;
+}
+.product-info__ft-price span { font-weight: 500; }
+.product-info .product-info__download { margin-bottom: 12px; }
+.product-info__ft-image {
+  border: 1px solid var(--color-rust);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.product-info__ft-image img { display: block; width: 100%; height: auto; }
 .product-info__view-cart {
   flex-shrink: 0;
   width: 52px;
