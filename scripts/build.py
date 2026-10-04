@@ -1258,6 +1258,7 @@ def render_home_meta(settings):
     site_obj = {
         "@context": "https://schema.org",
         "@type": "WebSite",
+        "creator": {"@type": "Organization", "@id": "https://web100.vn/#organization", "name": "Web100", "url": "https://web100.vn/"},
         "name": site.get("name") or title,
         "url": f"{BASE_URL}/",
     }
