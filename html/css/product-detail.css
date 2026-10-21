@@ -142,12 +142,24 @@
 .product-info__add-to-cart svg,
 .product-info__download svg { width: 18px; height: 18px; flex-shrink: 0; }
 .product-info__note {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   font-style: italic;
-  color: var(--color-muted);
-  line-height: 1.5;
+  color: var(--color-text, #111);
+  line-height: 1.4;
   margin-bottom: 20px;
+}
+.product-info__note-title {
+  font-size: 16px;
+  font-style: normal;
+}
+.product-info__note a {
+  color: #1a9fd9;
+  text-decoration: none;
+  word-break: break-all;
+}
+.product-info__note a:hover {
+  text-decoration: underline;
 }
 /* Custom Design detail page has no Add to cart/wishlist (portfolio piece, not a sellable
    SKU) - this callout takes the .product-info__actions button's place. */
