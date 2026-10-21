@@ -53,5 +53,10 @@
     "key": "love---anniversary",
     "label": "Love & Anniversary",
     "order": 10
+  },
+  {
+    "key": "father-s-day",
+    "label": "Father's Day",
+    "order": 11
   }
 ]
